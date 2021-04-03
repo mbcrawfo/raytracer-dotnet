@@ -22,4 +22,8 @@
         </PackageReference>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\source\RayTracer.Core\RayTracer.Core.csproj" />
+    </ItemGroup>
+
 </Project>
