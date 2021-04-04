@@ -1,9 +1,9 @@
 using System;
 using FluentAssertions;
-using RayTracer.Core.MathTypes;
+using RayTracer.Core.Math;
 using Xunit;
 
-namespace RayTracer.Core.UnitTests.MathTypes
+namespace RayTracer.Core.UnitTests.Math
 {
     public partial class VectorTests
     {

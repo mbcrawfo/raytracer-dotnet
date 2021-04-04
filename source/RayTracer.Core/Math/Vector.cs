@@ -1,7 +1,7 @@
 using System;
 using RayTracer.Core.Extensions;
 
-namespace RayTracer.Core.MathTypes
+namespace RayTracer.Core.Math
 {
     public struct Vector : IEquatable<Vector>
     {

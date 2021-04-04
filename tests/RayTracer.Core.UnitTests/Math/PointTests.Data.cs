@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using RayTracer.Core.Extensions;
-using RayTracer.Core.MathTypes;
+using RayTracer.Core.Math;
 
-namespace RayTracer.Core.UnitTests.MathTypes
+namespace RayTracer.Core.UnitTests.Math
 {
     public partial class PointTests
     {

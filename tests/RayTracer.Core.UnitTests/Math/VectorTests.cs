@@ -1,10 +1,10 @@
 using FluentAssertions;
 using FluentAssertions.Execution;
-using RayTracer.Core.MathTypes;
+using RayTracer.Core.Math;
 using RayTracer.Core.UnitTests.Assertions;
 using Xunit;
 
-namespace RayTracer.Core.UnitTests.MathTypes
+namespace RayTracer.Core.UnitTests.Math
 {
     public partial class VectorTests
     {

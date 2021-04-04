@@ -1,15 +1,15 @@
 using FluentAssertions;
-using RayTracer.Core.MathTypes;
+using RayTracer.Core.Math;
 using Xunit;
 
-namespace RayTracer.Core.UnitTests.MathTypes
+namespace RayTracer.Core.UnitTests.Math
 {
-    public partial class PointTests
+    public partial class VectorTests
     {
         [Theory]
-        [MemberData(nameof(PointsThatAreNotEquivalent))]
-        public void Equals__Object_ShouldReturnFalse_WhenOtherObjectIsNotAnEquivalentPoint(
-            Point tuple,
+        [MemberData(nameof(VectorsThatAreNotEquivalent))]
+        public void Equals__Object_ShouldReturnFalse_WhenOtherObjectIsNotAnEquivalentVector(
+            Vector tuple,
             object obj
         )
         {
@@ -22,11 +22,11 @@ namespace RayTracer.Core.UnitTests.MathTypes
         }
 
         [Theory]
-        [MemberData(nameof(ObjectsThatAreNotPoints))]
-        public void Equals__Object_ShouldReturnFalse_WhenOtherObjectIsNotPoint(object obj)
+        [MemberData(nameof(ObjectsThatAreNotVectors))]
+        public void Equals__Object_ShouldReturnFalse_WhenOtherObjectIsNotVector(object obj)
         {
             // arrange
-            var sut = new Point(1, 2, 3);
+            var sut = new Vector(1, 2, 3);
 
             // act
             var result = sut.Equals(obj);
@@ -36,9 +36,9 @@ namespace RayTracer.Core.UnitTests.MathTypes
         }
 
         [Theory]
-        [MemberData(nameof(PointsThatAreEquivalent))]
-        public void Equals__Object_ShouldReturnTrue_WhenOtherObjectIsAnEquivalentPoint(
-            Point tuple,
+        [MemberData(nameof(VectorsThatAreEquivalent))]
+        public void Equals__Object_ShouldReturnTrue_WhenOtherObjectIsAnEquivalentVector(
+            Vector tuple,
             object obj
         )
         {
@@ -51,10 +51,10 @@ namespace RayTracer.Core.UnitTests.MathTypes
         }
 
         [Theory]
-        [MemberData(nameof(PointsThatAreNotEquivalent))]
-        public void Equals__Point_ShouldReturnFalse_WhenRhsIsNotAnEquivalentPoint(
-            Point lhs,
-            Point rhs
+        [MemberData(nameof(VectorsThatAreNotEquivalent))]
+        public void Equals__Vector_ShouldReturnFalse_WhenRhsIsNotAnEquivalentVector(
+            Vector lhs,
+            Vector rhs
         )
         {
             // arrange
@@ -66,10 +66,10 @@ namespace RayTracer.Core.UnitTests.MathTypes
         }
 
         [Theory]
-        [MemberData(nameof(PointsThatAreEquivalent))]
-        public void Equals__Point_ShouldReturnTrue_WhenRhsIsAnEquivalentPoint(
-            Point lhs,
-            Point rhs
+        [MemberData(nameof(VectorsThatAreEquivalent))]
+        public void Equals__Vector_ShouldReturnTrue_WhenRhsIsAnEquivalentVector(
+            Vector lhs,
+            Vector rhs
         )
         {
             // arrange
@@ -81,10 +81,10 @@ namespace RayTracer.Core.UnitTests.MathTypes
         }
 
         [Theory]
-        [MemberData(nameof(PointsThatAreNotEquivalent))]
-        public void Op__Equality_ShouldReturnFalse_WhenRhsIsNotAnEquivalentPoint(
-            Point lhs,
-            Point rhs
+        [MemberData(nameof(VectorsThatAreNotEquivalent))]
+        public void Op__Equality_ShouldReturnFalse_WhenRhsIsNotAnEquivalentVector(
+            Vector lhs,
+            Vector rhs
         )
         {
             // arrange
@@ -96,10 +96,10 @@ namespace RayTracer.Core.UnitTests.MathTypes
         }
 
         [Theory]
-        [MemberData(nameof(PointsThatAreEquivalent))]
-        public void Op__Equality_ShouldReturnTrue_WhenRhsIsAnEquivalentPoint(
-            Point lhs,
-            Point rhs
+        [MemberData(nameof(VectorsThatAreEquivalent))]
+        public void Op__Equality_ShouldReturnTrue_WhenRhsIsAnEquivalentVector(
+            Vector lhs,
+            Vector rhs
         )
         {
             // arrange
@@ -111,10 +111,10 @@ namespace RayTracer.Core.UnitTests.MathTypes
         }
 
         [Theory]
-        [MemberData(nameof(PointsThatAreEquivalent))]
-        public void Op__Inequality_ShouldReturnFalse_WhenRhsIsAnEquivalentPoint(
-            Point lhs,
-            Point rhs
+        [MemberData(nameof(VectorsThatAreEquivalent))]
+        public void Op__Inequality_ShouldReturnFalse_WhenRhsIsAnEquivalentVector(
+            Vector lhs,
+            Vector rhs
         )
         {
             // arrange
@@ -126,10 +126,10 @@ namespace RayTracer.Core.UnitTests.MathTypes
         }
 
         [Theory]
-        [MemberData(nameof(PointsThatAreNotEquivalent))]
-        public void Op__Inequality_ShouldReturnTrue_WhenRhsIsNotAnEquivalentPoint(
-            Point lhs,
-            Point rhs
+        [MemberData(nameof(VectorsThatAreNotEquivalent))]
+        public void Op__Inequality_ShouldReturnTrue_WhenRhsIsNotAnEquivalentVector(
+            Vector lhs,
+            Vector rhs
         )
         {
             // arrange
