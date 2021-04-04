@@ -9,6 +9,32 @@ namespace RayTracer.Core.UnitTests
         private const double GreaterThanEpsilon = DoubleExtensions.ComparisonEpsilon * 10.0;
         private const double LessThanEpsilon = DoubleExtensions.ComparisonEpsilon / 10.0;
 
+        public static IEnumerable<object> DotProductTestCases =>
+            new object[]
+            {
+                new object[] { Tuple.UnitX, Tuple.UnitX, 1 },
+                new object[] { Tuple.UnitX * -1, Tuple.UnitX, -1 },
+                new object[]
+                {
+                    Tuple.Vector(1, 2, 3).Normalize(), Tuple.Vector(1, 2, 3).Normalize(), 1
+                },
+                new object[]
+                {
+                    Tuple.Vector(-1, -2, -3).Normalize(),
+                    Tuple.Vector(1, 2, 3).Normalize(),
+                    -1
+                },
+                new object[] { Tuple.Vector(1, 2, 3), Tuple.Vector(2, 3, 4), 20 },
+            };
+
+        public static IEnumerable<object> DotProductTestCasesWhereOneOperandIsPoint =>
+            new object[]
+            {
+                new object[] { Tuple.Point(1, 2, 3), Tuple.Point(1, 2, 3) },
+                new object[] { Tuple.UnitX, Tuple.Point(1, 2, 3) },
+                new object[] { Tuple.Point(1, 2, 3), Tuple.UnitX },
+            };
+
         public static IEnumerable<object> MagnitudeTestCases =>
             new object[]
             {

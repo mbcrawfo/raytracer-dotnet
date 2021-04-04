@@ -46,18 +46,52 @@ namespace RayTracer.Core.UnitTests
         }
 
         [Theory]
-        [MemberData(nameof(MagnitudeTestCases))]
-        public void Magnitude_ShouldCalculateTheExpectedValue_WhenTupleIsAVector(
+        [MemberData(nameof(DotProductTestCases))]
+        public void DotProduct_ShouldCalculateTheExpectedValue_WhenBothTuplesAreVectors(
             Tuple sut,
-            double expectedMagnitude
+            Tuple other,
+            double expected
         )
         {
             // arrange
             // act
-            var actualMagnitude = sut.Magnitude();
+            var actual = sut.DotProduct(other);
 
             // assert
-            actualMagnitude.Should().BeApproximately(expectedMagnitude);
+            actual.Should().BeApproximately(expected);
+        }
+
+        [Theory]
+        [MemberData(nameof(DotProductTestCasesWhereOneOperandIsPoint))]
+        public void DotProduct_ShouldThrowInvalidOperationException_WhenEitherTupleIsAPoint(
+            Tuple sut,
+            Tuple other
+        )
+        {
+            // arrange
+
+            // act
+            Action act = () => { _ = sut.DotProduct(other); };
+
+            // assert
+            act.Should()
+                .Throw<InvalidOperationException>()
+                .WithMessage("*only valid when both tuples are vectors*");
+        }
+
+        [Theory]
+        [MemberData(nameof(MagnitudeTestCases))]
+        public void Magnitude_ShouldCalculateTheExpectedValue_WhenTupleIsAVector(
+            Tuple sut,
+            double expected
+        )
+        {
+            // arrange
+            // act
+            var actual = sut.Magnitude();
+
+            // assert
+            actual.Should().BeApproximately(expected);
         }
 
         [Theory]

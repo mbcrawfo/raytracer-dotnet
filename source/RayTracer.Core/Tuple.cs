@@ -31,6 +31,9 @@ namespace RayTracer.Core
         /// <summary>
         ///     Gets the type of the tuple, based on <see cref="W" />.
         /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException">
+        ///     The W component of this tuple has an unexpected value.
+        /// </exception>
         public TupleType Type =>
             W switch
             {
@@ -44,22 +47,22 @@ namespace RayTracer.Core
             };
 
         /// <summary>
-        ///     Gets the W component of the tuple.
+        ///     Gets the W component of this tuple.
         /// </summary>
         public double W { get; private init; }
 
         /// <summary>
-        ///     Gets the X component of the tuple.
+        ///     Gets the X component of this tuple.
         /// </summary>
         public double X { get; private init; }
 
         /// <summary>
-        ///     Gets the Y component of the tuple.
+        ///     Gets the Y component of this tuple.
         /// </summary>
         public double Y { get; private init; }
 
         /// <summary>
-        ///     Gets the Z component of the tuple.
+        ///     Gets the Z component of this tuple.
         /// </summary>
         public double Z { get; private init; }
 
@@ -93,15 +96,36 @@ namespace RayTracer.Core
             Z.ApproximatelyEquals(other.Z);
 
         /// <summary>
+        ///     Calculates the dot product of this tuple with <paramref name="other"/>, if both
+        ///     tuples are vectors.
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException">
+        ///     The tuple is not a vector.
+        /// </exception>
+        public double DotProduct(Tuple other) =>
+            (W + other.W) switch
+            {
+                0.0 => X * other.X + Y * other.Y + Z * other.Z,
+                _ => throw new InvalidOperationException(
+                    nameof(DotProduct) + " is only valid when both tuples are vectors"
+                )
+            };
+
+        /// <summary>
         ///     Calculates the magnited of this tuple, if it is a vector.
         /// </summary>
         /// <returns></returns>
+        /// <exception cref="InvalidOperationException">
+        ///     The tuple is not a vector.
+        /// </exception>
         public double Magnitude() =>
             W switch
             {
                 0.0 => Math.Sqrt(X * X + Y * Y + Z * Z),
                 _ => throw new InvalidOperationException(
-                    "Magnitude operation is only valid on a vector"
+                    nameof(Magnitude) + " is only valid on a vector"
                 )
             };
 
@@ -110,15 +134,24 @@ namespace RayTracer.Core
         ///     vector.
         /// </summary>
         /// <returns></returns>
+        /// <exception cref="InvalidOperationException">
+        ///     The tuple is not a vector.
+        /// </exception>
         public Tuple Normalize()
         {
-            var magnitude = Magnitude();
-            return new Tuple
+            var magnitude = Math.Sqrt(X * X + Y * Y + Z * Z);
+            return W switch
             {
-                W = 0.0,
-                X = X / magnitude,
-                Y = Y / magnitude,
-                Z = Z / magnitude,
+                0.0 => new Tuple
+                {
+                    W = 0.0,
+                    X = X / magnitude,
+                    Y = Y / magnitude,
+                    Z = Z / magnitude,
+                },
+                _ => throw new InvalidOperationException(
+                    nameof(Normalize) + " is only valid on a vector"
+                )
             };
         }
 
