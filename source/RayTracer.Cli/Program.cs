@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Threading;
-using Tuple = RayTracer.Core.Tuple;
+using RayTracer.Core.MathTypes;
 
-var env = new Environment(Tuple.Vector(0, -0.1, 0), Tuple.Vector(-0.01, 0, 0));
-
-var proj = new Projectile(Tuple.Point(0, 1, 0), Tuple.Vector(1, 1, 0).Normalize());
-
+var env = new Environment(new Vector(0f, -0.1f, 0f), new Vector(-0.01f, 0f, 0f));
+var proj = new Projectile(new Point(0f, 1f, 0f), new Vector(1f, 1f, 0f).Normalize());
 var tick = 0;
+
 while (proj.Position.Y >= 0.0)
 {
     proj = proj.Tick(env);
@@ -14,14 +13,16 @@ while (proj.Position.Y >= 0.0)
     Thread.Sleep(500);
 }
 
-internal record Environment(Tuple Gravity, Tuple Wind);
+return 0;
 
-internal record Projectile(Tuple Position, Tuple Velocity)
+internal record Environment(Vector Gravity, Vector Wind);
+
+internal record Projectile(Point Position, Vector Velocity)
 {
-    public Projectile Tick(Environment environment)
-    {
-        var (gravity, wind) = environment;
-        return this with { Position = Position + Velocity, Velocity = Velocity + gravity + wind };
-    }
+    public Projectile Tick(Environment environment) =>
+        this with
+        {
+            Position = Position + Velocity,
+            Velocity = Velocity + environment.Gravity + environment.Wind
+        };
 }
-
