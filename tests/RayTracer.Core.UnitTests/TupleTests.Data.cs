@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using RayTracer.Core.Extensions;
 
@@ -7,6 +8,17 @@ namespace RayTracer.Core.UnitTests
     {
         private const double GreaterThanEpsilon = DoubleExtensions.ComparisonEpsilon * 10.0;
         private const double LessThanEpsilon = DoubleExtensions.ComparisonEpsilon / 10.0;
+
+        public static IEnumerable<object> MagnitudeCalculations =>
+            new object[]
+            {
+                new object[] { Tuple.Zero, 0.0 },
+                new object[] { Tuple.UnitX, 1.0 },
+                new object[] { Tuple.UnitY, 1.0 },
+                new object[] { Tuple.UnitZ, 1.0 },
+                new object[] { Tuple.Vector(1, 2, 3), Math.Sqrt(14) },
+                new object[] { Tuple.Vector(-1, -2, -3), Math.Sqrt(14) },
+            };
 
         public static IEnumerable<object> ObjectsThatAreNotTuples =>
             new object[]

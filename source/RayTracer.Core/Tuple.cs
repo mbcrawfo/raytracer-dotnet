@@ -93,6 +93,19 @@ namespace RayTracer.Core
             Z.ApproximatelyEquals(other.Z);
 
         /// <summary>
+        ///     Calculates the magnited of this tuple, if it is a vector.
+        /// </summary>
+        /// <returns></returns>
+        public double Magnitude() =>
+            W switch
+            {
+                0.0 => Math.Sqrt(X * X + Y * Y + Z * Z),
+                _ => throw new InvalidOperationException(
+                    "Magnitude operation is only valid on a vector"
+                )
+            };
+
+        /// <summary>
         ///     Construct a new <see cref="Tuple" /> representing a vector.
         /// </summary>
         /// <param name="x"></param>

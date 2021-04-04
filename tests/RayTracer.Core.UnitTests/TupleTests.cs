@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using FluentAssertions;
 using FluentAssertions.Execution;
+using RayTracer.Core.UnitTests.Assertions;
 using Xunit;
 
 namespace RayTracer.Core.UnitTests
@@ -42,6 +43,34 @@ namespace RayTracer.Core.UnitTests
             result.X.Should().Be(x);
             result.Y.Should().Be(y);
             result.Z.Should().Be(z);
+        }
+
+        [Theory]
+        [MemberData(nameof(MagnitudeCalculations))]
+        public void Magnitude_ShouldCalculateTheExpectedValue_WhenTupleIsAVector(
+            Tuple sut,
+            double expectedMagnitude
+        )
+        {
+            // arrange
+            // act
+            var actualMagnitude = sut.Magnitude();
+
+            // assert
+            actualMagnitude.Should().BeApproximately(expectedMagnitude);
+        }
+
+        [Fact]
+        public void Magnitude_ShouldThrowInvalidOperationException_WhenTupleIsAPoint()
+        {
+            // arrange
+            var sut = Tuple.Point(1, 2, 3);
+
+            // act
+            Action act = () => { _ = sut.Magnitude(); };
+
+            // assert
+            act.Should().Throw<InvalidOperationException>().WithMessage("*only valid on a vector*");
         }
 
         [Fact]
