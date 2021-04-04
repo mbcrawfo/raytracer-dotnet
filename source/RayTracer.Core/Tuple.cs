@@ -115,6 +115,32 @@ namespace RayTracer.Core
             };
 
         /// <summary>
+        ///     Allows deconstructing this tuple with all components.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="z"></param>
+        /// <param name="w"></param>
+        public void Deconstruct(out double x, out double y, out double z, out double w)
+        {
+            Deconstruct(out x, out y, out z);
+            w = W;
+        }
+
+        /// <summary>
+        ///     Allows deconstructing this tuple without the <see cref="W"/> component.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="z"></param>
+        public void Deconstruct(out double x, out double y, out double z)
+        {
+            x = X;
+            y = Y;
+            z = Z;
+        }
+
+        /// <summary>
         ///     Calculates the dot product of this tuple with <paramref name="other" />, if both
         ///     tuples are vectors.
         /// </summary>

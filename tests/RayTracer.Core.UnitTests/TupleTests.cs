@@ -142,6 +142,39 @@ namespace RayTracer.Core.UnitTests
         }
 
         [Fact]
+        public void Deconstruct__3_ShouldReturnExpectedComponentValues()
+        {
+            // arrange
+            var sut = Tuple.Point(1, 2, 3);
+
+            // act
+            var (x, y, z) = sut;
+
+            // assert
+            using var _ = new AssertionScope();
+            x.Should().Be(sut.X);
+            y.Should().Be(sut.Y);
+            z.Should().Be(sut.Z);
+        }
+
+        [Fact]
+        public void Deconstruct__4_ShouldReturnExpectedComponentValues()
+        {
+            // arrange
+            var sut = Tuple.Point(1, 2, 3);
+
+            // act
+            var (x, y, z, w) = sut;
+
+            // assert
+            using var _ = new AssertionScope();
+            x.Should().Be(sut.X);
+            y.Should().Be(sut.Y);
+            z.Should().Be(sut.Z);
+            w.Should().Be(1);
+        }
+
+        [Fact]
         public void Magnitude_ShouldThrowInvalidOperationException_WhenTupleIsAPoint()
         {
             // arrange
