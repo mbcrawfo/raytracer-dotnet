@@ -96,7 +96,26 @@ namespace RayTracer.Core
             Z.ApproximatelyEquals(other.Z);
 
         /// <summary>
-        ///     Calculates the dot product of this tuple with <paramref name="other"/>, if both
+        ///     Calculates the cross product of this tuple with <paramref name="other"/>, if both
+        ///     tuples are vectors.
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public Tuple CrossProduct(Tuple other) =>
+            (W + other.W) switch
+            {
+                0.0 => Vector(
+                    Y * other.Z - Z * other.Y,
+                    Z * other.X - X * other.Z,
+                    X * other.Y - Y * other.X
+                ),
+                _ => throw new InvalidOperationException(
+                    nameof(CrossProduct) + " is only valid when both tuples are vectors"
+                )
+            };
+
+        /// <summary>
+        ///     Calculates the dot product of this tuple with <paramref name="other" />, if both
         ///     tuples are vectors.
         /// </summary>
         /// <param name="other"></param>
@@ -142,13 +161,7 @@ namespace RayTracer.Core
             var magnitude = Math.Sqrt(X * X + Y * Y + Z * Z);
             return W switch
             {
-                0.0 => new Tuple
-                {
-                    W = 0.0,
-                    X = X / magnitude,
-                    Y = Y / magnitude,
-                    Z = Z / magnitude,
-                },
+                0.0 => Vector(X / magnitude, Y / magnitude, Z / magnitude),
                 _ => throw new InvalidOperationException(
                     nameof(Normalize) + " is only valid on a vector"
                 )

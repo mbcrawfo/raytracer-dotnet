@@ -9,6 +9,21 @@ namespace RayTracer.Core.UnitTests
         private const double GreaterThanEpsilon = DoubleExtensions.ComparisonEpsilon * 10.0;
         private const double LessThanEpsilon = DoubleExtensions.ComparisonEpsilon / 10.0;
 
+        public static IEnumerable<object> CrossProductTestCases =>
+            new object[]
+            {
+                new object[] { Tuple.UnitX, Tuple.UnitY, Tuple.UnitZ },
+                new object[] { Tuple.UnitY, Tuple.UnitX, -Tuple.UnitZ },
+                new object[]
+                {
+                    Tuple.Vector(1, 2, 3), Tuple.Vector(2, 3, 4), Tuple.Vector(-1, 2, -1)
+                },
+                new object[]
+                {
+                    Tuple.Vector(2, 3, 4), Tuple.Vector(1, 2, 3), Tuple.Vector(1, -2, 1)
+                },
+            };
+
         public static IEnumerable<object> DotProductTestCases =>
             new object[]
             {
@@ -25,14 +40,6 @@ namespace RayTracer.Core.UnitTests
                     -1
                 },
                 new object[] { Tuple.Vector(1, 2, 3), Tuple.Vector(2, 3, 4), 20 },
-            };
-
-        public static IEnumerable<object> DotProductTestCasesWhereOneOperandIsPoint =>
-            new object[]
-            {
-                new object[] { Tuple.Point(1, 2, 3), Tuple.Point(1, 2, 3) },
-                new object[] { Tuple.UnitX, Tuple.Point(1, 2, 3) },
-                new object[] { Tuple.Point(1, 2, 3), Tuple.UnitX },
             };
 
         public static IEnumerable<object> MagnitudeTestCases =>
@@ -69,6 +76,14 @@ namespace RayTracer.Core.UnitTests
             new object[]
             {
                 new object[] { new() }, new object[] { 1 }, new object[] { "hello world" }
+            };
+
+        public static IEnumerable<object> PairsOfTuplesWhereOneOperandIsAPoint =>
+            new object[]
+            {
+                new object[] { Tuple.Point(1, 2, 3), Tuple.Point(1, 2, 3) },
+                new object[] { Tuple.UnitX, Tuple.Point(1, 2, 3) },
+                new object[] { Tuple.Point(1, 2, 3), Tuple.UnitX },
             };
 
         public static IEnumerable<object> TuplesThatAreEquivalent =>

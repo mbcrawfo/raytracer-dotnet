@@ -10,39 +10,36 @@ namespace RayTracer.Core.UnitTests
     public partial class TupleTests
     {
         [Theory]
-        [InlineData(1, 2, 3)]
-        [InlineData(4.5, 5.6, 6.7)]
-        [InlineData(-1, -2, -3)]
-        public void Point_ShouldCreateTupleWithProvidedValues(double x, double y, double z)
+        [MemberData(nameof(PairsOfTuplesWhereOneOperandIsAPoint))]
+        public void CrossProduct_ShouldThrowInvalidOperationException_WhenEitherTupleIsAPoint(
+            Tuple sut,
+            Tuple other
+        )
         {
             // arrange
             // act
-            var result = Tuple.Point(x, y, z);
+            Action act = () => { _ = sut.CrossProduct(other); };
 
             // assert
-            using var _ = new AssertionScope();
-            result.W.Should().Be(1.0, "W must be 1 for all points");
-            result.X.Should().Be(x);
-            result.Y.Should().Be(y);
-            result.Z.Should().Be(z);
+            act.Should()
+                .Throw<InvalidOperationException>()
+                .WithMessage("*only valid when both tuples are vectors*");
         }
 
         [Theory]
-        [InlineData(1, 2, 3)]
-        [InlineData(4.5, 5.6, 6.7)]
-        [InlineData(-1, -2, -3)]
-        public void Vector_ShouldCreateTupleWithProvidedValues(double x, double y, double z)
+        [MemberData(nameof(CrossProductTestCases))]
+        public void CrossProduct_ShouldCalculateTheExpectedVector_WhenBothTuplesAreVectors(
+            Tuple sut,
+            Tuple other,
+            Tuple expected
+        )
         {
             // arrange
             // act
-            var result = Tuple.Vector(x, y, z);
+            var actual = sut.CrossProduct(other);
 
             // assert
-            using var _ = new AssertionScope();
-            result.W.Should().Be(0, "W must be 0 for all vectors");
-            result.X.Should().Be(x);
-            result.Y.Should().Be(y);
-            result.Z.Should().Be(z);
+            actual.Should().Be(expected);
         }
 
         [Theory]
@@ -62,14 +59,13 @@ namespace RayTracer.Core.UnitTests
         }
 
         [Theory]
-        [MemberData(nameof(DotProductTestCasesWhereOneOperandIsPoint))]
+        [MemberData(nameof(PairsOfTuplesWhereOneOperandIsAPoint))]
         public void DotProduct_ShouldThrowInvalidOperationException_WhenEitherTupleIsAPoint(
             Tuple sut,
             Tuple other
         )
         {
             // arrange
-
             // act
             Action act = () => { _ = sut.DotProduct(other); };
 
@@ -106,11 +102,43 @@ namespace RayTracer.Core.UnitTests
             var actual = sut.Normalize();
 
             // assert
+            actual.Should().Be(expected);
+        }
+
+        [Theory]
+        [InlineData(1, 2, 3)]
+        [InlineData(4.5, 5.6, 6.7)]
+        [InlineData(-1, -2, -3)]
+        public void Point_ShouldCreateTupleWithProvidedValues(double x, double y, double z)
+        {
+            // arrange
+            // act
+            var result = Tuple.Point(x, y, z);
+
+            // assert
             using var _ = new AssertionScope();
-            actual.W.Should().Be(0);
-            actual.X.Should().BeApproximately(expected.X);
-            actual.Y.Should().BeApproximately(expected.Y);
-            actual.Z.Should().BeApproximately(expected.Z);
+            result.W.Should().Be(1.0, "W must be 1 for all points");
+            result.X.Should().Be(x);
+            result.Y.Should().Be(y);
+            result.Z.Should().Be(z);
+        }
+
+        [Theory]
+        [InlineData(1, 2, 3)]
+        [InlineData(4.5, 5.6, 6.7)]
+        [InlineData(-1, -2, -3)]
+        public void Vector_ShouldCreateTupleWithProvidedValues(double x, double y, double z)
+        {
+            // arrange
+            // act
+            var result = Tuple.Vector(x, y, z);
+
+            // assert
+            using var _ = new AssertionScope();
+            result.W.Should().Be(0, "W must be 0 for all vectors");
+            result.X.Should().Be(x);
+            result.Y.Should().Be(y);
+            result.Z.Should().Be(z);
         }
 
         [Fact]
