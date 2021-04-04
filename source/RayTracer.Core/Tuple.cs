@@ -9,11 +9,6 @@ namespace RayTracer.Core
     public struct Tuple : IEquatable<Tuple>
     {
         /// <summary>
-        ///     The zero vector, with all components 0.
-        /// </summary>
-        public static readonly Tuple Zero = Vector(0.0, 0.0, 0.0);
-
-        /// <summary>
         ///     The X axis unit vector.
         /// </summary>
         public static readonly Tuple UnitX = Vector(1.0, 0.0, 0.0);
@@ -27,6 +22,75 @@ namespace RayTracer.Core
         ///     The Z axis unit vector.
         /// </summary>
         public static readonly Tuple UnitZ = Vector(0.0, 0.0, 1.0);
+
+        /// <summary>
+        ///     The zero vector, with all components 0.
+        /// </summary>
+        public static readonly Tuple Zero = Vector(0.0, 0.0, 0.0);
+
+        /// <summary>
+        ///     Gets the type of the tuple, based on <see cref="W" />.
+        /// </summary>
+        public TupleType Type =>
+            W switch
+            {
+                0.0 => TupleType.Vector,
+                1.0 => TupleType.Point,
+                _ => throw new ArgumentOutOfRangeException(
+                    nameof(W),
+                    W,
+                    nameof(W) + " must have a value of exactly 0 or 1"
+                )
+            };
+
+        /// <summary>
+        ///     Gets the W component of the tuple.
+        /// </summary>
+        public double W { get; private init; }
+
+        /// <summary>
+        ///     Gets the X component of the tuple.
+        /// </summary>
+        public double X { get; private init; }
+
+        /// <summary>
+        ///     Gets the Y component of the tuple.
+        /// </summary>
+        public double Y { get; private init; }
+
+        /// <summary>
+        ///     Gets the Z component of the tuple.
+        /// </summary>
+        public double Z { get; private init; }
+
+        /// <inheritdoc />
+        public override int GetHashCode() => HashCode.Combine(W, X, Y, Z);
+
+        /// <inheritdoc />
+        public override bool Equals(object? obj) => obj is Tuple other && Equals(other);
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            // Does not call Type since tests may call ToString on a tuple that has been
+            // intentionally made invalid
+            var type = W switch
+            {
+                0.0 => "Vector",
+                1.0 => "Point",
+                _ => "InvalidTuple"
+            };
+            return $"{type}({X}, {Y}, {Z}, {W})";
+        }
+
+        /// <inheritdoc />
+        public bool Equals(Tuple other) =>
+            // W should never be affected by rounding
+            // ReSharper disable once CompareOfFloatsByEqualityOperator
+            W == other.W &&
+            X.ApproximatelyEquals(other.X) &&
+            Y.ApproximatelyEquals(other.Y) &&
+            Z.ApproximatelyEquals(other.Z);
 
         /// <summary>
         ///     Construct a new <see cref="Tuple" /> representing a vector.
@@ -59,70 +123,6 @@ namespace RayTracer.Core
                 Y = y,
                 Z = z
             };
-
-        /// <summary>
-        ///     Gets the W component of the tuple.
-        /// </summary>
-        public double W { get; private init; }
-
-        /// <summary>
-        ///     Gets the X component of the tuple.
-        /// </summary>
-        public double X { get; private init; }
-
-        /// <summary>
-        ///     Gets the Y component of the tuple.
-        /// </summary>
-        public double Y { get; private init; }
-
-        /// <summary>
-        ///     Gets the Z component of the tuple.
-        /// </summary>
-        public double Z { get; private init; }
-
-        /// <summary>
-        ///     Gets the type of the tuple, based on <see cref="W" />.
-        /// </summary>
-        public TupleType Type =>
-            W switch
-            {
-                0.0 => TupleType.Vector,
-                1.0 => TupleType.Point,
-                _ => throw new ArgumentOutOfRangeException(
-                    nameof(W),
-                    W,
-                    nameof(W) + " must have a value of exactly 0 or 1"
-                )
-            };
-
-        /// <inheritdoc />
-        public override string ToString()
-        {
-            // Does not call Type since tests may call ToString on a tuple that has been
-            // intentionally made invalid
-            var type = W switch
-            {
-                0.0 => "Vector",
-                1.0 => "Point",
-                _ => "InvalidTuple"
-            };
-            return $"{type}({X}, {Y}, {Z}, {W})";
-        }
-
-        /// <inheritdoc />
-        public override int GetHashCode() => HashCode.Combine(W, X, Y, Z);
-
-        /// <inheritdoc />
-        public override bool Equals(object? obj) => obj is Tuple other && Equals(other);
-
-        /// <inheritdoc />
-        public bool Equals(Tuple other) =>
-            // W should never be affected by rounding
-            // ReSharper disable once CompareOfFloatsByEqualityOperator
-            W == other.W &&
-            X.ApproximatelyEquals(other.X) &&
-            Y.ApproximatelyEquals(other.Y) &&
-            Z.ApproximatelyEquals(other.Z);
 
         public static bool operator ==(Tuple left, Tuple right) => left.Equals(right);
 
