@@ -10,9 +10,9 @@ namespace RayTracer.Core.UnitTests
     public partial class TupleTests
     {
         [Theory]
-        [InlineData(1.0, 2.0, 3.0)]
+        [InlineData(1, 2, 3)]
         [InlineData(4.5, 5.6, 6.7)]
-        [InlineData(-1.0, -2.0, -3.0)]
+        [InlineData(-1, -2, -3)]
         public void Point_ShouldCreateTupleWithProvidedValues(double x, double y, double z)
         {
             // arrange
@@ -28,9 +28,9 @@ namespace RayTracer.Core.UnitTests
         }
 
         [Theory]
-        [InlineData(1.0, 2.0, 3.0)]
+        [InlineData(1, 2, 3)]
         [InlineData(4.5, 5.6, 6.7)]
-        [InlineData(-1.0, -2.0, -3.0)]
+        [InlineData(-1, -2, -3)]
         public void Vector_ShouldCreateTupleWithProvidedValues(double x, double y, double z)
         {
             // arrange
