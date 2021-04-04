@@ -96,7 +96,16 @@ namespace RayTracer.Core
             };
 
         /// <inheritdoc />
-        public override string ToString() => $"{Type.ToString()}({X}, {Y}, {Z}, {W})";
+        public override string ToString()
+        {
+            var type = W switch
+            {
+                0.0 => "Vector",
+                1.0 => "Point",
+                _ => "InvalidTuple"
+            };
+            return $"{type}({X}, {Y}, {Z}, {W})";
+        }
 
         /// <inheritdoc />
         public override int GetHashCode() => HashCode.Combine(W, X, Y, Z);
@@ -116,5 +125,43 @@ namespace RayTracer.Core
         public static bool operator ==(Tuple left, Tuple right) => left.Equals(right);
 
         public static bool operator !=(Tuple left, Tuple right) => !left.Equals(right);
+
+        public static Tuple operator +(Tuple lhs, Tuple rhs)
+        {
+            var result = new Tuple
+            {
+                W = lhs.W + rhs.W,
+                X = lhs.X + rhs.X,
+                Y = lhs.Y + rhs.Y,
+                Z = lhs.Z + rhs.Z,
+            };
+
+            return result.W switch
+            {
+                0.0 or 1.0 => result,
+                _ => throw new InvalidOperationException(
+                    "Adding two points is not a valid operation"
+                )
+            };
+        }
+
+        public static Tuple operator -(Tuple lhs, Tuple rhs)
+        {
+            var result = new Tuple
+            {
+                W = lhs.W - rhs.W,
+                X = lhs.X - rhs.X,
+                Y = lhs.Y - rhs.Y,
+                Z = lhs.Z - rhs.Z,
+            };
+
+            return result.W switch
+            {
+                0.0 or 1.0 => result,
+                _ => throw new InvalidOperationException(
+                    $"Unexpected result when performing {lhs} - {rhs}"
+                )
+            };
+        }
     }
 }

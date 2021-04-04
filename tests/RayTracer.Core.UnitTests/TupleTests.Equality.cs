@@ -6,46 +6,7 @@ namespace RayTracer.Core.UnitTests
     public partial class TupleTests
     {
         [Theory]
-        [MemberData(
-            nameof(TupleEquivalencyTestData.TuplesThatAreNotEquivalent),
-            MemberType = typeof(TupleEquivalencyTestData)
-        )]
-        public void EqualityOperator_ShouldReturnFalse_WhenRhsIsNotAnEquivalentTuple(
-            Tuple lhs,
-            Tuple rhs
-        )
-        {
-            // arrange
-            // act
-            var result = lhs == rhs;
-
-            // assert
-            result.Should().BeFalse();
-        }
-
-        [Theory]
-        [MemberData(
-            nameof(TupleEquivalencyTestData.TuplesThatAreEquivalent),
-            MemberType = typeof(TupleEquivalencyTestData)
-        )]
-        public void EqualityOperator_ShouldReturnTrue_WhenRhsIsAnEquivalentTuple(
-            Tuple lhs,
-            Tuple rhs
-        )
-        {
-            // arrange
-            // act
-            var result = lhs == rhs;
-
-            // assert
-            result.Should().BeTrue();
-        }
-
-        [Theory]
-        [MemberData(
-            nameof(TupleEquivalencyTestData.TuplesThatAreNotEquivalent),
-            MemberType = typeof(TupleEquivalencyTestData)
-        )]
+        [MemberData(nameof(TuplesThatAreNotEquivalent))]
         public void Equals__Object_ShouldReturnFalse_WhenOtherObjectIsNotAnEquivalentTuple(
             Tuple tuple,
             object obj
@@ -60,10 +21,7 @@ namespace RayTracer.Core.UnitTests
         }
 
         [Theory]
-        [MemberData(
-            nameof(TupleEquivalencyTestData.ObjectsThatAreNotTuples),
-            MemberType = typeof(TupleEquivalencyTestData)
-        )]
+        [MemberData(nameof(ObjectsThatAreNotTuples))]
         public void Equals__Object_ShouldReturnFalse_WhenOtherObjectIsNotTuple(object obj)
         {
             // arrange
@@ -77,10 +35,7 @@ namespace RayTracer.Core.UnitTests
         }
 
         [Theory]
-        [MemberData(
-            nameof(TupleEquivalencyTestData.TuplesThatAreEquivalent),
-            MemberType = typeof(TupleEquivalencyTestData)
-        )]
+        [MemberData(nameof(TuplesThatAreEquivalent))]
         public void Equals__Object_ShouldReturnTrue_WhenOtherObjectIsAnEquivalentTuple(
             Tuple tuple,
             object obj
@@ -95,10 +50,7 @@ namespace RayTracer.Core.UnitTests
         }
 
         [Theory]
-        [MemberData(
-            nameof(TupleEquivalencyTestData.TuplesThatAreNotEquivalent),
-            MemberType = typeof(TupleEquivalencyTestData)
-        )]
+        [MemberData(nameof(TuplesThatAreNotEquivalent))]
         public void Equals__Tuple_ShouldReturnFalse_WhenRhsIsNotAnEquivalentTuple(
             Tuple lhs,
             Tuple rhs
@@ -113,10 +65,7 @@ namespace RayTracer.Core.UnitTests
         }
 
         [Theory]
-        [MemberData(
-            nameof(TupleEquivalencyTestData.TuplesThatAreEquivalent),
-            MemberType = typeof(TupleEquivalencyTestData)
-        )]
+        [MemberData(nameof(TuplesThatAreEquivalent))]
         public void Equals__Tuple_ShouldReturnTrue_WhenRhsIsAnEquivalentTuple(
             Tuple lhs,
             Tuple rhs
@@ -131,11 +80,38 @@ namespace RayTracer.Core.UnitTests
         }
 
         [Theory]
-        [MemberData(
-            nameof(TupleEquivalencyTestData.TuplesThatAreEquivalent),
-            MemberType = typeof(TupleEquivalencyTestData)
-        )]
-        public void InequalityOperator_ShouldReturnFalse_WhenRhsIsAnEquivalentTuple(
+        [MemberData(nameof(TuplesThatAreNotEquivalent))]
+        public void Op__Equality_ShouldReturnFalse_WhenRhsIsNotAnEquivalentTuple(
+            Tuple lhs,
+            Tuple rhs
+        )
+        {
+            // arrange
+            // act
+            var result = lhs == rhs;
+
+            // assert
+            result.Should().BeFalse();
+        }
+
+        [Theory]
+        [MemberData(nameof(TuplesThatAreEquivalent))]
+        public void Op__Equality_ShouldReturnTrue_WhenRhsIsAnEquivalentTuple(
+            Tuple lhs,
+            Tuple rhs
+        )
+        {
+            // arrange
+            // act
+            var result = lhs == rhs;
+
+            // assert
+            result.Should().BeTrue();
+        }
+
+        [Theory]
+        [MemberData(nameof(TuplesThatAreEquivalent))]
+        public void Op__Inequality_ShouldReturnFalse_WhenRhsIsAnEquivalentTuple(
             Tuple lhs,
             Tuple rhs
         )
@@ -149,11 +125,8 @@ namespace RayTracer.Core.UnitTests
         }
 
         [Theory]
-        [MemberData(
-            nameof(TupleEquivalencyTestData.TuplesThatAreNotEquivalent),
-            MemberType = typeof(TupleEquivalencyTestData)
-        )]
-        public void InequalityOperator_ShouldReturnTrue_WhenRhsIsNotAnEquivalentTuple(
+        [MemberData(nameof(TuplesThatAreNotEquivalent))]
+        public void Op__Inequality_ShouldReturnTrue_WhenRhsIsNotAnEquivalentTuple(
             Tuple lhs,
             Tuple rhs
         )

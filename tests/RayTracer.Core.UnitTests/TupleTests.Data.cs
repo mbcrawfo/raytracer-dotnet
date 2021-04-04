@@ -3,7 +3,7 @@ using RayTracer.Core.Extensions;
 
 namespace RayTracer.Core.UnitTests
 {
-    public static class TupleEquivalencyTestData
+    public partial class TupleTests
     {
         private const double GreaterThanEpsilon = DoubleExtensions.ComparisonEpsilon * 10.0;
         private const double LessThanEpsilon = DoubleExtensions.ComparisonEpsilon / 10.0;
