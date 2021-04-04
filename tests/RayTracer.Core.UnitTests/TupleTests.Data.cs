@@ -9,15 +9,34 @@ namespace RayTracer.Core.UnitTests
         private const double GreaterThanEpsilon = DoubleExtensions.ComparisonEpsilon * 10.0;
         private const double LessThanEpsilon = DoubleExtensions.ComparisonEpsilon / 10.0;
 
-        public static IEnumerable<object> MagnitudeCalculations =>
+        public static IEnumerable<object> MagnitudeTestCases =>
             new object[]
             {
-                new object[] { Tuple.Zero, 0.0 },
-                new object[] { Tuple.UnitX, 1.0 },
-                new object[] { Tuple.UnitY, 1.0 },
-                new object[] { Tuple.UnitZ, 1.0 },
+                new object[] { Tuple.Zero, 0 },
+                new object[] { Tuple.UnitX, 1 },
+                new object[] { Tuple.UnitY, 1 },
+                new object[] { Tuple.UnitZ, 1 },
                 new object[] { Tuple.Vector(1, 2, 3), Math.Sqrt(14) },
                 new object[] { Tuple.Vector(-1, -2, -3), Math.Sqrt(14) },
+                new object[] { Tuple.Vector(1, 2, 3).Normalize(), 1 },
+            };
+
+        public static IEnumerable<object> NormalizationTestCases =>
+            new object[]
+            {
+                new object[] { Tuple.UnitX * 2, Tuple.UnitX },
+                new object[] { Tuple.UnitY * 2, Tuple.UnitY },
+                new object[] { Tuple.UnitZ * 2, Tuple.UnitZ },
+                new object[]
+                {
+                    Tuple.Vector(1, 2, 3),
+                    Tuple.Vector(1 / Math.Sqrt(14), 2 / Math.Sqrt(14), 3 / Math.Sqrt(14))
+                },
+                new object[]
+                {
+                    Tuple.Vector(-1, -2, -3),
+                    Tuple.Vector(-1 / Math.Sqrt(14), -2 / Math.Sqrt(14), -3 / Math.Sqrt(14))
+                },
             };
 
         public static IEnumerable<object> ObjectsThatAreNotTuples =>

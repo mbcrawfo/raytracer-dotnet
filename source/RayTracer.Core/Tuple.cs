@@ -106,6 +106,23 @@ namespace RayTracer.Core
             };
 
         /// <summary>
+        ///     Generates a unit vector representing the current tuple's direction, if it is a
+        ///     vector.
+        /// </summary>
+        /// <returns></returns>
+        public Tuple Normalize()
+        {
+            var magnitude = Magnitude();
+            return new Tuple
+            {
+                W = 0.0,
+                X = X / magnitude,
+                Y = Y / magnitude,
+                Z = Z / magnitude,
+            };
+        }
+
+        /// <summary>
         ///     Construct a new <see cref="Tuple" /> representing a vector.
         /// </summary>
         /// <param name="x"></param>

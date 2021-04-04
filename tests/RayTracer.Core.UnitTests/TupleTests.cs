@@ -46,7 +46,7 @@ namespace RayTracer.Core.UnitTests
         }
 
         [Theory]
-        [MemberData(nameof(MagnitudeCalculations))]
+        [MemberData(nameof(MagnitudeTestCases))]
         public void Magnitude_ShouldCalculateTheExpectedValue_WhenTupleIsAVector(
             Tuple sut,
             double expectedMagnitude
@@ -60,6 +60,25 @@ namespace RayTracer.Core.UnitTests
             actualMagnitude.Should().BeApproximately(expectedMagnitude);
         }
 
+        [Theory]
+        [MemberData(nameof(NormalizationTestCases))]
+        public void Normalize_ShouldCalculateTheExpectedUnitVector_WhenTupleIsAVector(
+            Tuple sut,
+            Tuple expected
+        )
+        {
+            // arrange
+            // act
+            var actual = sut.Normalize();
+
+            // assert
+            using var _ = new AssertionScope();
+            actual.W.Should().Be(0);
+            actual.X.Should().BeApproximately(expected.X);
+            actual.Y.Should().BeApproximately(expected.Y);
+            actual.Z.Should().BeApproximately(expected.Z);
+        }
+
         [Fact]
         public void Magnitude_ShouldThrowInvalidOperationException_WhenTupleIsAPoint()
         {
@@ -68,6 +87,19 @@ namespace RayTracer.Core.UnitTests
 
             // act
             Action act = () => { _ = sut.Magnitude(); };
+
+            // assert
+            act.Should().Throw<InvalidOperationException>().WithMessage("*only valid on a vector*");
+        }
+
+        [Fact]
+        public void Normalize_ShouldThrowInvalidOperationException_WhenTupleIsAPoint()
+        {
+            // arrange
+            var sut = Tuple.Point(1, 2, 3);
+
+            // act
+            Action act = () => { _ = sut.Normalize(); };
 
             // assert
             act.Should().Throw<InvalidOperationException>().WithMessage("*only valid on a vector*");
