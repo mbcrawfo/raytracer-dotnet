@@ -82,6 +82,111 @@ namespace RayTracer.Core.UnitTests
         }
 
         [Fact]
+        public void Op__DivideScalar_ShouldDivideXYZComponentsAndPreserveType_WhenOperandIsPoint()
+        {
+            // arrange
+            var sut = Tuple.Point(2, 4, 6);
+
+            // act
+            var result = sut / 2;
+
+            // assert
+            result.Should()
+                .BeEquivalentTo(
+                    new
+                    {
+                        Type = TupleType.Point,
+                        W = 1,
+                        X = 1,
+                        Y = 2,
+                        Z = 3
+                    }
+                );
+        }
+
+        [Fact]
+        public void Op__DivideScalar_ShouldDivideXYZComponentsAndPreserveType_WhenOperandIsVector()
+        {
+            // arrange
+            var sut = Tuple.Vector(2, 4, 6);
+
+            // act
+            var result = sut / 2;
+
+            // assert
+            result.Should()
+                .BeEquivalentTo(
+                    new
+                    {
+                        Type = TupleType.Vector,
+                        W = 0,
+                        X = 1,
+                        Y = 2,
+                        Z = 3
+                    }
+                );
+        }
+
+        [Fact]
+        public void Op__DivideScalar_ShouldThrowDivideByZeroException_WhenRhsOperandIsZero()
+        {
+            // arrange
+            // act
+            Action act = () => { _ = Tuple.Point(1, 2, 3) / 0; };
+
+            // assert
+            act.Should().Throw<DivideByZeroException>().WithMessage("*divide a tuple by 0*");
+        }
+
+        [Fact]
+        public void
+            Op__MultiplyScalar_ShouldMultiplyXYZComponentsAndPreserveType_WhenOperandIsPoint()
+        {
+            // arrange
+            var sut = Tuple.Point(1, 2, 3);
+
+            // act
+            var result = sut * 2;
+
+            // assert
+            result.Should()
+                .BeEquivalentTo(
+                    new
+                    {
+                        Type = TupleType.Point,
+                        W = 1,
+                        X = 2,
+                        Y = 4,
+                        Z = 6
+                    }
+                );
+        }
+
+        [Fact]
+        public void
+            Op__MultiplyScalar_ShouldMultiplyXYZComponentsAndPreserveType_WhenOperandIsVector()
+        {
+            // arrange
+            var sut = Tuple.Vector(1, 2, 3);
+
+            // act
+            var result = sut * 2;
+
+            // assert
+            result.Should()
+                .BeEquivalentTo(
+                    new
+                    {
+                        Type = TupleType.Vector,
+                        W = 0,
+                        X = 2,
+                        Y = 4,
+                        Z = 6
+                    }
+                );
+        }
+
+        [Fact]
         public void Op__Negation_ShouldNegateXYZComponentsAndPreserveType_WhenOperandIsPoint()
         {
             // arrange

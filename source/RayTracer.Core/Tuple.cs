@@ -98,6 +98,8 @@ namespace RayTracer.Core
         /// <inheritdoc />
         public override string ToString()
         {
+            // Does not call Type since tests may call ToString on a tuple that has been
+            // intentionally made invalid
             var type = W switch
             {
                 0.0 => "Vector",
@@ -172,5 +174,30 @@ namespace RayTracer.Core
                 Y = -tuple.Y,
                 Z = -tuple.Z
             };
+
+        public static Tuple operator *(Tuple lhs, double rhs) =>
+            new()
+            {
+                W = lhs.W,
+                X = lhs.X * rhs,
+                Y = lhs.Y * rhs,
+                Z = lhs.Z * rhs
+            };
+
+        public static Tuple operator /(Tuple lhs, double rhs)
+        {
+            if (rhs is 0.0)
+            {
+                throw new DivideByZeroException("Attempt to divide a tuple by 0");
+            }
+
+            return new Tuple
+            {
+                W = lhs.W,
+                X = lhs.X / rhs,
+                Y = lhs.Y / rhs,
+                Z = lhs.Z / rhs
+            };
+        }
     }
 }
