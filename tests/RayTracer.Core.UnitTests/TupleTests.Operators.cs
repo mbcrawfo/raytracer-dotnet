@@ -82,6 +82,52 @@ namespace RayTracer.Core.UnitTests
         }
 
         [Fact]
+        public void Op__Negation_ShouldNegateXYZComponentsAndPreserveType_WhenOperandIsPoint()
+        {
+            // arrange
+            var sut = Tuple.Point(1, 2, 3);
+
+            // act
+            var result = -sut;
+
+            // assert
+            result.Should()
+                .BeEquivalentTo(
+                    new
+                    {
+                        Type = TupleType.Point,
+                        W = 1,
+                        X = -1,
+                        Y = -2,
+                        Z = -3
+                    }
+                );
+        }
+
+        [Fact]
+        public void Op__Negation_ShouldNegateXYZComponentsAndPreserveType_WhenOperandIsVector()
+        {
+            // arrange
+            var sut = Tuple.Vector(1, 2, 3);
+
+            // act
+            var result = -sut;
+
+            // assert
+            result.Should()
+                .BeEquivalentTo(
+                    new
+                    {
+                        Type = TupleType.Vector,
+                        W = 0,
+                        X = -1,
+                        Y = -2,
+                        Z = -3
+                    }
+                );
+        }
+
+        [Fact]
         public void Op__Subtraction_ShouldReturnPoint_WhenAddingVectorAndPoint()
         {
             // arrange

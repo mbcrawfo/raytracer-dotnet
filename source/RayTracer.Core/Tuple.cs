@@ -163,5 +163,14 @@ namespace RayTracer.Core
                 )
             };
         }
+
+        public static Tuple operator -(Tuple tuple) =>
+            new()
+            {
+                W = tuple.W,
+                X = -tuple.X,
+                Y = -tuple.Y,
+                Z = -tuple.Z
+            };
     }
 }
