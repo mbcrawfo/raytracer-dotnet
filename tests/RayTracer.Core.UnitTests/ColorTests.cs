@@ -46,7 +46,7 @@ namespace RayTracer.Core.UnitTests
         public void Deconstruct_ShouldReturnExpectedComponentValues()
         {
             // arrange
-            var sut = new Color(1, 2, 3);
+            var sut = new Color(1f, 2f, 3f);
 
             // act
             var (r, g, b) = sut;
@@ -56,6 +56,21 @@ namespace RayTracer.Core.UnitTests
             r.Should().Be(sut.R);
             g.Should().Be(sut.G);
             b.Should().Be(sut.B);
+        }
+
+        [Fact]
+        public void HadamardProduct_ShouldMultipleComponentsWithOtherColorsComponents()
+        {
+            // arrange
+            var sut = new Color(1, 2, 3);
+            var other = new Color(2f, 3f, 4f);
+            var expected = new Color(2f, 6f, 12f);
+
+            // act
+            var actual = sut.HadamardProduct(other);
+
+            // assert
+            actual.Should().Be(expected);
         }
     }
 }

@@ -10,7 +10,7 @@ namespace RayTracer.Core
         public static readonly Color Green = new(0f, 1f, 0f);
         public static readonly Color Red = new(1f, 0f, 0f);
         public static readonly Color White = new(1f, 1f, 1f);
-        
+
         public Color(float r, float g, float b)
         {
             R = r;
@@ -51,8 +51,19 @@ namespace RayTracer.Core
             b = B;
         }
 
+        public Color HadamardProduct(Color other) => new(R * other.R, G * other.G, B * other.B);
+
         public static bool operator ==(Color lhs, Color rhs) => lhs.Equals(rhs);
 
         public static bool operator !=(Color lhs, Color rhs) => !lhs.Equals(rhs);
+
+        public static Color operator +(Color lhs, Color rhs) =>
+            new(lhs.R + rhs.R, lhs.G + rhs.G, lhs.B + rhs.B);
+
+        public static Color operator -(Color lhs, Color rhs) =>
+            new(lhs.R - rhs.R, lhs.G - rhs.G, lhs.B - rhs.B);
+
+        public static Color operator *(Color lhs, float rhs) =>
+            new(lhs.R * rhs, lhs.G * rhs, lhs.B * rhs);
     }
 }
