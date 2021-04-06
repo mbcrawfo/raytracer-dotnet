@@ -7,7 +7,6 @@ namespace RayTracer.Core.UnitTests.Math
 {
     public partial class PointTests
     {
-
         [Theory]
         [InlineData(1f, 2f, 3f)]
         [InlineData(4.5f, 5.6f, 6.7f)]
@@ -33,7 +32,7 @@ namespace RayTracer.Core.UnitTests.Math
         {
             // arrange
             var initialPoint = new Point(x, y, z);
-            
+
             // act
             var result = new Point(initialPoint);
 

@@ -9,13 +9,13 @@ namespace RayTracer.Core.UnitTests.Math
         [Theory]
         [MemberData(nameof(VectorsThatAreNotEquivalent))]
         public void Equals__Object_ShouldReturnFalse_WhenOtherObjectIsNotAnEquivalentVector(
-            Vector tuple,
+            Vector vector,
             object obj
         )
         {
             // arrange
             // act
-            var result = tuple.Equals(obj);
+            var result = vector.Equals(obj);
 
             // assert
             result.Should().BeFalse();
@@ -38,13 +38,13 @@ namespace RayTracer.Core.UnitTests.Math
         [Theory]
         [MemberData(nameof(VectorsThatAreEquivalent))]
         public void Equals__Object_ShouldReturnTrue_WhenOtherObjectIsAnEquivalentVector(
-            Vector tuple,
+            Vector vector,
             object obj
         )
         {
             // arrange
             // act
-            var result = tuple.Equals(obj);
+            var result = vector.Equals(obj);
 
             // assert
             result.Should().BeTrue();

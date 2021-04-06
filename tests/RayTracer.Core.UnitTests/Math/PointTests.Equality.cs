@@ -9,13 +9,13 @@ namespace RayTracer.Core.UnitTests.Math
         [Theory]
         [MemberData(nameof(PointsThatAreNotEquivalent))]
         public void Equals__Object_ShouldReturnFalse_WhenOtherObjectIsNotAnEquivalentPoint(
-            Point tuple,
+            Point point,
             object obj
         )
         {
             // arrange
             // act
-            var result = tuple.Equals(obj);
+            var result = point.Equals(obj);
 
             // assert
             result.Should().BeFalse();
@@ -38,13 +38,13 @@ namespace RayTracer.Core.UnitTests.Math
         [Theory]
         [MemberData(nameof(PointsThatAreEquivalent))]
         public void Equals__Object_ShouldReturnTrue_WhenOtherObjectIsAnEquivalentPoint(
-            Point tuple,
+            Point point,
             object obj
         )
         {
             // arrange
             // act
-            var result = tuple.Equals(obj);
+            var result = point.Equals(obj);
 
             // assert
             result.Should().BeTrue();
