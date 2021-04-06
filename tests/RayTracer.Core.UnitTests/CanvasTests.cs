@@ -1,5 +1,8 @@
 using System;
+using System.Collections.Immutable;
+using System.IO;
 using System.Linq;
+using System.Text;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Xunit;
@@ -213,7 +216,7 @@ namespace RayTracer.Core.UnitTests
         }
 
         [Fact]
-        public void Constructor_ShouldCreateCanvasOfTheCorrectSizeWithAllPixelsSetToBlack()
+        public void Constructor__2_ShouldCreateCanvasOfTheCorrectSizeWithAllPixelsSetToBlack()
         {
             // arrange
             const int expectedWidth = 10;
@@ -236,6 +239,30 @@ namespace RayTracer.Core.UnitTests
         }
 
         [Fact]
+        public void Constructor__3_ShouldCreateCanvasOfTheCorrectSizeWithAllPixelsSetToBlack()
+        {
+            // arrange
+            const int expectedWidth = 10;
+            const int expectedHeight = 20;
+            var expectedColor = Color.Red;
+
+            // act
+            var sut = new Canvas(expectedWidth, expectedHeight, expectedColor);
+
+            // assert
+            using var _ = new AssertionScope();
+            sut.Width.Should().Be(expectedWidth);
+            sut.Height.Should().Be(expectedHeight);
+            foreach (var x in Enumerable.Range(0, expectedWidth))
+            {
+                foreach (var y in Enumerable.Range(0, expectedHeight))
+                {
+                    sut[x, y].Should().Be(expectedColor, "pixel at ({0}, {1}) should be red", x, y);
+                }
+            }
+        }
+
+        [Fact]
         public void Indexer_ShouldSetAndReturnColorAtCoordinates()
         {
             // arrange
@@ -250,6 +277,97 @@ namespace RayTracer.Core.UnitTests
 
             // assert
             actual.Should().Be(expected);
+        }
+
+        [Fact]
+        public void
+            SerializeToPpm_ShouldSplitRowsAcrossMultipleDataLines_WhenLineIsMoreThan70Chars()
+        {
+            // arrange
+            var sb = new StringBuilder();
+            using var writer = new StringWriter(sb);
+            var sut = new Canvas(10, 2, new Color(1f, 0.8f, 0.6f));
+
+            // act
+            sut.SerializeToPpm(writer);
+            var dataLines = sb.ToString().Split(Environment.NewLine).Skip(3).ToImmutableList();
+
+            // assert
+            dataLines.Should()
+                .ContainInOrder(
+                    "255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204",
+                    "153 255 204 153 255 204 153 255 204 153 255 204 153",
+                    "255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204",
+                    "153 255 204 153 255 204 153 255 204 153 255 204 153"
+                );
+        }
+
+        [Fact]
+        public void
+            SerializeToPpm_ShouldTerminateDataWithANewline()
+        {
+            // arrange
+            var sb = new StringBuilder();
+            using var writer = new StringWriter(sb);
+            var sut = new Canvas(10, 2, new Color(1f, 0.8f, 0.6f));
+
+            // act
+            sut.SerializeToPpm(writer);
+            var data = sb.ToString();
+
+            // assert
+            data.Should().EndWith(Environment.NewLine);
+        }
+
+        [Fact]
+        public void SerializeToPpm_ShouldWriteOneDataLinePerRow_WhenEachRowIsLessThan70Chars()
+        {
+            // arrange
+            var sb = new StringBuilder();
+            using var writer = new StringWriter(sb);
+            var sut = new Canvas(5, 3)
+            {
+                [0, 0] = new(1.5f, 0f, 0f),
+                [2, 1] = new(0f, 0.5f, 0f),
+                [4, 2] = new(-0.5f, 0f, 1f)
+            };
+
+            // act
+            sut.SerializeToPpm(writer);
+            var dataLines = sb.ToString().Split(Environment.NewLine).Skip(3).ToImmutableList();
+
+            // assert
+            dataLines.Should()
+                .ContainInOrder(
+                    "255 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
+                    "0 0 0 0 0 0 0 128 0 0 0 0 0 0 0",
+                    "0 0 0 0 0 0 0 0 0 0 0 0 0 0 255"
+                );
+        }
+
+        [Fact]
+        public void SerializeToPpm_ShouldWritePpmFileHeader()
+        {
+            // arrange
+            const int width = 10;
+            const int height = 20;
+            var sb = new StringBuilder();
+            using var writer = new StringWriter(sb);
+            var sut = new Canvas(width, height);
+
+            // act
+            sut.SerializeToPpm(writer);
+            var headerLines = sb.ToString().Split(Environment.NewLine).Take(3).ToImmutableList();
+
+            // assert
+            headerLines.Should()
+                .HaveCount(3)
+                .And.StartWith("P3", "first header line must be the PPM magic number")
+                .And.Contain($"{width} {height}", "second header line must be the image dimensions")
+                .And.EndWith(
+                    Canvas.PpmMaxPixelValue.ToString(),
+                    "third header line must be the max pixel value"
+                );
         }
     }
 }
