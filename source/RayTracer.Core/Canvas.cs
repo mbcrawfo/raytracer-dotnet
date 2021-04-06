@@ -8,8 +8,6 @@ namespace RayTracer.Core
 {
     public sealed class Canvas
     {
-        public const int PpmMaxPixelValue = 255;
-
         private readonly Color[,] _pixelData;
 
         public Canvas(int width, int height)
@@ -104,35 +102,34 @@ namespace RayTracer.Core
         public void SerializeToPpm(TextWriter writer)
         {
             const int maxLineLength = 70;
+            const int maxPixelValue = 255;
 
             writer.WriteLine("P3");
             writer.WriteLine("{0} {1}", Width, Height);
-            writer.WriteLine(PpmMaxPixelValue);
+            writer.WriteLine(maxPixelValue);
 
-            var lineBuilder = new StringBuilder(128);
             foreach (var y in Enumerable.Range(0, Height))
             {
+                var currentLineLength = 0;
+                
                 foreach (var value in GetRowPixelValues(y))
                 {
-                    if (lineBuilder.Length < maxLineLength - value.Length - 1)
+                    if (currentLineLength >= maxLineLength - value.Length - 1)
                     {
-                        if (lineBuilder.Length > 0)
-                        {
-                            lineBuilder.Append(' ');
-                        }
+                        writer.WriteLine();
+                        currentLineLength = 0;
+                    }
+                    else if (currentLineLength > 0)
+                    {
+                        writer.Write(' ');
+                        currentLineLength += 1;
+                    }
 
-                        lineBuilder.Append(value);
-                    }
-                    else
-                    {
-                        writer.WriteLine(lineBuilder);
-                        lineBuilder.Clear();
-                        lineBuilder.Append(value);
-                    }
+                    writer.Write(value);
+                    currentLineLength += value.Length;
                 }
 
-                writer.WriteLine(lineBuilder);
-                lineBuilder.Clear();
+                writer.WriteLine();
             }
 
             writer.WriteLine();
@@ -150,7 +147,7 @@ namespace RayTracer.Core
 
             static string GetScaledColorComponentString(float value)
             {
-                var scaledValue = (int) MathF.Round(value * 255f);
+                var scaledValue = (int) MathF.Round(value * maxPixelValue);
                 return scaledValue.ToString();
             }
         }

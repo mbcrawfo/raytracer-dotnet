@@ -269,6 +269,7 @@ namespace RayTracer.Core.UnitTests
             const int x = 5;
             const int y = 10;
             var expected = new Color(0.25f, 0.3f, 0.75f);
+            // ReSharper disable once UseObjectOrCollectionInitializer
             var sut = new Canvas(10, 20);
 
             // act
@@ -364,10 +365,7 @@ namespace RayTracer.Core.UnitTests
                 .HaveCount(3)
                 .And.StartWith("P3", "first header line must be the PPM magic number")
                 .And.Contain($"{width} {height}", "second header line must be the image dimensions")
-                .And.EndWith(
-                    Canvas.PpmMaxPixelValue.ToString(),
-                    "third header line must be the max pixel value"
-                );
+                .And.EndWith("255", "third header line must be the max pixel value");
         }
     }
 }
