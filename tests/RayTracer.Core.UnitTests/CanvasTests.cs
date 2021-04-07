@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -278,6 +279,204 @@ namespace RayTracer.Core.UnitTests
 
             // assert
             actual.Should().Be(expected);
+        }
+
+        [Fact]
+        public void SerializeToBitmap_ShouldWriteBmpHeaderAtTheStartOfTheOutput()
+        {
+            // arrange
+            const int imageDimension = 4;
+            const int headerSize = 54;
+            const int pixelDataSize = imageDimension * imageDimension * 3;
+            Debug.Assert(pixelDataSize % 4 == 0, nameof(pixelDataSize) + " is a multiple of 4");
+
+            using var stream = new MemoryStream();
+            var sut = new Canvas(imageDimension, imageDimension);
+
+            // act
+            using (var writer = new BinaryWriter(stream, Encoding.Default, leaveOpen: true))
+            {
+                sut.SerializeToBitmap(writer);
+            }
+
+            stream.Position = 0;
+            using var reader = new BinaryReader(stream);
+
+            // assert
+            using var _ = new AssertionScope();
+            reader.ReadChars(2)
+                .Should()
+                .ContainInOrder(new[] { 'B', 'M' }, "offset 0x00 must be the BM file type marker");
+            reader.ReadUInt32()
+                .Should()
+                .Be(headerSize + pixelDataSize, "offset 0x02 must be the 4 byte total file size");
+            reader.ReadUInt32().Should().Be(0, "offset 0x06 must be 4 bytes zeroed (unused)");
+            reader.ReadUInt32()
+                .Should()
+                .Be(
+                    headerSize,
+                    "offset 0x0A must be the 4 byte offset where the pixel data starts (total header size)"
+                );
+        }
+
+        [Fact]
+        public void SerializeToBitmap_ShouldWriteDibHeaderAfterBmpHeader()
+        {
+            // arrange
+            const int bmpHeaderSize = 14;
+            const int dibHeaderSize = 40;
+            const int expectedWidth = 12;
+            const int expectedHeight = 8;
+            const int pixelDataSize = expectedWidth * expectedHeight * 3;
+            Debug.Assert(pixelDataSize % 4 == 0, nameof(pixelDataSize) + " is a multiple of 4");
+
+            using var stream = new MemoryStream();
+            var sut = new Canvas(expectedWidth, expectedHeight);
+
+            // act
+            using (var writer = new BinaryWriter(stream, Encoding.Default, leaveOpen: true))
+            {
+                sut.SerializeToBitmap(writer);
+            }
+
+            stream.Position = 0;
+            using var reader = new BinaryReader(stream);
+            _ = reader.ReadBytes(bmpHeaderSize);
+
+            // assert
+            using var a = new AssertionScope();
+            reader.ReadUInt32()
+                .Should()
+                .Be(dibHeaderSize, "offset 0x0E must be the 4 byte DIB header size");
+            reader.ReadUInt32()
+                .Should()
+                .Be(expectedWidth, "offset 0x12 must be the 4 byte image width");
+            reader.ReadUInt32()
+                .Should()
+                .Be(expectedHeight, "offset 0x16 must be the 4 byte image height");
+            reader.ReadUInt16().Should().Be(1, "offset 0x1A must be the 2 byte color plane count");
+            reader.ReadUInt16()
+                .Should()
+                .Be(24, "offset 0x1C must be the 2 byte bits per pixel count");
+            reader.ReadUInt32()
+                .Should()
+                .Be(0, "offset 0x1E must be the 4 byte BI_RGB pixel format indicator");
+            reader.ReadUInt32()
+                .Should()
+                .Be(pixelDataSize, "offset 0x22 must be the 4 byte pixel data array size");
+            reader.ReadUInt32()
+                .Should()
+                .Be(2835, "offset 0x26 must be the pixel/m print resolution for 72dpi");
+            reader.ReadUInt32()
+                .Should()
+                .Be(2835, "offset 0x2A must be the pixel/m print resolution for 72dpi");
+            reader.ReadUInt32()
+                .Should()
+                .Be(0, "offset 0x2E should be the 4 byte count of colors in the palette");
+            reader.ReadUInt32()
+                .Should()
+                .Be(0, "offset 0x32 should be the 4 byte indicator of important colors");
+        }
+
+        [Fact]
+        public void
+            SerializeToBitmap_ShouldWritePixelArrayFollowingHeaders_WhenPixelDataDoesNotRequirePadding()
+        {
+            // arrange
+            const int pixelDataOffset = 54;
+            const int imageWidth = 4;
+            const int imageHeight = 4;
+            const int pixelRowSize = imageWidth * 3;
+
+            using var stream = new MemoryStream();
+            var sut = new Canvas(imageWidth, imageHeight)
+            {
+                [0, 0] = Color.Red,
+                [1, 1] = Color.Green,
+                [2, 2] = Color.Blue,
+                [3, 3] = Color.White
+            };
+
+            var expectedPixelData = ImmutableList.Create(
+                new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255 },
+                new byte[] { 0, 0, 0, 0, 0, 0, 255, 0, 0, 0, 0, 0 },
+                new byte[] { 0, 0, 0, 0, 255, 0, 0, 0, 0, 0, 0, 0 },
+                new byte[] { 0, 0, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+            );
+
+            // act
+            using (var writer = new BinaryWriter(stream, Encoding.Default, leaveOpen: true))
+            {
+                sut.SerializeToBitmap(writer);
+            }
+
+            stream.Position = 0;
+            using var reader = new BinaryReader(stream);
+            _ = reader.ReadBytes(pixelDataOffset);
+
+            // assert
+            using var a = new AssertionScope();
+            foreach (var row in Enumerable.Range(0, imageHeight))
+            {
+                reader.ReadBytes(pixelRowSize)
+                    .Should()
+                    .ContainInOrder(
+                        expectedPixelData[row],
+                        "Row {0} should contain expected bytes",
+                        row
+                    );
+            }
+
+            stream.Position.Should()
+                .Be(stream.Length, "should not be any data after pixel array is read");
+        }
+
+        [Fact]
+        public void
+            SerializeToBitmap_ShouldWritePixelArrayWithPaddingBytes_WhenPixelRowSizeIsNot4ByteAligned()
+        {
+            // arrange
+            const int pixelDataOffset = 54;
+            const int imageWidth = 2;
+            const int imageHeight = 2;
+            const int pixelRowSize = imageWidth * 3 + 2;
+
+            using var stream = new MemoryStream();
+            var sut = new Canvas(imageWidth, imageHeight)
+            {
+                [0, 0] = Color.White, [1, 1] = Color.White,
+            };
+
+            var expectedPixelData = ImmutableList.Create(
+                new byte[] { 0, 0, 0, 255, 255, 255, 0, 0 },
+                new byte[] { 255, 255, 255, 0, 0, 0, 0, 0 }
+            );
+
+            // act
+            using (var writer = new BinaryWriter(stream, Encoding.Default, leaveOpen: true))
+            {
+                sut.SerializeToBitmap(writer);
+            }
+
+            stream.Position = 0;
+            using var reader = new BinaryReader(stream);
+            _ = reader.ReadBytes(pixelDataOffset);
+
+            // assert
+            using var a = new AssertionScope();
+            foreach (var row in Enumerable.Range(0, imageHeight))
+            {
+                reader.ReadBytes(pixelRowSize)
+                    .Should()
+                    .ContainInOrder(
+                        expectedPixelData[row],
+                        "Row {0} should contain expected bytes",
+                        row
+                    );
+            }
+
+            stream.Position.Should()
+                .Be(stream.Length, "should not be any data after pixel array is read");
         }
 
         [Fact]

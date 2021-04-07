@@ -43,9 +43,9 @@ namespace RayTracer.Cli
                 Console.WriteLine($"Tick {tick++}: {proj}");
             }
 
-            using var fileStream = File.OpenWrite("projectile.ppm");
-            using var streamWriter = new StreamWriter(fileStream);
-            canvas.SerializeToPpm(streamWriter);
+            using var stream = File.OpenWrite("projectile.bmp");
+            using var writer = new BinaryWriter(stream);
+            canvas.SerializeToBitmap(writer);
         }
 
         internal record Environment(Vector Gravity, Vector Wind);

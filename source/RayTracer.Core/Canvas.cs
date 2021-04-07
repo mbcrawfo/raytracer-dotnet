@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace RayTracer.Core
 {
@@ -99,6 +99,63 @@ namespace RayTracer.Core
 
         public int Width { get; }
 
+        public void SerializeToBitmap(BinaryWriter writer)
+        {
+            const int bmpHeaderSize = 14;
+            const int dibHeaderSize = 40;
+
+            var pixelArray = GetPixelData().ToImmutableArray();
+
+            // BMP header
+            writer.Write((ushort) 0x4d42); // 'BM' magic number 
+            writer.Write((uint) (bmpHeaderSize + dibHeaderSize + pixelArray.Length)); // file size
+            writer.Write((uint) 0); // unused app specific
+            writer.Write((uint) (bmpHeaderSize + dibHeaderSize)); // pixel array offset
+
+            // DIB header
+            writer.Write((uint) dibHeaderSize);
+            writer.Write((uint) Width);
+            writer.Write((uint) Height);
+            writer.Write((ushort) 1); // color planes
+            writer.Write((ushort) 24); // bits per pixel
+            writer.Write((uint) 0); // BI_RGB, no pixel array compression
+            writer.Write((uint) pixelArray.Length);
+            writer.Write((uint) 2835); // horizontal print resolution in pixels/meter => 72 dpi
+            writer.Write((uint) 2835); // vertical print resolution in pixels/meter => 72 dpi
+            writer.Write((uint) 0); // colors in the palette
+            writer.Write((uint) 0); // all colors are important
+            
+            writer.Write(pixelArray.AsSpan());
+
+            IEnumerable<byte> GetPixelData()
+            {
+                // The number of bytes written for each row must be a multiple of 4
+                var rowPaddingRequired = (Width * 3) % 4;
+                
+                foreach (var y in Enumerable.Range(1, Height).Select(v => Height - v))
+                {
+                    foreach (var x in Enumerable.Range(0, Width))
+                    {
+                        var (r, g, b) = _pixelData[x, y].Clamp();
+                        
+                        // Pixel values need to be "little endian" even though they don't make up
+                        // a full integer
+                        yield return GetScaledColorComponent(b);
+                        yield return GetScaledColorComponent(g);
+                        yield return GetScaledColorComponent(r);
+                    }
+                    
+                    foreach (var _ in Enumerable.Range(0, rowPaddingRequired))
+                    {
+                        yield return 0;
+                    }
+                }
+            }
+
+            static byte GetScaledColorComponent(float value) =>
+                (byte) (int) MathF.Round(value * 255f);
+        }
+
         public void SerializeToPpm(TextWriter writer)
         {
             const int maxLineLength = 70;
@@ -111,7 +168,7 @@ namespace RayTracer.Core
             foreach (var y in Enumerable.Range(0, Height))
             {
                 var currentLineLength = 0;
-                
+
                 foreach (var value in GetRowPixelValues(y))
                 {
                     if (currentLineLength >= maxLineLength - value.Length - 1)
@@ -139,17 +196,14 @@ namespace RayTracer.Core
                 foreach (var x in Enumerable.Range(0, Width))
                 {
                     var (r, g, b) = _pixelData[x, y].Clamp();
-                    yield return GetScaledColorComponentString(r);
-                    yield return GetScaledColorComponentString(g);
-                    yield return GetScaledColorComponentString(b);
+                    yield return GetScaledColorComponent(r);
+                    yield return GetScaledColorComponent(g);
+                    yield return GetScaledColorComponent(b);
                 }
             }
 
-            static string GetScaledColorComponentString(float value)
-            {
-                var scaledValue = (int) MathF.Round(value * maxPixelValue);
-                return scaledValue.ToString();
-            }
+            static string GetScaledColorComponent(float value) =>
+                ((int) MathF.Round(value * maxPixelValue)).ToString();
         }
     }
 }
