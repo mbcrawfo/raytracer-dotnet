@@ -481,7 +481,7 @@ namespace RayTracer.Core.UnitTests
 
         [Fact]
         public void
-            SerializeToPpm_ShouldSplitRowsAcrossMultipleDataLines_WhenLineIsMoreThan70Chars()
+            SerializeToPortablePixmap_ShouldSplitRowsAcrossMultipleDataLines_WhenLineIsMoreThan70Chars()
         {
             // arrange
             var sb = new StringBuilder();
@@ -489,7 +489,7 @@ namespace RayTracer.Core.UnitTests
             var sut = new Canvas(10, 2, new Color(1f, 0.8f, 0.6f));
 
             // act
-            sut.SerializeToPpm(writer);
+            sut.SerializeToPortablePixmap(writer);
             var dataLines = sb.ToString().Split(Environment.NewLine).Skip(3).ToImmutableList();
 
             // assert
@@ -504,7 +504,7 @@ namespace RayTracer.Core.UnitTests
 
         [Fact]
         public void
-            SerializeToPpm_ShouldTerminateDataWithANewline()
+            SerializeToPortablePixmap_ShouldTerminateDataWithANewline()
         {
             // arrange
             var sb = new StringBuilder();
@@ -512,7 +512,7 @@ namespace RayTracer.Core.UnitTests
             var sut = new Canvas(10, 2, new Color(1f, 0.8f, 0.6f));
 
             // act
-            sut.SerializeToPpm(writer);
+            sut.SerializeToPortablePixmap(writer);
             var data = sb.ToString();
 
             // assert
@@ -520,7 +520,8 @@ namespace RayTracer.Core.UnitTests
         }
 
         [Fact]
-        public void SerializeToPpm_ShouldWriteOneDataLinePerRow_WhenEachRowIsLessThan70Chars()
+        public void
+            SerializeToPortablePixmap_ShouldWriteOneDataLinePerRow_WhenEachRowIsLessThan70Chars()
         {
             // arrange
             var sb = new StringBuilder();
@@ -533,7 +534,7 @@ namespace RayTracer.Core.UnitTests
             };
 
             // act
-            sut.SerializeToPpm(writer);
+            sut.SerializeToPortablePixmap(writer);
             var dataLines = sb.ToString().Split(Environment.NewLine).Skip(3).ToImmutableList();
 
             // assert
@@ -546,7 +547,7 @@ namespace RayTracer.Core.UnitTests
         }
 
         [Fact]
-        public void SerializeToPpm_ShouldWritePpmFileHeader()
+        public void SerializeToPortablePixmap_ShouldWritePpmFileHeader()
         {
             // arrange
             const int width = 10;
@@ -556,7 +557,7 @@ namespace RayTracer.Core.UnitTests
             var sut = new Canvas(width, height);
 
             // act
-            sut.SerializeToPpm(writer);
+            sut.SerializeToPortablePixmap(writer);
             var headerLines = sb.ToString().Split(Environment.NewLine).Take(3).ToImmutableList();
 
             // assert

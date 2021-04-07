@@ -124,27 +124,27 @@ namespace RayTracer.Core
             writer.Write((uint) 2835); // vertical print resolution in pixels/meter => 72 dpi
             writer.Write((uint) 0); // colors in the palette
             writer.Write((uint) 0); // all colors are important
-            
+
             writer.Write(pixelArray.AsSpan());
 
             IEnumerable<byte> GetPixelData()
             {
                 // The number of bytes written for each row must be a multiple of 4
-                var rowPaddingRequired = (Width * 3) % 4;
-                
+                var rowPaddingRequired = Width * 3 % 4;
+
                 foreach (var y in Enumerable.Range(1, Height).Select(v => Height - v))
                 {
                     foreach (var x in Enumerable.Range(0, Width))
                     {
                         var (r, g, b) = _pixelData[x, y].Clamp();
-                        
+
                         // Pixel values need to be "little endian" even though they don't make up
                         // a full integer
                         yield return GetScaledColorComponent(b);
                         yield return GetScaledColorComponent(g);
                         yield return GetScaledColorComponent(r);
                     }
-                    
+
                     foreach (var _ in Enumerable.Range(0, rowPaddingRequired))
                     {
                         yield return 0;
@@ -156,7 +156,7 @@ namespace RayTracer.Core
                 (byte) (int) MathF.Round(value * 255f);
         }
 
-        public void SerializeToPpm(TextWriter writer)
+        public void SerializeToPortablePixmap(TextWriter writer)
         {
             const int maxLineLength = 70;
             const int maxPixelValue = 255;
