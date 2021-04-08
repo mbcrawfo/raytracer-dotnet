@@ -21,10 +21,10 @@ namespace RayTracer.Core.UnitTests.Math
         public static IEnumerable<object> PointsThatAreEquivalent =>
             new object[]
             {
-                new object[] { Point.Zero, Point.Zero },
+                new object[] { Point.Origin, Point.Origin },
                 new object[]
                 {
-                    Point.Zero, new Point(LessThanEpsilon, LessThanEpsilon, LessThanEpsilon)
+                    Point.Origin, new Point(LessThanEpsilon, LessThanEpsilon, LessThanEpsilon)
                 },
                 new object[] { new Point(1f, 2f, 3f), new Point(1f, 2f, 3f) },
                 new object[] { new Point(1.23f, 4.56f, 7.89f), new Point(1.23f, 4.56f, 7.89f) },

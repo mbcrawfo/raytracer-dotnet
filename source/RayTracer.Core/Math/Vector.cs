@@ -3,12 +3,20 @@ using RayTracer.Core.Extensions;
 
 namespace RayTracer.Core.Math
 {
-    public struct Vector : IEquatable<Vector>
+    public readonly struct Vector : IEquatable<Vector>
     {
-        public static readonly Vector UnitX = new(1f, 0f, 0f);
-        public static readonly Vector UnitY = new(0f, 1f, 0f);
-        public static readonly Vector UnitZ = new(0f, 0f, 1f);
-        public static readonly Vector Zero = new(0f, 0f, 0f);
+        private static readonly Vector UnitXValue = new(1f, 0f, 0f);
+        private static readonly Vector UnitYValue = new(0f, 1f, 0f);
+        private static readonly Vector UnitZValue = new(0f, 0f, 1f);
+        private static readonly Vector ZeroValue = new(0f, 0f, 0f);
+
+        public static ref readonly Vector UnitX => ref UnitXValue;
+
+        public static ref readonly Vector UnitY => ref UnitYValue;
+
+        public static ref readonly Vector UnitZ => ref UnitZValue;
+
+        public static ref readonly Vector Zero => ref ZeroValue;
 
         public Vector(float x, float y, float z)
         {
@@ -17,16 +25,16 @@ namespace RayTracer.Core.Math
             Z = z;
         }
 
-        public Vector(Vector other)
+        public Vector(in Vector other)
             : this(other.X, other.Y, other.Z)
         {
         }
 
-        public float X { get; init; }
+        public float X { get; }
 
-        public float Y { get; init; }
+        public float Y { get; }
 
-        public float Z { get; init; }
+        public float Z { get; }
 
         /// <inheritdoc />
         public override int GetHashCode() => HashCode.Combine(X, Y, Z);
@@ -43,7 +51,7 @@ namespace RayTracer.Core.Math
             Y.ApproximatelyEquals(other.Y) &&
             Z.ApproximatelyEquals(other.Z);
 
-        public Vector CrossProduct(Vector other) =>
+        public Vector CrossProduct(in Vector other) =>
             new(
                 Y * other.Z - Z * other.Y,
                 Z * other.X - X * other.Z,
@@ -57,7 +65,7 @@ namespace RayTracer.Core.Math
             z = Z;
         }
 
-        public float DotProduct(Vector other) => X * other.X + Y * other.Y + Z * other.Z;
+        public float DotProduct(in Vector other) => X * other.X + Y * other.Y + Z * other.Z;
 
         public float Magnitude() => MathF.Sqrt(X * X + Y * Y + Z * Z);
 
@@ -67,22 +75,22 @@ namespace RayTracer.Core.Math
             return new Vector(X / magnitude, Y / magnitude, Z / magnitude);
         }
 
-        public static Vector operator -(Vector other) => new(-other.X, -other.Y, -other.Z);
+        public static Vector operator -(in Vector other) => new(-other.X, -other.Y, -other.Z);
 
-        public static bool operator ==(Vector lhs, Vector rhs) => lhs.Equals(rhs);
+        public static bool operator ==(in Vector lhs, in Vector rhs) => lhs.Equals(rhs);
 
-        public static bool operator !=(Vector lhs, Vector rhs) => !lhs.Equals(rhs);
+        public static bool operator !=(in Vector lhs, in Vector rhs) => !lhs.Equals(rhs);
 
-        public static Vector operator +(Vector lhs, Vector rhs) =>
+        public static Vector operator +(in Vector lhs, in Vector rhs) =>
             new(lhs.X + rhs.X, lhs.Y + rhs.Y, lhs.Z + rhs.Z);
-        
-        public static Vector operator -(Vector lhs, Vector rhs) =>
+
+        public static Vector operator -(in Vector lhs, in Vector rhs) =>
             new(lhs.X - rhs.X, lhs.Y - rhs.Y, lhs.Z - rhs.Z);
 
-        public static Vector operator *(Vector lhs, float rhs) =>
+        public static Vector operator *(in Vector lhs, float rhs) =>
             new(lhs.X * rhs, lhs.Y * rhs, lhs.Z * rhs);
 
-        public static Vector operator /(Vector lhs, float rhs)
+        public static Vector operator /(in Vector lhs, float rhs)
         {
             if (rhs is 0f)
             {

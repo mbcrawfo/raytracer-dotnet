@@ -3,9 +3,11 @@ using RayTracer.Core.Extensions;
 
 namespace RayTracer.Core.Math
 {
-    public struct Point : IEquatable<Point>
+    public readonly struct Point : IEquatable<Point>
     {
-        public static readonly Point Zero = new(0f, 0f, 0f);
+        private static readonly Point OriginValue = new(0f, 0f, 0f);
+
+        public static ref readonly Point Origin => ref OriginValue;
 
         public Point(float x, float y, float z)
         {
@@ -14,16 +16,16 @@ namespace RayTracer.Core.Math
             Z = z;
         }
 
-        public Point(Point other)
+        public Point(in Point other)
             : this(other.X, other.Y, other.Z)
         {
         }
 
-        public float X { get; init; }
+        public float X { get; }
 
-        public float Y { get; init; }
+        public float Y { get; }
 
-        public float Z { get; init; }
+        public float Z { get; }
 
         /// <inheritdoc />
         public override int GetHashCode() => HashCode.Combine(X, Y, Z);
@@ -47,17 +49,17 @@ namespace RayTracer.Core.Math
             z = Z;
         }
 
-        public static bool operator ==(Point lhs, Point rhs) => lhs.Equals(rhs);
+        public static bool operator ==(in Point lhs, in Point rhs) => lhs.Equals(rhs);
 
-        public static bool operator !=(Point lhs, Point rhs) => !lhs.Equals(rhs);
+        public static bool operator !=(in Point lhs, in Point rhs) => !lhs.Equals(rhs);
 
-        public static Point operator +(Point lhs, Vector rhs) =>
+        public static Point operator +(in Point lhs, in Vector rhs) =>
             new(lhs.X + rhs.X, lhs.Y + rhs.Y, lhs.Z + rhs.Z);
 
-        public static Point operator -(Point lhs, Vector rhs) =>
+        public static Point operator -(in Point lhs, in Vector rhs) =>
             new(lhs.X - rhs.X, lhs.Y - rhs.Y, lhs.Z - rhs.Z);
 
-        public static Vector operator -(Point lhs, Point rhs) =>
+        public static Vector operator -(in Point lhs, in Point rhs) =>
             new(lhs.X - rhs.X, lhs.Y - rhs.Y, lhs.Z - rhs.Z);
     }
 }

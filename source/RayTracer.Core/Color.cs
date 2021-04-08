@@ -3,13 +3,23 @@ using RayTracer.Core.Extensions;
 
 namespace RayTracer.Core
 {
-    public struct Color : IEquatable<Color>
+    public readonly struct Color : IEquatable<Color>
     {
-        public static readonly Color Black = new(0f, 0f, 0f);
-        public static readonly Color Blue = new(0f, 0f, 1f);
-        public static readonly Color Green = new(0f, 1f, 0f);
-        public static readonly Color Red = new(1f, 0f, 0f);
-        public static readonly Color White = new(1f, 1f, 1f);
+        private static readonly Color BlackValue = new(0f, 0f, 0f);
+        private static readonly Color BlueValue = new(0f, 0f, 1f);
+        private static readonly Color GreenValue = new(0f, 1f, 0f);
+        private static readonly Color RedValue = new(1f, 0f, 0f);
+        private static readonly Color WhiteValue = new(1f, 1f, 1f);
+
+        public static ref readonly Color Black => ref BlackValue;
+
+        public static ref readonly Color Blue => ref BlueValue;
+
+        public static ref readonly Color Green => ref GreenValue;
+
+        public static ref readonly Color Red => ref RedValue;
+
+        public static ref readonly Color White => ref WhiteValue;
 
         public Color(float r, float g, float b)
         {
@@ -18,16 +28,16 @@ namespace RayTracer.Core
             B = b;
         }
 
-        public Color(Color other)
+        public Color(in Color other)
             : this(other.R, other.G, other.B)
         {
         }
 
-        public float R { get; init; }
+        public float R { get; }
 
-        public float G { get; init; }
+        public float G { get; }
 
-        public float B { get; init; }
+        public float B { get; }
 
         /// <inheritdoc />
         public override bool Equals(object? obj) => obj is Color other && Equals(other);
@@ -57,19 +67,19 @@ namespace RayTracer.Core
             b = B;
         }
 
-        public Color HadamardProduct(Color other) => new(R * other.R, G * other.G, B * other.B);
+        public Color HadamardProduct(in Color other) => new(R * other.R, G * other.G, B * other.B);
 
-        public static bool operator ==(Color lhs, Color rhs) => lhs.Equals(rhs);
+        public static bool operator ==(in Color lhs, in Color rhs) => lhs.Equals(rhs);
 
-        public static bool operator !=(Color lhs, Color rhs) => !lhs.Equals(rhs);
+        public static bool operator !=(in Color lhs, in Color rhs) => !lhs.Equals(rhs);
 
-        public static Color operator +(Color lhs, Color rhs) =>
+        public static Color operator +(in Color lhs, in Color rhs) =>
             new(lhs.R + rhs.R, lhs.G + rhs.G, lhs.B + rhs.B);
 
-        public static Color operator -(Color lhs, Color rhs) =>
+        public static Color operator -(in Color lhs, in Color rhs) =>
             new(lhs.R - rhs.R, lhs.G - rhs.G, lhs.B - rhs.B);
 
-        public static Color operator *(Color lhs, float rhs) =>
+        public static Color operator *(in Color lhs, float rhs) =>
             new(lhs.R * rhs, lhs.G * rhs, lhs.B * rhs);
     }
 }
