@@ -1,0 +1,58 @@
+using FluentAssertions;
+using FluentAssertions.Execution;
+using RayTracer.Core.Math;
+using Xunit;
+
+namespace RayTracer.Core.UnitTests.Math
+{
+    public partial class Matrix2Tests
+    {
+        [Theory]
+        [InlineData(1f, 2f, 3f, 4f)]
+        [InlineData(4.5f, 5.6f, 6.7f, 8.9f)]
+        [InlineData(-1f, -2f, -3f, -4f)]
+        public void Constructor_ShouldCreateMatrix2WithProvidedValues(
+            float m00,
+            float m01,
+            float m10,
+            float m11
+        )
+        {
+            // arrange
+            // act
+            var result = new Matrix2(m00, m01, m10, m11);
+
+            // assert
+            using var _ = new AssertionScope();
+            result[0, 0].Should().Be(m00);
+            result[0, 1].Should().Be(m01);
+            result[1, 0].Should().Be(m10);
+            result[1, 1].Should().Be(m11);
+        }
+
+        [Theory]
+        [InlineData(1f, 2f, 3f, 4f)]
+        [InlineData(4.5f, 5.6f, 6.7f, 8.9f)]
+        [InlineData(-1f, -2f, -3f, -4f)]
+        public void CopyConstructor_ShouldCreateMatrix2WithProvidedValues(
+            float m00,
+            float m01,
+            float m10,
+            float m11
+        )
+        {
+            // arrange
+            var initialMatrix = new Matrix2(m00, m01, m10, m11);
+
+            // act
+            var result = new Matrix2(initialMatrix);
+
+            // assert
+            using var _ = new AssertionScope();
+            result[0, 0].Should().Be(m00);
+            result[0, 1].Should().Be(m01);
+            result[1, 0].Should().Be(m10);
+            result[1, 1].Should().Be(m11);
+        }
+    }
+}
