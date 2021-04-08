@@ -28,7 +28,11 @@ namespace RayTracer.Core.Math
         public float Z { get; }
 
         /// <inheritdoc />
-        public override int GetHashCode() => HashCode.Combine(X, Y, Z);
+        public override int GetHashCode() =>
+            throw new NotSupportedException(
+                nameof(Point) +
+                " is not suitable for use as a key because it relies on approximate equality"
+            );
 
         /// <inheritdoc />
         public override bool Equals(object? obj) => obj is Point other && Equals(other);

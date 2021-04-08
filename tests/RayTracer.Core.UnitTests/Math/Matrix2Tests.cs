@@ -146,5 +146,18 @@ namespace RayTracer.Core.UnitTests.Math
                 .Throw<ArgumentOutOfRangeException>()
                 .WithMessage($"*[{x}, {y}] is not valid*");
         }
+
+        [Fact]
+        public void GetHashCode_ShouldThrowNotSupportedException()
+        {
+            // arrange
+            var sut = new Matrix2(1f, 2f, 3f, 4f);
+
+            // act
+            Action act = () => { _ = sut.GetHashCode(); };
+
+            // assert
+            act.Should().Throw<NotSupportedException>();
+        }
     }
 }

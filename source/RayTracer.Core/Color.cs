@@ -43,7 +43,11 @@ namespace RayTracer.Core
         public override bool Equals(object? obj) => obj is Color other && Equals(other);
 
         /// <inheritdoc />
-        public override int GetHashCode() => HashCode.Combine(R, G, B);
+        public override int GetHashCode() =>
+            throw new NotSupportedException(
+                nameof(Color) +
+                " is not suitable for use as a key because it relies on approximate equality"
+            );
 
         /// <inheritdoc />
         public override string ToString() => $"Color({R}, {G}, {B})";
@@ -55,7 +59,7 @@ namespace RayTracer.Core
             B.ApproximatelyEquals(other.B);
 
         /// <summary>
-        ///     Returns a new <see cref="Color"/> with all components clamped to the range [0, 1].
+        ///     Returns a new <see cref="Color" /> with all components clamped to the range [0, 1].
         /// </summary>
         /// <returns></returns>
         public Color Clamp() => new(R.Clamp(0f, 1f), G.Clamp(0f, 1f), B.Clamp(0f, 1f));

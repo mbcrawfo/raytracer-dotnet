@@ -1,3 +1,4 @@
+using System;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using RayTracer.Core.Math;
@@ -110,7 +111,7 @@ namespace RayTracer.Core.UnitTests.Math
         public void Deconstruct_ShouldReturnExpectedComponentValues()
         {
             // arrange
-            var sut = new Vector(1, 2, 3);
+            var sut = new Vector(1f, 2f, 3f);
 
             // act
             var (x, y, z) = sut;
@@ -120,6 +121,19 @@ namespace RayTracer.Core.UnitTests.Math
             x.Should().Be(sut.X);
             y.Should().Be(sut.Y);
             z.Should().Be(sut.Z);
+        }
+
+        [Fact]
+        public void GetHashCode_ShouldThrowNotSupportedException()
+        {
+            // arrange
+            var sut = new Vector(1f, 2f, 3f);
+
+            // act
+            Action act = () => { _ = sut.GetHashCode(); };
+
+            // assert
+            act.Should().Throw<NotSupportedException>();
         }
     }
 }

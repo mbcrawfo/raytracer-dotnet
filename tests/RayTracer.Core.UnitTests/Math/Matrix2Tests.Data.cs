@@ -9,10 +9,12 @@ namespace RayTracer.Core.UnitTests.Math
         private const float GreaterThanEpsilon = FloatExtensions.ComparisonEpsilon * 10f;
         private const float LessThanEpsilon = FloatExtensions.ComparisonEpsilon / 10f;
 
+        private static readonly Matrix2 MatrixForReferenceEquality = new(0f, 0f, 0f, 0f);
+
         public static IEnumerable<object> Matrix2ThatAreEquivalent =>
             new object[]
             {
-                new object[] { new Matrix2(0f, 0f, 0f, 0f), new Matrix2(0f, 0f, 0f, 0f) },
+                new object[] { MatrixForReferenceEquality, MatrixForReferenceEquality },
                 new object[]
                 {
                     new Matrix2(0f, 0f, 0f, 0f),

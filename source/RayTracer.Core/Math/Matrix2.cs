@@ -89,7 +89,10 @@ namespace RayTracer.Core.Math
 
         /// <inheritdoc />
         public override int GetHashCode() =>
-            HashCode.Combine(_elements[0, 0], _elements[0, 1], _elements[1, 0], _elements[1, 1]);
+            throw new NotSupportedException(
+                nameof(Matrix2) +
+                " is not suitable for use as a key because it relies on approximate equality"
+            );
 
         public static bool operator ==(Matrix2 lhs, Matrix2 rhs) => lhs.Equals(rhs);
 

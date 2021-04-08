@@ -1,3 +1,4 @@
+using System;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Xunit;
@@ -87,10 +88,23 @@ namespace RayTracer.Core.UnitTests
         }
 
         [Fact]
+        public void GetHashCode_ShouldThrowNotSupportedException()
+        {
+            // arrange
+            var sut = new Color(1f, 2f, 3f);
+
+            // act
+            Action act = () => { _ = sut.GetHashCode(); };
+
+            // assert
+            act.Should().Throw<NotSupportedException>();
+        }
+
+        [Fact]
         public void HadamardProduct_ShouldMultipleComponentsWithOtherColorsComponents()
         {
             // arrange
-            var sut = new Color(1, 2, 3);
+            var sut = new Color(1f, 2f, 3f);
             var other = new Color(2f, 3f, 4f);
             var expected = new Color(2f, 6f, 12f);
 
