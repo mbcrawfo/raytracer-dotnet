@@ -39,12 +39,12 @@ namespace RayTracer.Core.UnitTests.Math
         [InlineData(2, 1)]
         [InlineData(3, 3)]
         public void Constructor__2x2Array_ShouldThrowArgumentOutOfRangeException_WhenInputIsNot2x2(
-            int x,
-            int y
+            int i,
+            int j
         )
         {
             // arrange
-            var array = new float[x, y];
+            var array = new float[i, j];
 
             // act
             Action act = () => { _ = new Matrix2(array); };
@@ -106,10 +106,10 @@ namespace RayTracer.Core.UnitTests.Math
         [InlineData(0, 1)]
         [InlineData(1, 0)]
         [InlineData(1, 1)]
-        public void Index_ShouldReturnValueAtPosition(int x, int y)
+        public void Index_ShouldReturnValueAtPosition(int i, int j)
         {
             // arrange
-            var sut = (x, y) switch
+            var sut = (i, j) switch
             {
                 (0, 0) => new Matrix2(MathF.PI, 0f, 0f, 0f),
                 (0, 1) => new Matrix2(0f, MathF.PI, 0f, 0f),
@@ -120,7 +120,7 @@ namespace RayTracer.Core.UnitTests.Math
 
             // act
             // assert
-            sut[x, y].Should().Be(MathF.PI);
+            sut[i, j].Should().Be(MathF.PI);
         }
 
         [Theory]
@@ -131,20 +131,20 @@ namespace RayTracer.Core.UnitTests.Math
         [InlineData(-1, 0)]
         [InlineData(-1, -1)]
         public void Indexer_ShouldThrowArgumentOutOfRangeException_WhenInputIsNotInTheMatrix(
-            int x,
-            int y
+            int i,
+            int j
         )
         {
             // arrange
             var sut = new Matrix2(1f, 2f, 3f, 4f);
 
             // act
-            Action act = () => { _ = sut[x, y]; };
+            Action act = () => { _ = sut[i, j]; };
 
             // assert
             act.Should()
                 .Throw<ArgumentOutOfRangeException>()
-                .WithMessage($"*[{x}, {y}] is not valid*");
+                .WithMessage($"*[{i}, {j}] is not valid*");
         }
 
         [Fact]

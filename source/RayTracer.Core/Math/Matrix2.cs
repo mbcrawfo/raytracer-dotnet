@@ -27,11 +27,11 @@ namespace RayTracer.Core.Math
 
             _elements = new float[Size, Size];
 
-            for (var x = 0; x < Size; x++)
+            for (var i = 0; i < Size; i++)
             {
-                for (var y = 0; y < Size; y++)
+                for (var j = 0; j < Size; j++)
                 {
-                    _elements[x, y] = elements[x, y];
+                    _elements[i, j] = elements[i, j];
                 }
             }
         }
@@ -41,19 +41,19 @@ namespace RayTracer.Core.Math
         {
         }
 
-        public float this[int x, int y]
+        public float this[int i, int j]
         {
             get
             {
-                if (x is < 0 or >= Size || y is < 0 or >= Size)
+                if (i is < 0 or >= Size || j is < 0 or >= Size)
                 {
                     throw new ArgumentOutOfRangeException(
-                        $"[{x}, {y}] is not valid for a 2x2 matrix",
+                        $"[{i}, {j}] is not valid for a 2x2 matrix",
                         (Exception?) null
                     );
                 }
 
-                return _elements[x, y];
+                return _elements[i, j];
             }
         }
 
@@ -73,11 +73,11 @@ namespace RayTracer.Core.Math
                 return true;
             }
 
-            for (var x = 0; x < Size; x++)
+            for (var i = 0; i < Size; i++)
             {
-                for (var y = 0; y < Size; y++)
+                for (var j = 0; j < Size; j++)
                 {
-                    if (!_elements[x, y].ApproximatelyEquals(other._elements[x, y]))
+                    if (!_elements[i, j].ApproximatelyEquals(other._elements[i, j]))
                     {
                         return false;
                     }
