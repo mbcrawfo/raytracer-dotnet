@@ -12,7 +12,52 @@ namespace RayTracer.Core.UnitTests.Math
         [InlineData(1f, 2f, 3f, 4f)]
         [InlineData(4.5f, 5.6f, 6.7f, 8.9f)]
         [InlineData(-1f, -2f, -3f, -4f)]
-        public void Constructor_ShouldCreateMatrix2WithProvidedValues(
+        public void Constructor__2x2Array_ShouldCreateMatrix2WithProvidedValues(
+            float m00,
+            float m01,
+            float m10,
+            float m11
+        )
+        {
+            // arrange
+            var array = new[,] { { m00, m01 }, { m10, m11 } };
+
+            // act
+            var result = new Matrix2(array);
+
+            // assert
+            using var _ = new AssertionScope();
+            result[0, 0].Should().Be(m00);
+            result[0, 1].Should().Be(m01);
+            result[1, 0].Should().Be(m10);
+            result[1, 1].Should().Be(m11);
+        }
+
+        [Theory]
+        [InlineData(1, 1)]
+        [InlineData(1, 2)]
+        [InlineData(2, 1)]
+        [InlineData(3, 3)]
+        public void Constructor__2x2Array_ShouldThrowArgumentOutOfRangeException_WhenInputIsNot2x2(
+            int x,
+            int y
+        )
+        {
+            // arrange
+            var array = new float[x, y];
+
+            // act
+            Action act = () => { _ = new Matrix2(array); };
+
+            // assert
+            act.Should().Throw<ArgumentOutOfRangeException>().WithMessage("*must be a 2x2 array*");
+        }
+
+        [Theory]
+        [InlineData(1f, 2f, 3f, 4f)]
+        [InlineData(4.5f, 5.6f, 6.7f, 8.9f)]
+        [InlineData(-1f, -2f, -3f, -4f)]
+        public void Constructor__4Floats_ShouldCreateMatrix2WithProvidedValues(
             float m00,
             float m01,
             float m10,

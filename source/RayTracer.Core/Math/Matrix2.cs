@@ -14,17 +14,31 @@ namespace RayTracer.Core.Math
             _elements = new[,] { { m00, m01 }, { m10, m11 } };
         }
 
-        public Matrix2(Matrix2 other)
+        public Matrix2(float[,] elements)
         {
+            if (elements.GetLength(0) != Size || elements.GetLength(1) != Size)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(elements),
+                    elements,
+                    "Value must be a 2x2 array"
+                );
+            }
+
             _elements = new float[Size, Size];
 
             for (var x = 0; x < Size; x++)
             {
                 for (var y = 0; y < Size; y++)
                 {
-                    _elements[x, y] = other._elements[x, y];
+                    _elements[x, y] = elements[x, y];
                 }
             }
+        }
+
+        public Matrix2(Matrix2 other)
+            : this(other._elements)
+        {
         }
 
         public float this[int x, int y]
