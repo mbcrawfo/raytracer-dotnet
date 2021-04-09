@@ -4,13 +4,13 @@ using Xunit;
 
 namespace RayTracer.Core.UnitTests.Math
 {
-    public partial class Matrix2Tests
+    public partial class MatrixTests
     {
         [Theory]
-        [MemberData(nameof(Matrix2ThatAreNotEquivalent))]
-        public void Equals__Matrix2_ShouldReturnFalse_WhenRhsIsNotAnEquivalentMatrix2(
-            Matrix2 lhs,
-            Matrix2 rhs
+        [MemberData(nameof(MatricesThatAreNotEquivalent))]
+        public void Equals__Matrix_ShouldReturnFalse_WhenRhsIsNotAnEquivalentMatrix(
+            Matrix lhs,
+            Matrix rhs
         )
         {
             // arrange
@@ -22,10 +22,10 @@ namespace RayTracer.Core.UnitTests.Math
         }
 
         [Theory]
-        [MemberData(nameof(Matrix2ThatAreEquivalent))]
-        public void Equals__Matrix2_ShouldReturnTrue_WhenRhsIsAnEquivalentMatrix2(
-            Matrix2 lhs,
-            Matrix2 rhs
+        [MemberData(nameof(MatricesThatAreEquivalent))]
+        public void Equals__Matrix_ShouldReturnTrue_WhenRhsIsAnEquivalentMatrix(
+            Matrix lhs,
+            Matrix rhs
         )
         {
             // arrange
@@ -37,9 +37,9 @@ namespace RayTracer.Core.UnitTests.Math
         }
 
         [Theory]
-        [MemberData(nameof(Matrix2ThatAreNotEquivalent))]
-        public void Equals__Object_ShouldReturnFalse_WhenOtherObjectIsNotAnEquivalentMatrix2(
-            Matrix2 matrix,
+        [MemberData(nameof(MatricesThatAreNotEquivalent))]
+        public void Equals__Object_ShouldReturnFalse_WhenOtherObjectIsNotAnEquivalentMatrix(
+            Matrix matrix,
             object obj
         )
         {
@@ -52,11 +52,11 @@ namespace RayTracer.Core.UnitTests.Math
         }
 
         [Theory]
-        [MemberData(nameof(ObjectsThatAreNotMatrix2))]
-        public void Equals__Object_ShouldReturnFalse_WhenOtherObjectIsNotMatrix2(object obj)
+        [MemberData(nameof(ObjectsThatAreNotMatrices))]
+        public void Equals__Object_ShouldReturnFalse_WhenOtherObjectIsNotMatrix(object obj)
         {
             // arrange
-            var sut = new Matrix2(1f, 2f, 3f, 4f);
+            var sut = new TestMatrix(2, 2);
 
             // act
             var result = sut.Equals(obj);
@@ -66,9 +66,9 @@ namespace RayTracer.Core.UnitTests.Math
         }
 
         [Theory]
-        [MemberData(nameof(Matrix2ThatAreEquivalent))]
-        public void Equals__Object_ShouldReturnTrue_WhenOtherObjectIsAnEquivalentMatrix2(
-            Matrix2 matrix,
+        [MemberData(nameof(MatricesThatAreEquivalent))]
+        public void Equals__Object_ShouldReturnTrue_WhenOtherObjectIsAnEquivalentMatrix(
+            Matrix matrix,
             object obj
         )
         {
@@ -81,10 +81,10 @@ namespace RayTracer.Core.UnitTests.Math
         }
 
         [Theory]
-        [MemberData(nameof(Matrix2ThatAreNotEquivalent))]
-        public void Op__Equality_ShouldReturnFalse_WhenRhsIsNotAnEquivalentMatrix2(
-            Matrix2 lhs,
-            Matrix2 rhs
+        [MemberData(nameof(MatricesThatAreNotEquivalent))]
+        public void Op__Equality_ShouldReturnFalse_WhenRhsIsNotAnEquivalentMatrix(
+            Matrix lhs,
+            Matrix rhs
         )
         {
             // arrange
@@ -96,10 +96,10 @@ namespace RayTracer.Core.UnitTests.Math
         }
 
         [Theory]
-        [MemberData(nameof(Matrix2ThatAreEquivalent))]
-        public void Op__Equality_ShouldReturnTrue_WhenRhsIsAnEquivalentMatrix2(
-            Matrix2 lhs,
-            Matrix2 rhs
+        [MemberData(nameof(MatricesThatAreEquivalent))]
+        public void Op__Equality_ShouldReturnTrue_WhenRhsIsAnEquivalentMatrix(
+            Matrix lhs,
+            Matrix rhs
         )
         {
             // arrange
@@ -111,10 +111,10 @@ namespace RayTracer.Core.UnitTests.Math
         }
 
         [Theory]
-        [MemberData(nameof(Matrix2ThatAreEquivalent))]
-        public void Op__Inequality_ShouldReturnFalse_WhenRhsIsAnEquivalentMatrix2(
-            Matrix2 lhs,
-            Matrix2 rhs
+        [MemberData(nameof(MatricesThatAreEquivalent))]
+        public void Op__Inequality_ShouldReturnFalse_WhenRhsIsAnEquivalentMatrix(
+            Matrix lhs,
+            Matrix rhs
         )
         {
             // arrange
@@ -126,10 +126,10 @@ namespace RayTracer.Core.UnitTests.Math
         }
 
         [Theory]
-        [MemberData(nameof(Matrix2ThatAreNotEquivalent))]
-        public void Op__Inequality_ShouldReturnTrue_WhenRhsIsNotAnEquivalentMatrix2(
-            Matrix2 lhs,
-            Matrix2 rhs
+        [MemberData(nameof(MatricesThatAreNotEquivalent))]
+        public void Op__Inequality_ShouldReturnTrue_WhenRhsIsNotAnEquivalentMatrix(
+            Matrix lhs,
+            Matrix rhs
         )
         {
             // arrange
