@@ -1,12 +1,11 @@
 using System;
+using System.Text;
 using RayTracer.Core.Extensions;
 
 namespace RayTracer.Core.Math
 {
     public abstract class Matrix : IEquatable<Matrix>
     {
-        private readonly float[,] _elements;
-
         protected Matrix(int rows, int columns)
         {
             if (rows <= 0)
@@ -25,7 +24,7 @@ namespace RayTracer.Core.Math
 
             Rows = rows;
             Columns = columns;
-            _elements = new float[Rows, Columns];
+            Elements = new float[Rows, Columns];
         }
 
         protected Matrix(float[,] elements)
@@ -35,13 +34,13 @@ namespace RayTracer.Core.Math
             {
                 for (var j = 0; j < Columns; j++)
                 {
-                    _elements[i, j] = elements[i, j];
+                    Elements[i, j] = elements[i, j];
                 }
             }
         }
 
         protected Matrix(Matrix other)
-            : this(other._elements)
+            : this(other.Elements)
         {
         }
 
@@ -59,7 +58,7 @@ namespace RayTracer.Core.Math
                     );
                 }
 
-                return _elements[i, j];
+                return Elements[i, j];
             }
             init
             {
@@ -71,11 +70,13 @@ namespace RayTracer.Core.Math
                     );
                 }
 
-                _elements[i, j] = value;
+                Elements[i, j] = value;
             }
         }
 
         public int Rows { get; }
+
+        protected float[,] Elements { get; }
 
         /// <inheritdoc />
         public override bool Equals(object? obj) => Equals(obj as Matrix);
@@ -102,7 +103,7 @@ namespace RayTracer.Core.Math
             {
                 for (var j = 0; j < Columns; j++)
                 {
-                    if (!_elements[i, j].ApproximatelyEquals(other._elements[i, j]))
+                    if (!Elements[i, j].ApproximatelyEquals(other.Elements[i, j]))
                     {
                         return false;
                     }
@@ -118,6 +119,41 @@ namespace RayTracer.Core.Math
                 nameof(Matrix) +
                 " is not suitable for use as a key because it relies on approximate equality"
             );
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            var sb = new StringBuilder(32).Append("Matrix")
+                .Append(Rows)
+                .Append('x')
+                .Append(Columns)
+                .Append("[ ");
+
+            for (var i = 0; i < Rows; i++)
+            {
+                if (i > 0)
+                {
+                    sb.Append(", ");
+                }
+
+                sb.Append('[');
+
+                for (var j = 0; j < Columns; j++)
+                {
+                    if (j > 0)
+                    {
+                        sb.Append(", ");
+                    }
+
+                    sb.Append(Elements[i, j]);
+                }
+
+                sb.Append("] ");
+            }
+
+            sb.Append(']');
+            return sb.ToString();
+        }
 
         public static bool operator ==(Matrix lhs, Matrix rhs) => lhs.Equals(rhs);
 

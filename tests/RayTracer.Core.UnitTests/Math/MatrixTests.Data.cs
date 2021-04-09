@@ -291,7 +291,7 @@ namespace RayTracer.Core.UnitTests.Math
                 new object[] { "hello world" }
             };
 
-        internal class TestMatrix : Matrix
+        private class TestMatrix : Matrix
         {
             /// <inheritdoc />
             public TestMatrix(int columns, int rows)
