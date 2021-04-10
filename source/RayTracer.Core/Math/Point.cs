@@ -46,7 +46,7 @@ namespace RayTracer.Core.Math
             Y.ApproximatelyEquals(other.Y) &&
             Z.ApproximatelyEquals(other.Z);
 
-        public void Deconstruct(out double x, out double y, out double z)
+        public void Deconstruct(out float x, out float y, out float z)
         {
             x = X;
             y = Y;

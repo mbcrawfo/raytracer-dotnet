@@ -62,7 +62,7 @@ namespace RayTracer.Core.Math
                 X * other.Y - Y * other.X
             );
 
-        public void Deconstruct(out double x, out double y, out double z)
+        public void Deconstruct(out float x, out float y, out float z)
         {
             x = X;
             y = Y;

@@ -6,7 +6,7 @@ namespace RayTracer.Cli
     {
         internal static void Main()
         {
-            Chapter2ProjectilePath.GenerateImage();
+            Chapter4AnalogClockFace.GenerateImage();
         }
     }
 }
