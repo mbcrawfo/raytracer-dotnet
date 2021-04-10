@@ -31,6 +31,9 @@ namespace RayTracer.Core.Math
         }
 
         /// <inheritdoc />
+        public override Matrix3 Inverse() => new(InverseElements());
+
+        /// <inheritdoc />
         public override Matrix2 SubMatrix(int row, int column)
         {
             if (row is < 0 or >= Size)

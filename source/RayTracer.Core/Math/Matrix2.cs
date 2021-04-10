@@ -35,8 +35,10 @@ namespace RayTracer.Core.Math
             Elements[0, 0] * Elements[1, 1] - Elements[0, 1] * Elements[1, 0];
 
         /// <inheritdoc />
-        public override Matrix SubMatrix(int row, int column) =>
-            throw new NotSupportedException();
+        public override Matrix Inverse() => throw new NotSupportedException();
+
+        /// <inheritdoc />
+        public override Matrix SubMatrix(int row, int column) => throw new NotSupportedException();
 
         /// <inheritdoc />
         public override Matrix2 Transpose() => new(TransposeElements());

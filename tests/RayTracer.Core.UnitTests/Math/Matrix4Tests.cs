@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using RayTracer.Core.Math;
@@ -85,6 +86,33 @@ namespace RayTracer.Core.UnitTests.Math
                 .WithMessage("*must be in range [0, 4)*")
                 .And.ParamName.Should()
                 .Be(nameof(column));
+        }
+
+        [Theory]
+        [MemberData(nameof(InverseTestCases))]
+        public void Inverse_ShouldReturnInvertedMatrix4(Matrix4 sut, Matrix4 expected)
+        {
+            // arrange
+            // act
+            var actual = sut.Inverse();
+
+            // assert
+            using var _ = new AssertionScope();
+            foreach (var row in Enumerable.Range(0, 4))
+            {
+                foreach (var col in Enumerable.Range(0, 4))
+                {
+                    actual[row, col]
+                        .Should()
+                        .BeApproximately(
+                            expected[row, col],
+                            1e-5f,
+                            "[{0}, {1}] should match expected",
+                            row,
+                            col
+                        );
+                }
+            }
         }
 
         [Fact]
@@ -204,6 +232,107 @@ namespace RayTracer.Core.UnitTests.Math
             cofactor02.Should().Be(210f);
             cofactor03.Should().Be(51f);
             determinant.Should().Be(-4071f);
+        }
+
+        [Fact]
+        public void
+            Inverse_ShouldReturnTheLeftInputOfMultiplication_WhenMultiplyingAProductByTheInverseOfTheRightOperand()
+        {
+            // arrange
+            var lhs = new Matrix4(
+                new[,]
+                {
+                    { 3f, -9f, 7f, 3f },
+                    { 3f, -8f, 2f, -9f },
+                    { -4f, 4f, 4f, 1f },
+                    { -6f, 5f, -1f, 1f }
+                }
+            );
+            var rhs = new Matrix4(
+                new[,]
+                {
+                    { 8f, 2f, 2f, 2f },
+                    { 3f, -1f, 7f, 0f },
+                    { 7f, 0f, 5f, 4f },
+                    { 6f, -2f, 0f, 5f }
+                }
+            );
+            var product = lhs * rhs;
+
+            // act
+            var result = product * rhs.Inverse();
+
+            // assert
+            result.Should().Be(lhs);
+        }
+
+        [Fact]
+        public void Inverse_ShouldThrowInvalidOperationException_WhenMatrixIsNotInvertible()
+        {
+            // arrange
+            var sut = new Matrix4(
+                new[,]
+                {
+                    { -4f, 2f, -2f, -3f },
+                    { 9f, 6f, 2f, 6f },
+                    { 0f, -5f, 1f, -5f },
+                    { 0f, 0f, 0f, 0f }
+                }
+            );
+
+            // act
+            Action act = () => { _ = sut.Inverse(); };
+
+            // assert
+            act.Should().Throw<InvalidOperationException>().WithMessage("*not invertible*");
+        }
+
+        [Fact]
+        public void IsInvertible_ShouldReturnFalse_WhenDeterminantIsZero()
+        {
+            // arrange
+            var sut = new Matrix4(
+                new[,]
+                {
+                    { -4f, 2f, -2f, -3f },
+                    { 9f, 6f, 2f, 6f },
+                    { 0f, -5f, 1f, -5f },
+                    { 0f, 0f, 0f, 0f }
+                }
+            );
+
+            // act
+            var determinant = sut.Determinant();
+            var isInvertible = sut.IsInvertible;
+
+            // assert
+            using var _ = new AssertionScope();
+            determinant.Should().Be(0f);
+            isInvertible.Should().BeFalse();
+        }
+
+        [Fact]
+        public void IsInvertible_ShouldReturnTrue_WhenDeterminantIsNonZero()
+        {
+            // arrange
+            var sut = new Matrix4(
+                new[,]
+                {
+                    { 6f, 4f, 4f, 4f },
+                    { 5f, 5f, 7f, 6f },
+                    { 4f, -9f, 3f, -7f },
+                    { 9f, 1f, 7f, -6f }
+                }
+            );
+
+            // act
+            var determinant = sut.Determinant();
+            var isInvertible = sut.IsInvertible;
+
+            // assert
+            using var _ = new AssertionScope();
+            determinant.Should().Be(-2120f);
+            isInvertible.Should().BeTrue();
         }
 
         [Fact]

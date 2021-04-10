@@ -48,6 +48,8 @@ namespace RayTracer.Core.Math
 
         public int Columns { get; }
 
+        public bool IsInvertible => !Determinant().ApproximatelyEquals(0f);
+
         public float this[int i, int j]
         {
             get
@@ -180,6 +182,28 @@ namespace RayTracer.Core.Math
         }
 
         public abstract Matrix Transpose();
+
+        public abstract Matrix Inverse();
+
+        protected float[,] InverseElements()
+        {
+            var determinant = Determinant();
+            if (determinant.ApproximatelyEquals(0f))
+            {
+                throw new InvalidOperationException("Matrix is not invertible");
+            }
+            
+            var result = new float[Rows, Columns];
+            for (var row = 0; row < Rows; row += 1)
+            {
+                for (var col = 0; col < Columns; col += 1)
+                {
+                    result[col, row] = Cofactor(row, col) / determinant;
+                }
+            }
+
+            return result;
+        }
 
         protected float[,] SubMatrixElements(int rowToRemove, int columnToRemove)
         {

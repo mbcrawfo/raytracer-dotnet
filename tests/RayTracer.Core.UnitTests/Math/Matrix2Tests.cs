@@ -97,6 +97,19 @@ namespace RayTracer.Core.UnitTests.Math
         }
 
         [Fact]
+        public void Inverse_ShouldThrowNotSupportedException()
+        {
+            // arrange
+            var sut = new Matrix2();
+
+            // act
+            Action act = () => { _ = sut.Inverse(); };
+
+            // assert
+            act.Should().Throw<NotSupportedException>();
+        }
+
+        [Fact]
         public void SubMatrix_ShouldThrowNotSupportedException()
         {
             // arrange
