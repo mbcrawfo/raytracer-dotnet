@@ -38,6 +38,9 @@ namespace RayTracer.Core.Math
         {
         }
 
+        /// <inheritdoc />
+        public override Matrix4 Transpose() => new(TransposeElements());
+
         public static Matrix4 operator *(Matrix4 lhs, Matrix4 rhs)
         {
             var result = new Matrix4();

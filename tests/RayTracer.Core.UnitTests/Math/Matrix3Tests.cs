@@ -92,5 +92,19 @@ namespace RayTracer.Core.UnitTests.Math
             result.Rows.Should().Be(3);
             result.Columns.Should().Be(3);
         }
+
+        [Fact]
+        public void Transpose_ShouldSwapRowsAndColumns()
+        {
+            // arrange
+            var sut = new Matrix3(new[,] { { 0f, 9f, 3f }, { 9f, 8f, 0f }, { 1f, 8f, 5f } });
+            var expected = new Matrix3(new[,] { { 0f, 9f, 1f }, { 9f, 8f, 8f }, { 3f, 0f, 5f } });
+
+            // act
+            var actual = sut.Transpose();
+
+            // assert
+            actual.Should().Be(expected);
+        }
     }
 }

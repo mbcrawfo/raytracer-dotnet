@@ -310,6 +310,9 @@ namespace RayTracer.Core.UnitTests.Math
                 : base(other)
             {
             }
+
+            /// <inheritdoc />
+            public override Matrix Transpose() => throw new System.NotImplementedException();
         }
     }
 }

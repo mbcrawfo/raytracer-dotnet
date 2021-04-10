@@ -157,6 +157,23 @@ namespace RayTracer.Core.Math
             return sb.ToString();
         }
 
+        public abstract Matrix Transpose();
+
+        protected float[,] TransposeElements()
+        {
+            var result = new float[Rows, Columns];
+
+            for (int readI = 0, writeJ = 0; readI < Rows; readI += 1, writeJ += 1)
+            {
+                for (int readJ = 0, writeI = 0; readJ < Columns; readJ += 1, writeI += 1)
+                {
+                    result[writeI, writeJ] = Elements[readI, readJ];
+                }
+            }
+
+            return result;
+        }
+
         public static bool operator ==(Matrix lhs, Matrix rhs) => lhs.Equals(rhs);
 
         public static bool operator !=(Matrix lhs, Matrix rhs) => !lhs.Equals(rhs);

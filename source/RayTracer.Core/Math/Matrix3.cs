@@ -29,5 +29,8 @@ namespace RayTracer.Core.Math
             : base(other)
         {
         }
+
+        /// <inheritdoc />
+        public override Matrix3 Transpose() => new(TransposeElements());
     }
 }
