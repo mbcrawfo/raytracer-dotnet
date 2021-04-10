@@ -362,6 +362,65 @@ namespace RayTracer.Core.UnitTests.Math
         }
 
         [Fact]
+        public void Matrix4_ChainedTransformationsMustBeAppliedInReverseOrder()
+        {
+            // arrange
+            var point = new Point(1f, 0f, 1f);
+            var rotateX = Matrix4.RotationX(PiOver2);
+            var scale = Matrix4.Scaling(5f, 5f, 5f);
+            var translate = Matrix4.Translation(10f, 5f, 7f);
+            var shear = Matrix4.Shearing(xToZ: 1f);
+
+            // act
+            var transform = shear * translate * scale * rotateX;
+            var result = transform * point;
+
+            // assert
+            result.Should().Be(new Point(22f, 0f, 7f));
+        }
+
+        [Fact]
+        public void Matrix4_FluentTransformationsMustBeAppliedInReverseOrder()
+        {
+            // arrange
+            var point = new Point(1f, 0f, 1f);
+
+            // act
+            var transform = Matrix4.Identity.RotateX(PiOver2)
+                .Scale(5f, 5f, 5f)
+                .Translate(10f, 5f, 7f)
+                .Shear(xToZ: 1f);
+            var result = transform * point;
+
+            // assert
+            result.Should().Be(new Point(22f, 0f, 7f));
+        }
+
+        [Fact]
+        public void Matrix4_TransformationsCanBeAppliedInSequence()
+        {
+            // arrange
+            var point = new Point(1f, 0f, 1f);
+            var rotateX = Matrix4.RotationX(PiOver2);
+            var scale = Matrix4.Scaling(5f, 5f, 5f);
+            var translate = Matrix4.Translation(10f, 5f, 7f);
+            var shear = Matrix4.Shearing(xToZ: 1f);
+
+            // act
+            var rotatedPoint = rotateX * point;
+            var scaledRotatedPoint = scale * rotatedPoint;
+            var translatedScaledRotatedPoint = translate * scaledRotatedPoint;
+            var shearedTranslatedScaledRotatedPoint = shear * translatedScaledRotatedPoint;
+
+            // assert
+            using var _ = new AssertionScope();
+            rotatedPoint.Should().Be(new Point(1f, -1f, 0f));
+            scaledRotatedPoint.Should().Be(new Point(5f, -5f, 0f));
+            translatedScaledRotatedPoint.Should().Be(new Point(15f, 0f, 7f));
+            shearedTranslatedScaledRotatedPoint.Should().Be(new Point(22f, 0f, 7f));
+        }
+
+        [Fact]
         public void Op__MultiplyMatrix4_ShouldReturnExpectedResultMatrix()
         {
             // arrange

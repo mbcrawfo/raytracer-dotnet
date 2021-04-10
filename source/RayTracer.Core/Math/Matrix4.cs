@@ -41,6 +41,24 @@ namespace RayTracer.Core.Math
         /// <inheritdoc />
         public override Matrix4 Inverse() => new(InverseElements());
 
+        public Matrix4 RotateX(float radians) => RotationX(radians) * this;
+
+        public Matrix4 RotateY(float radians) => RotationY(radians) * this;
+
+        public Matrix4 RotateZ(float radians) => RotationZ(radians) * this;
+
+        public Matrix4 Scale(float x, float y, float z) => Scaling(x, y, z) * this;
+
+        public Matrix4 Shear(
+            float xToY = 0f,
+            float xToZ = 0f,
+            float yToX = 0f,
+            float yToZ = 0f,
+            float zToX = 0f,
+            float zToY = 0f
+        ) =>
+            Shearing(xToY, xToZ, yToX, yToZ, zToX, zToY) * this;
+
         /// <inheritdoc />
         public override Matrix3 SubMatrix(int row, int column)
         {
@@ -64,6 +82,8 @@ namespace RayTracer.Core.Math
 
             return new Matrix3(SubMatrixElements(row, column));
         }
+
+        public Matrix4 Translate(float x, float y, float z) => Translation(x, y, z) * this;
 
         /// <inheritdoc />
         public override Matrix4 Transpose() => new(TransposeElements());
@@ -169,12 +189,12 @@ namespace RayTracer.Core.Math
         }
 
         public static Matrix4 Shearing(
-            float xToY,
-            float xToZ,
-            float yToX,
-            float yToZ,
-            float zToX,
-            float zToY
+            float xToY = 0f,
+            float xToZ = 0f,
+            float yToX = 0f,
+            float yToZ = 0f,
+            float zToX = 0f,
+            float zToY = 0f
         )
         {
             var result = new Matrix4(Identity);
