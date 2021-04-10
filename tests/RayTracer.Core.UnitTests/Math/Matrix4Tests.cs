@@ -120,5 +120,90 @@ namespace RayTracer.Core.UnitTests.Math
             result.Rows.Should().Be(4);
             result.Columns.Should().Be(4);
         }
+
+        [Fact]
+        public void Op__MultiplyMatrix4_ShouldReturnExpectedResultMatrix()
+        {
+            // arrange
+            var lhs = new Matrix4(
+                new[,]
+                {
+                    { 1f, 2f, 3f, 4f },
+                    { 5f, 6f, 7f, 8f },
+                    { 9f, 8f, 7f, 6f },
+                    { 5f, 4f, 3f, 2f }
+                }
+            );
+            var rhs = new Matrix4(
+                new[,]
+                {
+                    { -2f, 1f, 2f, 3f },
+                    { 3f, 2f, 1f, -1f },
+                    { 4f, 3f, 6f, 5f },
+                    { 1f, 2f, 7f, 8f }
+                }
+            );
+            var expected = new Matrix4(
+                new[,]
+                {
+                    { 20f, 22f, 50f, 48f },
+                    { 44f, 54f, 114f, 108f },
+                    { 40f, 58f, 110f, 102f },
+                    { 16f, 26f, 46f, 42f }
+                }
+            );
+
+            // act
+            var actual = lhs * rhs;
+
+            // assert
+            actual.Should().Be(expected);
+        }
+
+        [Fact]
+        public void Op__MultiplyPoint_ShouldReturnExpectedResultPoint()
+        {
+            // arrange
+            var lhs = new Matrix4(
+                new[,]
+                {
+                    { 1f, 2f, 3f, 4f },
+                    { 2f, 4f, 4f, 2f },
+                    { 8f, 6f, 4f, 1f },
+                    { 0f, 0f, 0f, 1f }
+                }
+            );
+            var rhs = new Point(1f, 2f, 3f);
+            var expected = new Point(18f, 24f, 33f);
+
+            // act
+            var actual = lhs * rhs;
+
+            // assert
+            actual.Should().Be(expected);
+        }
+
+        [Fact]
+        public void Op__MultiplyVector_ShouldReturnExpectedResultVector()
+        {
+            // arrange
+            var lhs = new Matrix4(
+                new[,]
+                {
+                    { 1f, 2f, 3f, 4f },
+                    { 2f, 4f, 4f, 2f },
+                    { 8f, 6f, 4f, 1f },
+                    { 0f, 0f, 0f, 1f }
+                }
+            );
+            var rhs = new Vector(1f, 2f, 3f);
+            var expected = new Vector(14f, 22f, 32f);
+
+            // act
+            var actual = lhs * rhs;
+
+            // assert
+            actual.Should().Be(expected);
+        }
     }
 }
