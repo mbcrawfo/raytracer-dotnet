@@ -48,7 +48,7 @@ namespace RayTracer.Core.Math
 
         public int Columns { get; }
 
-        public bool IsInvertible => !Determinant().ApproximatelyEquals(0f);
+        public bool IsInvertible => Determinant() != 0f;
 
         public float this[int row, int col]
         {
@@ -188,7 +188,7 @@ namespace RayTracer.Core.Math
         protected float[,] InverseElements()
         {
             var determinant = Determinant();
-            if (determinant.ApproximatelyEquals(0f))
+            if (determinant == 0f)
             {
                 throw new InvalidOperationException("Matrix is not invertible");
             }
