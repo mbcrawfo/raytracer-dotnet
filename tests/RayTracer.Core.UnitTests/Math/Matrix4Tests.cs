@@ -442,6 +442,104 @@ namespace RayTracer.Core.UnitTests.Math
         }
 
         [Fact]
+        public void Scaling_ShouldReturnMatrixThatCanReflectAPointAroundTheXAxis()
+        {
+            // arrange
+            var point = new Point(2f, 3f, 4f);
+            var expected = new Point(-2f, 3f, 4f);
+
+            // act
+            var actual = Matrix4.Scaling(-1f, 1f, 1f) * point;
+
+            // assert
+            actual.Should().Be(expected);
+        }
+
+        [Fact]
+        public void Scaling_ShouldReturnMatrixThatWillIncreaseTheLengthOfAVector()
+        {
+            // arrange
+            var vector = new Vector(-4f, 6f, 8f);
+            var expected = new Vector(-8f, 18f, 32f);
+
+            // act
+            var actual = Matrix4.Scaling(2f, 3f, 4f) * vector;
+
+            // assert
+            actual.Should().Be(expected);
+        }
+
+        [Fact]
+        public void Scaling_ShouldReturnMatrixThatWillScaleAPointFromTheOrigin()
+        {
+            // arrange
+            var point = new Point(-4f, 6f, 8f);
+            var expected = new Point(-8f, 18f, 32f);
+
+            // act
+            var actual = Matrix4.Scaling(2f, 3f, 4f) * point;
+
+            // assert
+            actual.Should().Be(expected);
+        }
+
+        [Fact]
+        public void Scaling_ShouldReturnMatrixWhoseInverseWillShrinkTheLengthOfAVector()
+        {
+            // arrange
+            var vector = new Vector(-4f, 6f, 8f);
+            var expected = new Vector(-2f, 2f, 2f);
+
+            // act
+            var actual = Matrix4.Scaling(2f, 3f, 4f).Inverse() * vector;
+
+            // assert
+            actual.Should().Be(expected);
+        }
+
+        [Fact]
+        public void Translation_ShouldReturnMatrixThatDoesNotAffectVectors()
+        {
+            // arrange
+            var expected = new Vector(-3f, 4f, 5f);
+
+            // act
+            var actual = Matrix4.Translation(5f, -3f, 2f) * expected;
+
+            // assert
+            actual.Should().Be(expected);
+        }
+
+        [Fact]
+        public void Translation_ShouldReturnMatrixThatWillTranslateAPoint()
+        {
+            // arrange
+            var point = new Point(-3f, 4f, 5f);
+            var expected = new Point(2f, 1f, 7f);
+
+            // act
+            var actual = Matrix4.Translation(5f, -3f, 2f) * point;
+
+            // assert
+            actual.Should().Be(expected);
+        }
+
+        [Fact]
+        public void
+            Translation_ShouldReturnMatrixWhoseInverseWillTranslateAPointInReverse()
+        {
+            // arrange
+            var point = new Point(-3f, 4f, 5f);
+            var expected = new Point(-8f, 7f, 3f);
+
+            // act
+            var actual = Matrix4.Translation(5f, -3f, 2f).Inverse() * point;
+
+            // assert
+            actual.Should().Be(expected);
+        }
+
+        [Fact]
         public void Transpose_ShouldSwapRowsAndColumns()
         {
             // arrange

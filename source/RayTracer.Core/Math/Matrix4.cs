@@ -115,5 +115,25 @@ namespace RayTracer.Core.Math
                 lhs.Elements[2, 1] * rhs.Y +
                 lhs.Elements[2, 2] * rhs.Z
             );
+
+        public static Matrix4 Scaling(float x, float y, float z)
+        {
+            var result = new Matrix4(Identity);
+            result.Elements[0, 0] = x;
+            result.Elements[1, 1] = y;
+            result.Elements[2, 2] = z;
+
+            return result;
+        }
+
+        public static Matrix4 Translation(float x, float y, float z)
+        {
+            var result = new Matrix4(Identity);
+            result.Elements[0, 3] = x;
+            result.Elements[1, 3] = y;
+            result.Elements[2, 3] = z;
+
+            return result;
+        }
     }
 }
