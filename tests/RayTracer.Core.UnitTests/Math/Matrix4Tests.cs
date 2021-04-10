@@ -9,6 +9,10 @@ namespace RayTracer.Core.UnitTests.Math
 {
     public partial class Matrix4Tests
     {
+        private const float PiOver4 = MathF.PI / 4f;
+        private const float PiOver2 = MathF.PI / 2f;
+        private static readonly float Sqrt2Over2 = MathF.Sqrt(2) / 2f;
+        
         [Theory]
         [MemberData(nameof(ArraysThatAreNot4X4))]
         public void Constructor__Array_ShouldThrowArgumentException_WhenElementsArrayIsNot4x4(
@@ -442,17 +446,102 @@ namespace RayTracer.Core.UnitTests.Math
         }
 
         [Fact]
-        public void Scaling_ShouldReturnMatrixThatCanReflectAPointAroundTheXAxis()
+        public void RotationX_ShouldReturnMatrixThatWillRotateAPointAroundTheXAxis()
         {
             // arrange
-            var point = new Point(2f, 3f, 4f);
-            var expected = new Point(-2f, 3f, 4f);
+            var point = new Point(0f, 1f, 0f);
+            var expectedHalfQuarter = new Point(0f, Sqrt2Over2, Sqrt2Over2);
+            var expectedFullQuarter = new Point(0f, 0f, 1f);
 
             // act
-            var actual = Matrix4.Scaling(-1f, 1f, 1f) * point;
+            var actualHalfQuarter = Matrix4.RotationX(PiOver4) * point;
+            var actualFullQuarter = Matrix4.RotationX(PiOver2) * point;
 
             // assert
-            actual.Should().Be(expected);
+            using var _ = new AssertionScope();
+            actualHalfQuarter.Should().Be(expectedHalfQuarter);
+            actualFullQuarter.Should().Be(expectedFullQuarter);
+        }
+
+        [Fact]
+        public void
+            RotationX_ShouldReturnMatrixWhoseInverseWillRotateAPointAroundTheXAxisInTheOppositeDirection()
+        {
+            // arrange
+            var point = new Point(0f, 1f, 0f);
+            var expectedHalfQuarter = new Point(0f, Sqrt2Over2, -Sqrt2Over2);
+
+            // act
+            var actualHalfQuarter = Matrix4.RotationX(PiOver4).Inverse() * point;
+
+            // assert
+            actualHalfQuarter.Should().Be(expectedHalfQuarter);
+        }
+
+        [Fact]
+        public void RotationY_ShouldReturnMatrixThatWillRotateAPointAroundTheYAxis()
+        {
+            // arrange
+            var point = new Point(0f, 0f, 1f);
+            var expectedHalfQuarter = new Point(Sqrt2Over2, 0f, Sqrt2Over2);
+            var expectedFullQuarter = new Point(1f, 0f, 0f);
+
+            // act
+            var actualHalfQuarter = Matrix4.RotationY(PiOver4) * point;
+            var actualFullQuarter = Matrix4.RotationY(PiOver2) * point;
+
+            // assert
+            using var _ = new AssertionScope();
+            actualHalfQuarter.Should().Be(expectedHalfQuarter);
+            actualFullQuarter.Should().Be(expectedFullQuarter);
+        }
+
+        [Fact]
+        public void
+            RotationY_ShouldReturnMatrixWhoseInverseWillRotateAPointAroundTheYAxisInTheOppositeDirection()
+        {
+            // arrange
+            var point = new Point(0f, 0f, 1f);
+            var expectedHalfQuarter = new Point(-Sqrt2Over2, 0f, Sqrt2Over2);
+
+            // act
+            var actualHalfQuarter = Matrix4.RotationY(PiOver4).Inverse() * point;
+
+            // assert
+            actualHalfQuarter.Should().Be(expectedHalfQuarter);
+        }
+
+        [Fact]
+        public void RotationZ_ShouldReturnMatrixThatWillRotateAPointAroundTheZAxis()
+        {
+            // arrange
+            var point = new Point(0f, 1f, 0f);
+            var expectedHalfQuarter = new Point(-Sqrt2Over2, Sqrt2Over2, 0f);
+            var expectedFullQuarter = new Point(-1f, 0f, 0f);
+
+            // act
+            var actualHalfQuarter = Matrix4.RotationZ(PiOver4) * point;
+            var actualFullQuarter = Matrix4.RotationZ(PiOver2) * point;
+
+            // assert
+            using var _ = new AssertionScope();
+            actualHalfQuarter.Should().Be(expectedHalfQuarter);
+            actualFullQuarter.Should().Be(expectedFullQuarter);
+        }
+
+        [Fact]
+        public void
+            RotationZ_ShouldReturnMatrixWhoseInverseWillRotateAPointAroundTheZAxisInTheOppositeDirection()
+        {
+            // arrange
+            var point = new Point(0f, 1f, 0f);
+            var expectedHalfQuarter = new Point(Sqrt2Over2, Sqrt2Over2, 0f);
+
+            // act
+            var actualHalfQuarter = Matrix4.RotationZ(PiOver4).Inverse() * point;
+
+            // assert
+            actualHalfQuarter.Should().Be(expectedHalfQuarter);
         }
 
         [Fact]
@@ -464,6 +553,20 @@ namespace RayTracer.Core.UnitTests.Math
 
             // act
             var actual = Matrix4.Scaling(2f, 3f, 4f) * vector;
+
+            // assert
+            actual.Should().Be(expected);
+        }
+
+        [Fact]
+        public void Scaling_ShouldReturnMatrixThatWillReflectAPointAroundTheXAxis()
+        {
+            // arrange
+            var point = new Point(2f, 3f, 4f);
+            var expected = new Point(-2f, 3f, 4f);
+
+            // act
+            var actual = Matrix4.Scaling(-1f, 1f, 1f) * point;
 
             // assert
             actual.Should().Be(expected);

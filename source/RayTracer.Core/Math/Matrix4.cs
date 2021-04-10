@@ -116,6 +116,48 @@ namespace RayTracer.Core.Math
                 lhs.Elements[2, 2] * rhs.Z
             );
 
+        public static Matrix4 RotationX(float radians)
+        {
+            var cos = MathF.Cos(radians);
+            var sin = MathF.Sin(radians);
+
+            var result = new Matrix4(Identity);
+            result.Elements[1, 1] = cos;
+            result.Elements[1, 2] = -sin;
+            result.Elements[2, 1] = sin;
+            result.Elements[2, 2] = cos;
+
+            return result;
+        }
+
+        public static Matrix4 RotationY(float radians)
+        {
+            var cos = MathF.Cos(radians);
+            var sin = MathF.Sin(radians);
+
+            var result = new Matrix4(Identity);
+            result.Elements[0, 0] = cos;
+            result.Elements[0, 2] = sin;
+            result.Elements[2, 0] = -sin;
+            result.Elements[2, 2] = cos;
+
+            return result;
+        }
+
+        public static Matrix4 RotationZ(float radians)
+        {
+            var cos = MathF.Cos(radians);
+            var sin = MathF.Sin(radians);
+
+            var result = new Matrix4(Identity);
+            result.Elements[0, 0] = cos;
+            result.Elements[0, 1] = -sin;
+            result.Elements[1, 0] = sin;
+            result.Elements[1, 1] = cos;
+
+            return result;
+        }
+
         public static Matrix4 Scaling(float x, float y, float z)
         {
             var result = new Matrix4(Identity);
