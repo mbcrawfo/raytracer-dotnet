@@ -30,21 +30,6 @@ namespace RayTracer.Core.Math
         {
         }
 
-        public float Cofactor(int row, int column)
-        {
-            var multiplier = (row + column) switch
-            {
-                1 or 3 => -1f,
-                _ => 1f
-            };
-            return Minor(row, column) * multiplier;
-        }
-
-        /// <inheritdoc />
-        public override float Determinant() => throw new NotImplementedException();
-
-        public float Minor(int row, int column) => SubMatrix(row, column).Determinant();
-
         /// <inheritdoc />
         public override Matrix2 SubMatrix(int row, int column)
         {

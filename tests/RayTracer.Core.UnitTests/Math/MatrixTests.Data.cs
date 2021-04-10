@@ -313,9 +313,6 @@ namespace RayTracer.Core.UnitTests.Math
             }
 
             /// <inheritdoc />
-            public override float Determinant() => throw new NotImplementedException();
-
-            /// <inheritdoc />
             public override Matrix SubMatrix(int row, int column) =>
                 throw new NotImplementedException();
 

@@ -39,9 +39,6 @@ namespace RayTracer.Core.Math
         }
 
         /// <inheritdoc />
-        public override float Determinant() => throw new NotImplementedException();
-
-        /// <inheritdoc />
         public override Matrix3 SubMatrix(int row, int column)
         {
             if (row is < 0 or >= Size)

@@ -177,6 +177,36 @@ namespace RayTracer.Core.UnitTests.Math
         }
 
         [Fact]
+        public void Determinant_ShouldReturnExpectedValue()
+        {
+            // arrange
+            var sut = new Matrix4(
+                new[,]
+                {
+                    { -2f, -8f, 3f, 5f },
+                    { -3f, 1f, 7f, 3f },
+                    { 1f, 2f, -9f, 6f },
+                    { -6f, 7f, 7f, -9f }
+                }
+            );
+
+            // act
+            var cofactor00 = sut.Cofactor(0, 0);
+            var cofactor01 = sut.Cofactor(0, 1);
+            var cofactor02 = sut.Cofactor(0, 2);
+            var cofactor03 = sut.Cofactor(0, 3);
+            var determinant = sut.Determinant();
+
+            // assert
+            using var _ = new AssertionScope();
+            cofactor00.Should().Be(690f);
+            cofactor01.Should().Be(447f);
+            cofactor02.Should().Be(210f);
+            cofactor03.Should().Be(51f);
+            determinant.Should().Be(-4071f);
+        }
+
+        [Fact]
         public void Op__MultiplyMatrix4_ShouldReturnExpectedResultMatrix()
         {
             // arrange

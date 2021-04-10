@@ -80,7 +80,23 @@ namespace RayTracer.Core.Math
 
         protected float[,] Elements { get; }
 
-        public abstract float Determinant();
+        public float Cofactor(int row, int column)
+        {
+            var multiplier = (row + column) % 2 == 1 ? -1f : 1f;
+            return Minor(row, column) * multiplier;
+        }
+
+        public virtual float Determinant()
+        {
+            var result = 0f;
+
+            for (var j = 0; j < Columns; j += 1)
+            {
+                result += Elements[0, j] * Cofactor(0, j);
+            }
+
+            return result;
+        }
 
         /// <inheritdoc />
         public override bool Equals(object? obj) => Equals(obj as Matrix);
@@ -123,6 +139,8 @@ namespace RayTracer.Core.Math
                 nameof(Matrix) +
                 " is not suitable for use as a key because it relies on approximate equality"
             );
+
+        public float Minor(int row, int column) => SubMatrix(row, column).Determinant();
 
         public abstract Matrix SubMatrix(int row, int column);
 
