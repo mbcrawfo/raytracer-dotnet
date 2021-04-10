@@ -168,6 +168,26 @@ namespace RayTracer.Core.Math
             return result;
         }
 
+        public static Matrix4 Shearing(
+            float xToY,
+            float xToZ,
+            float yToX,
+            float yToZ,
+            float zToX,
+            float zToY
+        )
+        {
+            var result = new Matrix4(Identity);
+            result.Elements[0, 1] = xToY;
+            result.Elements[0, 2] = xToZ;
+            result.Elements[1, 0] = yToX;
+            result.Elements[1, 2] = yToZ;
+            result.Elements[2, 0] = zToX;
+            result.Elements[2, 1] = zToY;
+
+            return result;
+        }
+
         public static Matrix4 Translation(float x, float y, float z)
         {
             var result = new Matrix4(Identity);

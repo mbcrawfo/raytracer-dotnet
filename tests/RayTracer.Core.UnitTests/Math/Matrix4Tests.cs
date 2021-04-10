@@ -12,7 +12,7 @@ namespace RayTracer.Core.UnitTests.Math
         private const float PiOver4 = MathF.PI / 4f;
         private const float PiOver2 = MathF.PI / 2f;
         private static readonly float Sqrt2Over2 = MathF.Sqrt(2) / 2f;
-        
+
         [Theory]
         [MemberData(nameof(ArraysThatAreNot4X4))]
         public void Constructor__Array_ShouldThrowArgumentException_WhenElementsArrayIsNot4x4(
@@ -117,6 +117,28 @@ namespace RayTracer.Core.UnitTests.Math
                         );
                 }
             }
+        }
+
+        [Theory]
+        [MemberData(nameof(ShearingTestCases))]
+        public void Shearing_ShouldReturnMatrixThatWillTransformToTheExpectedPoint(
+            float xToY,
+            float xToZ,
+            float yToX,
+            float yToZ,
+            float zToX,
+            float zToY,
+            Point expected
+        )
+        {
+            // arrange
+            var point = new Point(2f, 3f, 4f);
+
+            // act
+            var actual = Matrix4.Shearing(xToY, xToZ, yToX, yToZ, zToX, zToY) * point;
+
+            // assert
+            actual.Should().Be(expected);
         }
 
         [Fact]

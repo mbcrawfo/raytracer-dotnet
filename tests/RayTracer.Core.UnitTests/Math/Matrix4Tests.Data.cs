@@ -82,6 +82,17 @@ namespace RayTracer.Core.UnitTests.Math
                 },
             };
 
+        public static IEnumerable<object> ShearingTestCases =>
+            new object[]
+            {
+                new object[] { 1f, 0f, 0f, 0f, 0f, 0f, new Point(5f, 3f, 4f) },
+                new object[] { 0f, 1f, 0f, 0f, 0f, 0f, new Point(6f, 3f, 4f) },
+                new object[] { 0f, 0f, 1f, 0f, 0f, 0f, new Point(2f, 5f, 4f) },
+                new object[] { 0f, 0f, 0f, 1f, 0f, 0f, new Point(2f, 7f, 4f) },
+                new object[] { 0f, 0f, 0f, 0f, 1f, 0f, new Point(2f, 3f, 6f) },
+                new object[] { 0f, 0f, 0f, 0f, 0f, 1f, new Point(2f, 3f, 7f) },
+            };
+
         public static IEnumerable<object> SubMatrixTestCases =>
             new object[]
             {
