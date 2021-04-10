@@ -24,11 +24,7 @@ namespace RayTracer.Core.UnitTests.Math
 
         [Theory]
         [MemberData(nameof(SubMatrixTestCases))]
-        public void SubMatrix_ShouldReturnExpectedMatrix3(
-            int rowToRemove,
-            int columnToRemove,
-            Matrix3 expected
-        )
+        public void SubMatrix_ShouldReturnExpectedMatrix3(int row, int column, Matrix3 expected)
         {
             // arrange
             var sut = new Matrix4(
@@ -42,7 +38,7 @@ namespace RayTracer.Core.UnitTests.Math
             );
 
             // act
-            var actual = sut.SubMatrix(rowToRemove, columnToRemove);
+            var actual = sut.SubMatrix(row, column);
 
             // assert
             actual.Should().Be(expected);
@@ -52,21 +48,21 @@ namespace RayTracer.Core.UnitTests.Math
         [InlineData(-1)]
         [InlineData(4)]
         public void SubMatrix_ShouldThrowArgumentOutOfRangeException_WhenRowToRemoveIsNotInMatrix(
-            int rowToRemove
+            int row
         )
         {
             // arrange
             var sut = new Matrix4();
 
             // act
-            Action act = () => { _ = sut.SubMatrix(rowToRemove, 0); };
+            Action act = () => { _ = sut.SubMatrix(row, 0); };
 
             // assert
             act.Should()
                 .Throw<ArgumentOutOfRangeException>()
                 .WithMessage("*must be in range [0, 4)*")
                 .And.ParamName.Should()
-                .Be(nameof(rowToRemove));
+                .Be(nameof(row));
         }
 
         [Theory]
@@ -74,21 +70,21 @@ namespace RayTracer.Core.UnitTests.Math
         [InlineData(4)]
         public void
             SubMatrix_ShouldThrowArgumentOutOfRangeException_WhenColumnToRemoveIsNotInMatrix(
-                int columnToRemove
+                int column
             )
         {
             // arrange
             var sut = new Matrix4();
 
             // act
-            Action act = () => { _ = sut.SubMatrix(0, columnToRemove); };
+            Action act = () => { _ = sut.SubMatrix(0, column); };
 
             // assert
             act.Should()
                 .Throw<ArgumentOutOfRangeException>()
                 .WithMessage("*must be in range [0, 4)*")
                 .And.ParamName.Should()
-                .Be(nameof(columnToRemove));
+                .Be(nameof(column));
         }
 
         [Fact]

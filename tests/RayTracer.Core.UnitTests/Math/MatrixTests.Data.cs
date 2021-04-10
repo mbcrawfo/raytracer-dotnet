@@ -316,7 +316,7 @@ namespace RayTracer.Core.UnitTests.Math
             public override float Determinant() => throw new NotImplementedException();
 
             /// <inheritdoc />
-            public override Matrix SubMatrix(int rowToRemove, int columnToRemove) =>
+            public override Matrix SubMatrix(int row, int column) =>
                 throw new NotImplementedException();
 
             /// <inheritdoc />

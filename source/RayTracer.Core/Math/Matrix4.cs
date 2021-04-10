@@ -42,27 +42,27 @@ namespace RayTracer.Core.Math
         public override float Determinant() => throw new NotImplementedException();
 
         /// <inheritdoc />
-        public override Matrix3 SubMatrix(int rowToRemove, int columnToRemove)
+        public override Matrix3 SubMatrix(int row, int column)
         {
-            if (rowToRemove is < 0 or >= Size)
+            if (row is < 0 or >= Size)
             {
                 throw new ArgumentOutOfRangeException(
-                    nameof(rowToRemove),
-                    rowToRemove,
+                    nameof(row),
+                    row,
                     $"Value must be in range [0, {Size})"
                 );
             }
 
-            if (columnToRemove is < 0 or >= Size)
+            if (column is < 0 or >= Size)
             {
                 throw new ArgumentOutOfRangeException(
-                    nameof(columnToRemove),
-                    columnToRemove,
+                    nameof(column),
+                    column,
                     $"Value must be in range [0, {Size})"
                 );
             }
 
-            return new Matrix3(SubMatrixElements(rowToRemove, columnToRemove));
+            return new Matrix3(SubMatrixElements(row, column));
         }
 
         /// <inheritdoc />

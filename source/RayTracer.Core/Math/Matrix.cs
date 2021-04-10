@@ -124,7 +124,7 @@ namespace RayTracer.Core.Math
                 " is not suitable for use as a key because it relies on approximate equality"
             );
 
-        public abstract Matrix SubMatrix(int rowToRemove, int columnToRemove);
+        public abstract Matrix SubMatrix(int row, int column);
 
         /// <inheritdoc />
         public override string ToString()

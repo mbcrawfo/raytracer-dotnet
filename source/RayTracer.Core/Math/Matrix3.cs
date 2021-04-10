@@ -30,31 +30,43 @@ namespace RayTracer.Core.Math
         {
         }
 
+        public float Cofactor(int row, int column)
+        {
+            var multiplier = (row + column) switch
+            {
+                1 or 3 => -1f,
+                _ => 1f
+            };
+            return Minor(row, column) * multiplier;
+        }
+
         /// <inheritdoc />
         public override float Determinant() => throw new NotImplementedException();
 
+        public float Minor(int row, int column) => SubMatrix(row, column).Determinant();
+
         /// <inheritdoc />
-        public override Matrix2 SubMatrix(int rowToRemove, int columnToRemove)
+        public override Matrix2 SubMatrix(int row, int column)
         {
-            if (rowToRemove is < 0 or >= Size)
+            if (row is < 0 or >= Size)
             {
                 throw new ArgumentOutOfRangeException(
-                    nameof(rowToRemove),
-                    rowToRemove,
+                    nameof(row),
+                    row,
                     $"Value must be in range [0, {Size})"
                 );
             }
 
-            if (columnToRemove is < 0 or >= Size)
+            if (column is < 0 or >= Size)
             {
                 throw new ArgumentOutOfRangeException(
-                    nameof(columnToRemove),
-                    columnToRemove,
+                    nameof(column),
+                    column,
                     $"Value must be in range [0, {Size})"
                 );
             }
 
-            return new Matrix2(SubMatrixElements(rowToRemove, columnToRemove));
+            return new Matrix2(SubMatrixElements(row, column));
         }
 
         /// <inheritdoc />
