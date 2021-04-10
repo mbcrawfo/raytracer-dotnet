@@ -37,11 +37,11 @@ namespace RayTracer.Core.Math
         protected Matrix(Matrix other)
             : this(other.Rows, other.Columns)
         {
-            for (var i = 0; i < Rows; i++)
+            for (var row = 0; row < Rows; row++)
             {
-                for (var j = 0; j < Columns; j++)
+                for (var col = 0; col < Columns; col++)
                 {
-                    Elements[i, j] = other.Elements[i, j];
+                    Elements[row, col] = other.Elements[row, col];
                 }
             }
         }
@@ -50,31 +50,31 @@ namespace RayTracer.Core.Math
 
         public bool IsInvertible => !Determinant().ApproximatelyEquals(0f);
 
-        public float this[int i, int j]
+        public float this[int row, int col]
         {
             get
             {
-                if (i < 0 || i >= Rows || j < 0 || j > Columns)
+                if (row < 0 || row >= Rows || col < 0 || col > Columns)
                 {
                     throw new ArgumentOutOfRangeException(
-                        $"[{i}, {j}] is not valid for a {Rows}x{Columns} matrix",
+                        $"[{row}, {col}] is not valid for a {Rows}x{Columns} matrix",
                         (Exception?) null
                     );
                 }
 
-                return Elements[i, j];
+                return Elements[row, col];
             }
             init
             {
-                if (i < 0 || i >= Rows || j < 0 || j > Columns)
+                if (row < 0 || row >= Rows || col < 0 || col > Columns)
                 {
                     throw new ArgumentOutOfRangeException(
-                        $"[{i}, {j}] is not valid for a {Rows}x{Columns} matrix",
+                        $"[{row}, {col}] is not valid for a {Rows}x{Columns} matrix",
                         (Exception?) null
                     );
                 }
 
-                Elements[i, j] = value;
+                Elements[row, col] = value;
             }
         }
 
@@ -92,9 +92,9 @@ namespace RayTracer.Core.Math
         {
             var result = 0f;
 
-            for (var j = 0; j < Columns; j += 1)
+            for (var col = 0; col < Columns; col += 1)
             {
-                result += Elements[0, j] * Cofactor(0, j);
+                result += Elements[0, col] * Cofactor(0, col);
             }
 
             return result;
@@ -121,11 +121,11 @@ namespace RayTracer.Core.Math
                 return false;
             }
 
-            for (var i = 0; i < Rows; i++)
+            for (var col = 0; col < Rows; col++)
             {
-                for (var j = 0; j < Columns; j++)
+                for (var row = 0; row < Columns; row++)
                 {
-                    if (!Elements[i, j].ApproximatelyEquals(other.Elements[i, j]))
+                    if (!Elements[col, row].ApproximatelyEquals(other.Elements[col, row]))
                     {
                         return false;
                     }
@@ -142,6 +142,8 @@ namespace RayTracer.Core.Math
                 " is not suitable for use as a key because it relies on approximate equality"
             );
 
+        public abstract Matrix Inverse();
+
         public float Minor(int row, int column) => SubMatrix(row, column).Determinant();
 
         public abstract Matrix SubMatrix(int row, int column);
@@ -155,23 +157,23 @@ namespace RayTracer.Core.Math
                 .Append(Columns)
                 .Append("[ ");
 
-            for (var i = 0; i < Rows; i++)
+            for (var row = 0; row < Rows; row++)
             {
-                if (i > 0)
+                if (row > 0)
                 {
                     sb.Append(", ");
                 }
 
                 sb.Append('[');
 
-                for (var j = 0; j < Columns; j++)
+                for (var col = 0; col < Columns; col++)
                 {
-                    if (j > 0)
+                    if (col > 0)
                     {
                         sb.Append(", ");
                     }
 
-                    sb.Append(Elements[i, j]);
+                    sb.Append(Elements[row, col]);
                 }
 
                 sb.Append("] ");
@@ -183,8 +185,6 @@ namespace RayTracer.Core.Math
 
         public abstract Matrix Transpose();
 
-        public abstract Matrix Inverse();
-
         protected float[,] InverseElements()
         {
             var determinant = Determinant();
@@ -192,7 +192,7 @@ namespace RayTracer.Core.Math
             {
                 throw new InvalidOperationException("Matrix is not invertible");
             }
-            
+
             var result = new float[Rows, Columns];
             for (var row = 0; row < Rows; row += 1)
             {
@@ -209,23 +209,23 @@ namespace RayTracer.Core.Math
         {
             var result = new float[Rows - 1, Columns - 1];
 
-            var readI = rowToRemove == 0 ? 1 : 0;
-            var writeI = 0;
-            while (readI < Rows)
+            var readRow = rowToRemove == 0 ? 1 : 0;
+            var writeRow = 0;
+            while (readRow < Rows)
             {
-                var readJ = columnToRemove == 0 ? 1 : 0;
-                var writeJ = 0;
+                var readCol = columnToRemove == 0 ? 1 : 0;
+                var writeCol = 0;
 
-                while (readJ < Columns)
+                while (readCol < Columns)
                 {
-                    result[writeI, writeJ] = Elements[readI, readJ];
+                    result[writeRow, writeCol] = Elements[readRow, readCol];
 
-                    readJ += readJ == columnToRemove - 1 ? 2 : 1;
-                    writeJ += 1;
+                    readCol += readCol == columnToRemove - 1 ? 2 : 1;
+                    writeCol += 1;
                 }
 
-                readI += readI == rowToRemove - 1 ? 2 : 1;
-                writeI += 1;
+                readRow += readRow == rowToRemove - 1 ? 2 : 1;
+                writeRow += 1;
             }
 
             return result;
@@ -235,11 +235,11 @@ namespace RayTracer.Core.Math
         {
             var result = new float[Rows, Columns];
 
-            for (int readI = 0, writeJ = 0; readI < Rows; readI += 1, writeJ += 1)
+            for (var row = 0; row < Rows; row += 1)
             {
-                for (int readJ = 0, writeI = 0; readJ < Columns; readJ += 1, writeI += 1)
+                for (var col = 0; col < Columns; col += 1)
                 {
-                    result[writeI, writeJ] = Elements[readI, readJ];
+                    result[col, row] = Elements[row, col];
                 }
             }
 

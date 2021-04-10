@@ -72,15 +72,15 @@ namespace RayTracer.Core.Math
         {
             var result = new Matrix4();
 
-            for (var i = 0; i < Size; i += 1)
+            for (var row = 0; row < Size; row += 1)
             {
-                for (var j = 0; j < Size; j += 1)
+                for (var col = 0; col < Size; col += 1)
                 {
-                    result.Elements[i, j] =
-                        lhs.Elements[i, 0] * rhs.Elements[0, j] +
-                        lhs.Elements[i, 1] * rhs.Elements[1, j] +
-                        lhs.Elements[i, 2] * rhs.Elements[2, j] +
-                        lhs.Elements[i, 3] * rhs.Elements[3, j];
+                    result.Elements[row, col] =
+                        lhs.Elements[row, 0] * rhs.Elements[0, col] +
+                        lhs.Elements[row, 1] * rhs.Elements[1, col] +
+                        lhs.Elements[row, 2] * rhs.Elements[2, col] +
+                        lhs.Elements[row, 3] * rhs.Elements[3, col];
                 }
             }
 

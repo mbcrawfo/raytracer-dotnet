@@ -20,13 +20,18 @@ namespace RayTracer.Core.UnitTests.Math
             using var _ = new AssertionScope();
             result.Rows.Should().Be(array.GetLength(0));
             result.Columns.Should().Be(array.GetLength(1));
-            foreach (var i in Enumerable.Range(0, result.Rows))
+            foreach (var row in Enumerable.Range(0, result.Rows))
             {
-                foreach (var j in Enumerable.Range(0, result.Columns))
+                foreach (var col in Enumerable.Range(0, result.Columns))
                 {
-                    result[i, j]
+                    result[row, col]
                         .Should()
-                        .Be(array[i, j], "matrix[{0}, {1}] should equal array[{0}, {1}]", i, j);
+                        .Be(
+                            array[row, col],
+                            "matrix[{0}, {1}] should equal array[{0}, {1}]",
+                            row,
+                            col
+                        );
                 }
             }
         }
@@ -106,14 +111,14 @@ namespace RayTracer.Core.UnitTests.Math
         public void Index_ShouldSetAndReturnValueAtPosition(int rows, int columns)
         {
             // arrange
-            var i = rows / 2;
-            var j = columns / 2;
+            var row = rows / 2;
+            var col = columns / 2;
 
             // act
-            var sut = new TestMatrix(rows, columns) { [i, j] = MathF.PI };
+            var sut = new TestMatrix(rows, columns) { [row, col] = MathF.PI };
 
             // assert
-            sut[i, j].Should().Be(MathF.PI);
+            sut[row, col].Should().Be(MathF.PI);
         }
 
         [Theory]
@@ -125,20 +130,20 @@ namespace RayTracer.Core.UnitTests.Math
         public void Indexer__Set_ShouldThrowArgumentOutOfRangeException_WhenInputIsNotInTheMatrix(
             int rows,
             int columns,
-            int i,
-            int j
+            int rowToAccess,
+            int colToAccess
         )
         {
             // arrange
             var sut = new TestMatrix(rows, columns);
 
             // act
-            Action act = () => { _ = sut[i, j]; };
+            Action act = () => { _ = sut[rowToAccess, colToAccess]; };
 
             // assert
             act.Should()
                 .Throw<ArgumentOutOfRangeException>()
-                .WithMessage($"*[{i}, {j}] is not valid*");
+                .WithMessage($"*[{rowToAccess}, {colToAccess}] is not valid*");
         }
 
         [Fact]
