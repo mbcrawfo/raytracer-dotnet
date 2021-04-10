@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace RayTracer.Core.Math
 {
@@ -23,8 +24,9 @@ namespace RayTracer.Core.Math
             }
         }
 
+        [SuppressMessage("ReSharper", "SuggestBaseTypeForParameter")]
         public Matrix3(Matrix3 other)
-            : base(other.Elements)
+            : base(other)
         {
         }
     }

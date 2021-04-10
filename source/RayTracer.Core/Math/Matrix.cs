@@ -28,20 +28,22 @@ namespace RayTracer.Core.Math
         }
 
         protected Matrix(float[,] elements)
-            : this(elements.GetLength(0), elements.GetLength(1))
+        {
+            Rows = elements.GetLength(0);
+            Columns = elements.GetLength(1);
+            Elements = elements;
+        }
+
+        protected Matrix(Matrix other)
+            : this(other.Rows, other.Columns)
         {
             for (var i = 0; i < Rows; i++)
             {
                 for (var j = 0; j < Columns; j++)
                 {
-                    Elements[i, j] = elements[i, j];
+                    Elements[i, j] = other.Elements[i, j];
                 }
             }
-        }
-
-        protected Matrix(Matrix other)
-            : this(other.Elements)
-        {
         }
 
         public int Columns { get; }
