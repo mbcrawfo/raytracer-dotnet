@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using RayTracer.Core.Extensions;
 using RayTracer.Core.Math;
@@ -312,7 +313,14 @@ namespace RayTracer.Core.UnitTests.Math
             }
 
             /// <inheritdoc />
-            public override Matrix Transpose() => throw new System.NotImplementedException();
+            public override float Determinant() => throw new NotImplementedException();
+
+            /// <inheritdoc />
+            public override Matrix SubMatrix(int rowToRemove, int columnToRemove) =>
+                throw new NotImplementedException();
+
+            /// <inheritdoc />
+            public override Matrix Transpose() => throw new NotImplementedException();
         }
     }
 }

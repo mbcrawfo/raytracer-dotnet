@@ -32,6 +32,81 @@ namespace RayTracer.Core.UnitTests.Math
             act.Should().Throw<ArgumentException>().WithMessage("*must be a 3x3 array*");
         }
 
+        public static IEnumerable<object> SubMatrixTestCases =>
+            new object[]
+            {
+                new object[] { 0, 0, new Matrix2(new[,] { { 5f, 6f }, { 8f, 9f } }) },
+                new object[] { 0, 1, new Matrix2(new[,] { { 4f, 6f }, { 7f, 9f } }) },
+                new object[] { 0, 2, new Matrix2(new[,] { { 4f, 5f }, { 7f, 8f } }) },
+                new object[] { 1, 0, new Matrix2(new[,] { { 2f, 3f }, { 8f, 9f } }) },
+                new object[] { 1, 1, new Matrix2(new[,] { { 1f, 3f }, { 7f, 9f } }) },
+                new object[] { 1, 2, new Matrix2(new[,] { { 1f, 2f }, { 7f, 8f } }) },
+                new object[] { 2, 0, new Matrix2(new[,] { { 2f, 3f }, { 5f, 6f } }) },
+                new object[] { 2, 1, new Matrix2(new[,] { { 1f, 3f }, { 4f, 6f } }) },
+                new object[] { 2, 2, new Matrix2(new[,] { { 1f, 2f }, { 4f, 5f } }) },
+            };
+
+        [Theory]
+        [MemberData(nameof(SubMatrixTestCases))]
+        public void SubMatrix_ShouldReturnExpectedMatrix2(
+            int rowToRemove,
+            int columnToRemove,
+            Matrix2 expected
+        )
+        {
+            // arrange
+            var sut = new Matrix3(new[,] { { 1f, 2f, 3f }, { 4f, 5f, 6f }, { 7f, 8f, 9f } });
+
+            // act
+            var actual = sut.SubMatrix(rowToRemove, columnToRemove);
+
+            // assert
+            actual.Should().Be(expected);
+        }
+
+        [Theory]
+        [InlineData(-1)]
+        [InlineData(3)]
+        public void SubMatrix_ShouldThrowArgumentOutOfRangeException_WhenRowToRemoveIsNotInMatrix(
+            int rowToRemove
+        )
+        {
+            // arrange
+            var sut = new Matrix3();
+
+            // act
+            Action act = () => { _ = sut.SubMatrix(rowToRemove, 0); };
+
+            // assert
+            act.Should()
+                .Throw<ArgumentOutOfRangeException>()
+                .WithMessage("*must be in range [0, 3)*")
+                .And.ParamName.Should()
+                .Be(nameof(rowToRemove));
+        }
+
+        [Theory]
+        [InlineData(-1)]
+        [InlineData(3)]
+        public void
+            SubMatrix_ShouldThrowArgumentOutOfRangeException_WhenColumnToRemoveIsNotInMatrix(
+                int columnToRemove
+            )
+        {
+            // arrange
+            var sut = new Matrix3();
+
+            // act
+            Action act = () => { _ = sut.SubMatrix(0, columnToRemove); };
+
+            // assert
+            act.Should()
+                .Throw<ArgumentOutOfRangeException>()
+                .WithMessage("*must be in range [0, 3)*")
+                .And.ParamName.Should()
+                .Be(nameof(columnToRemove));
+        }
+
         [Fact]
         public void Constructor__Array_ShouldCreate3x3MatrixAndAssignElementsFromTheArray()
         {

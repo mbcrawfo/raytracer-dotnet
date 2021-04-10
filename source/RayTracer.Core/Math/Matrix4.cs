@@ -5,6 +5,8 @@ namespace RayTracer.Core.Math
 {
     public sealed class Matrix4 : Matrix
     {
+        private const int Size = 4;
+
         public static readonly Matrix4 Identity = new()
         {
             [0, 0] = 1f,
@@ -12,8 +14,6 @@ namespace RayTracer.Core.Math
             [2, 2] = 1f,
             [3, 3] = 1f
         };
-        
-        private const int Size = 4;
 
         public Matrix4()
             : base(Size, Size)
@@ -36,6 +36,33 @@ namespace RayTracer.Core.Math
         public Matrix4(Matrix4 other)
             : base(other)
         {
+        }
+
+        /// <inheritdoc />
+        public override float Determinant() => throw new NotImplementedException();
+
+        /// <inheritdoc />
+        public override Matrix3 SubMatrix(int rowToRemove, int columnToRemove)
+        {
+            if (rowToRemove is < 0 or >= Size)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(rowToRemove),
+                    rowToRemove,
+                    $"Value must be in range [0, {Size})"
+                );
+            }
+
+            if (columnToRemove is < 0 or >= Size)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(columnToRemove),
+                    columnToRemove,
+                    $"Value must be in range [0, {Size})"
+                );
+            }
+
+            return new Matrix3(SubMatrixElements(rowToRemove, columnToRemove));
         }
 
         /// <inheritdoc />

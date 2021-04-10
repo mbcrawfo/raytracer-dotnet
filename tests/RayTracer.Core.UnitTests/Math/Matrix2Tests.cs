@@ -84,6 +84,32 @@ namespace RayTracer.Core.UnitTests.Math
         }
 
         [Fact]
+        public void Determinant_ShouldReturnExpectedValue()
+        {
+            // arrange
+            var sut = new Matrix2(new[,] { { 1f, 5f }, { -3f, 2f } });
+
+            // act
+            var result = sut.Determinant();
+
+            // assert
+            result.Should().Be(17);
+        }
+
+        [Fact]
+        public void SubMatrix_ShouldThrowNotSupportedException()
+        {
+            // arrange
+            var sut = new Matrix2();
+
+            // act
+            Action act = () => { _ = sut.SubMatrix(0, 0); };
+
+            // assert
+            act.Should().Throw<NotSupportedException>();
+        }
+
+        [Fact]
         public void Transpose_ShouldSwapRowsAndColumns()
         {
             // arrange

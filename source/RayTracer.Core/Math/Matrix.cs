@@ -80,6 +80,8 @@ namespace RayTracer.Core.Math
 
         protected float[,] Elements { get; }
 
+        public abstract float Determinant();
+
         /// <inheritdoc />
         public override bool Equals(object? obj) => Equals(obj as Matrix);
 
@@ -122,6 +124,8 @@ namespace RayTracer.Core.Math
                 " is not suitable for use as a key because it relies on approximate equality"
             );
 
+        public abstract Matrix SubMatrix(int rowToRemove, int columnToRemove);
+
         /// <inheritdoc />
         public override string ToString()
         {
@@ -158,6 +162,32 @@ namespace RayTracer.Core.Math
         }
 
         public abstract Matrix Transpose();
+
+        protected float[,] SubMatrixElements(int rowToRemove, int columnToRemove)
+        {
+            var result = new float[Rows - 1, Columns - 1];
+
+            var readI = rowToRemove == 0 ? 1 : 0;
+            var writeI = 0;
+            while (readI < Rows)
+            {
+                var readJ = columnToRemove == 0 ? 1 : 0;
+                var writeJ = 0;
+
+                while (readJ < Columns)
+                {
+                    result[writeI, writeJ] = Elements[readI, readJ];
+
+                    readJ += readJ == columnToRemove - 1 ? 2 : 1;
+                    writeJ += 1;
+                }
+
+                readI += readI == rowToRemove - 1 ? 2 : 1;
+                writeI += 1;
+            }
+
+            return result;
+        }
 
         protected float[,] TransposeElements()
         {
