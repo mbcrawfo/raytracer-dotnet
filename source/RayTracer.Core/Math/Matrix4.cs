@@ -4,6 +4,14 @@ namespace RayTracer.Core.Math
 {
     public sealed class Matrix4 : Matrix
     {
+        public static readonly Matrix4 Identity = new()
+        {
+            [0, 0] = 1f,
+            [1, 1] = 1f,
+            [2, 2] = 1f,
+            [3, 3] = 1f
+        };
+        
         private const int Size = 4;
 
         public Matrix4()

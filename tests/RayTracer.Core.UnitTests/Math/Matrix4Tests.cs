@@ -161,6 +161,27 @@ namespace RayTracer.Core.UnitTests.Math
         }
 
         [Fact]
+        public void Op__MultiplyMatrix4_ShouldReturnMatrixEquivalentToLhs_WhenRhsIsIdentityMatrix()
+        {
+            // arrange
+            var lhs = new Matrix4(
+                new[,]
+                {
+                    { 1f, 2f, 3f, 4f },
+                    { 5f, 6f, 7f, 8f },
+                    { 9f, 8f, 7f, 6f },
+                    { 5f, 4f, 3f, 2f }
+                }
+            );
+
+            // act
+            var result = lhs * Matrix4.Identity;
+
+            // assert
+            result.Should().Be(lhs);
+        }
+
+        [Fact]
         public void Op__MultiplyPoint_ShouldReturnExpectedResultPoint()
         {
             // arrange
