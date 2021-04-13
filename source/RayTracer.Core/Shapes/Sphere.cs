@@ -4,13 +4,13 @@ using RayTracer.Core.Math;
 
 namespace RayTracer.Core.Shapes
 {
-    public record Sphere
+    public record Sphere : Shape
     {
         public Point Position { get; } = Point.Origin;
 
         public float Radius { get; } = 1f;
 
-        public IImmutableList<float> Intersect(Ray ray)
+        public override IImmutableList<Intersection> Intersect(Ray ray)
         {
             var sphereToRay = ray.Origin - Position;
             var a = ray.Direction.DotProduct(ray.Direction);
@@ -20,13 +20,16 @@ namespace RayTracer.Core.Shapes
 
             if (discriminant < 0f)
             {
-                return ImmutableArray<float>.Empty;
+                return ImmutableArray<Intersection>.Empty;
             }
 
             var t1 = (-b - MathF.Sqrt(discriminant)) / (2f * a);
             var t2 = (-b + MathF.Sqrt(discriminant)) / (2f * a);
 
-            return t1 <= t2 ? ImmutableArray.Create(t1, t2) : ImmutableArray.Create(t2, t1);
+            var i1 = new Intersection(this, t1);
+            var i2 = new Intersection(this, t2);
+
+            return t1 <= t2 ? ImmutableArray.Create(i1, i2) : ImmutableArray.Create(i2, i1);
         }
     }
 }
