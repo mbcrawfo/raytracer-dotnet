@@ -12,9 +12,11 @@ namespace RayTracer.Core.Shapes
 
         public override IImmutableList<Intersection> Intersect(Ray ray)
         {
-            var sphereToRay = ray.Origin - Position;
-            var a = ray.Direction.DotProduct(ray.Direction);
-            var b = 2f * ray.Direction.DotProduct(sphereToRay);
+            var (origin, direction) = ray.Transform(Transform.Inverse());
+
+            var sphereToRay = origin - Position;
+            var a = direction.DotProduct(direction);
+            var b = 2f * direction.DotProduct(sphereToRay);
             var c = sphereToRay.DotProduct(sphereToRay) - Radius;
             var discriminant = b * b - 4 * a * c;
 

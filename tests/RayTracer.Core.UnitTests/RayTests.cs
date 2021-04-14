@@ -62,5 +62,37 @@ namespace RayTracer.Core.UnitTests
             actualOrigin.Should().Be(expectedOrigin);
             actualDirection.Should().Be(expectedDirection);
         }
+
+        [Fact]
+        public void Transform_ShouldScaleARay()
+        {
+            // arrange
+            var matrix = Matrix4.Scaling(2f, 3f, 4f);
+            var sut = new Ray(new Point(1f, 2f, 3f), new Vector(0f, 1f, 0f));
+
+            // act
+            var result = sut.Transform(matrix);
+
+            // assert
+            using var _ = new AssertionScope();
+            result.Origin.Should().Be(new Point(2f, 6f, 12f));
+            result.Direction.Should().Be(new Vector(0f, 3f, 0f));
+        }
+
+        [Fact]
+        public void Transform_ShouldTranslateARay()
+        {
+            // arrange
+            var matrix = Matrix4.Translation(3f, 4f, 5f);
+            var sut = new Ray(new Point(1f, 2f, 3f), new Vector(0f, 1f, 0f));
+
+            // act
+            var result = sut.Transform(matrix);
+
+            // assert
+            using var _ = new AssertionScope();
+            result.Origin.Should().Be(new Point(4f, 6f, 8f));
+            result.Direction.Should().Be(new Vector(0f, 1f, 0f));
+        }
     }
 }

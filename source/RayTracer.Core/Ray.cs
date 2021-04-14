@@ -25,5 +25,8 @@ namespace RayTracer.Core
         }
 
         public Point Position(float time) => Origin + Direction * time;
+
+        public Ray Transform(Matrix4 matrix) =>
+            this with { Direction = matrix * Direction, Origin = matrix * Origin };
     }
 }
