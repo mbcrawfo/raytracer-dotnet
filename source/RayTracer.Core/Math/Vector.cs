@@ -79,6 +79,8 @@ namespace RayTracer.Core.Math
             return new Vector(X / magnitude, Y / magnitude, Z / magnitude);
         }
 
+        public Vector Reflect(in Vector normal) => this - normal * 2f * DotProduct(normal);
+
         public static Vector operator -(in Vector other) => new(-other.X, -other.Y, -other.Z);
 
         public static bool operator ==(in Vector lhs, in Vector rhs) => lhs.Equals(rhs);

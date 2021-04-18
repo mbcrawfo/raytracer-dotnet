@@ -135,5 +135,33 @@ namespace RayTracer.Core.UnitTests.Math
             // assert
             act.Should().Throw<NotSupportedException>();
         }
+
+        [Fact]
+        public void Reflect_ShouldReturnReflectedVectorWhenApproachingAt45Degrees()
+        {
+            // arrange
+            var normal = new Vector(0f, 1f, 0f);
+            var sut = new Vector(1f, -1f, 0f);
+
+            // act
+            var result = sut.Reflect(normal);
+
+            // assert
+            result.Should().Be(new Vector(1f, 1f, 0f));
+        }
+
+        [Fact]
+        public void Reflect_ShouldReturnReflectedVectorWhenSurfaceIsSlanted()
+        {
+            // arrange
+            var normal = new Vector(MathF.Sqrt(2f) / 2f, MathF.Sqrt(2f) / 2f, 0f);
+            var sut = new Vector(0f, -1f, 0f);
+
+            // act
+            var result = sut.Reflect(normal);
+
+            // assert
+            result.Should().Be(new Vector(1f, 0f, 0f));
+        }
     }
 }
