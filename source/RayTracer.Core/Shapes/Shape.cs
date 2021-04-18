@@ -7,6 +7,8 @@ namespace RayTracer.Core.Shapes
     {
         private readonly Matrix4 _transform = Matrix4.Identity;
 
+        public Material Material { get; init; } = Material.Default;
+
         public Matrix4 Transform
         {
             get => _transform;
