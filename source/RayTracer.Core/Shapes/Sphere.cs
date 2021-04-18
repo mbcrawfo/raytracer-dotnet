@@ -12,7 +12,7 @@ namespace RayTracer.Core.Shapes
 
         public override IImmutableList<Intersection> Intersect(Ray ray)
         {
-            var (origin, direction) = ray.Transform(Transform.Inverse());
+            var (origin, direction) = ray.Transform(TransformInverse);
 
             var sphereToRay = origin - Position;
             var a = direction.DotProduct(direction);
@@ -32,6 +32,14 @@ namespace RayTracer.Core.Shapes
             var i2 = new Intersection(this, t2);
 
             return t1 <= t2 ? ImmutableArray.Create(i1, i2) : ImmutableArray.Create(i2, i1);
+        }
+
+        public Vector NormalAt(in Point worldPoint)
+        {
+            var objectPoint = TransformInverse * worldPoint;
+            var objectNormal = objectPoint - Point.Origin;
+            var worldNormal = TransformInverse.Transpose() * objectNormal;
+            return worldNormal.Normalize();
         }
     }
 }

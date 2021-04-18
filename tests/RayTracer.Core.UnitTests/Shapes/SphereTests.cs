@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using FluentAssertions.Execution;
@@ -9,6 +11,64 @@ namespace RayTracer.Core.UnitTests.Shapes
 {
     public class SphereTests
     {
+        private static readonly float Sqrt3Over3 = MathF.Sqrt(3f) / 3f;
+
+        public static IEnumerable<object> NormalAtTestCases =>
+            new object[]
+            {
+                new object[]
+                {
+                    Matrix4.Identity, new Point(1f, 0f, 0f), new Vector(1f, 0f, 0f)
+                },
+                new object[]
+                {
+                    Matrix4.Identity, new Point(0f, 1f, 0f), new Vector(0f, 1f, 0f)
+                },
+                new object[]
+                {
+                    Matrix4.Identity, new Point(0f, 0f, 1f), new Vector(0f, 0f, 1f)
+                },
+                new object[]
+                {
+                    Matrix4.Identity,
+                    new Point(Sqrt3Over3, Sqrt3Over3, Sqrt3Over3),
+                    new Vector(Sqrt3Over3, Sqrt3Over3, Sqrt3Over3)
+                },
+                new object[]
+                {
+                    Matrix4.Translation(0f, 1f, 0f),
+                    new Point(0f, 1.70711f, -0.70711f),
+                    new Vector(0f, 0.70711f, -0.70711f)
+                },
+                new object[]
+                {
+                    Matrix4.Scaling(1f, 0.5f, 1f) * Matrix4.RotationZ(MathF.PI / 5f),
+                    new Point(0f, MathF.Sqrt(2f) / 2f, -MathF.Sqrt(2f) / 2f),
+                    new Vector(0f, 0.97014f, -0.24254f)
+                }
+            };
+
+        [Theory]
+        [MemberData(nameof(NormalAtTestCases))]
+        public void NormalAt_ShouldReturnExpectedSurfaceNormal(
+            Matrix4 transform,
+            Point point,
+            Vector expected
+        )
+        {
+            // arrange
+            var sut = new Sphere { Transform = transform };
+
+            // act
+            var actual = sut.NormalAt(point);
+
+            // assert
+            using var _ = new AssertionScope();
+            actual.X.Should().BeApproximately(expected.X, 1e-5f);
+            actual.Y.Should().BeApproximately(expected.Y, 1e-5f);
+            actual.Z.Should().BeApproximately(expected.Z, 1e-5f);
+        }
+
         [Fact]
         public void Intersect_ShouldReturnTwoIdenticalIntersections_WhenRayIsTangentToTheSphere()
         {
@@ -121,6 +181,20 @@ namespace RayTracer.Core.UnitTests.Shapes
 
             // assert
             result.Should().BeEmpty();
+        }
+
+        [Fact]
+        public void NormalAt_ShouldReturnANormalizedVector()
+        {
+            // arrange
+            var point = new Point(Sqrt3Over3, Sqrt3Over3, Sqrt3Over3);
+            var sut = new Sphere();
+
+            // act
+            var result = sut.NormalAt(point);
+
+            // assert
+            result.Should().Be(result.Normalize());
         }
     }
 }
