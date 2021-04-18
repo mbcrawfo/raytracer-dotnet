@@ -99,20 +99,5 @@ namespace RayTracer.Core.UnitTests
             // assert
             act.Should().Throw<NotSupportedException>();
         }
-
-        [Fact]
-        public void HadamardProduct_ShouldMultipleComponentsWithOtherColorsComponents()
-        {
-            // arrange
-            var sut = new Color(1f, 2f, 3f);
-            var other = new Color(2f, 3f, 4f);
-            var expected = new Color(2f, 6f, 12f);
-
-            // act
-            var actual = sut.HadamardProduct(other);
-
-            // assert
-            actual.Should().Be(expected);
-        }
     }
 }

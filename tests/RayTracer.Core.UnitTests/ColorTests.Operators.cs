@@ -36,6 +36,21 @@ namespace RayTracer.Core.UnitTests
         }
 
         [Fact]
+        public void Op__MultiplyColors_ShouldMultipleComponentsWithOtherColorsComponents()
+        {
+            // arrange
+            var color1 = new Color(1f, 2f, 3f);
+            var color2 = new Color(2f, 3f, 4f);
+            var expected = new Color(2f, 6f, 12f);
+
+            // act
+            var actual = color1 * color2;
+
+            // assert
+            actual.Should().Be(expected);
+        }
+
+        [Fact]
         public void Op__MultiplyColorsAndScalar_ShouldMultiplyComponentsByRhs()
         {
             // arrange

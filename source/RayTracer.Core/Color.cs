@@ -71,8 +71,6 @@ namespace RayTracer.Core
             b = B;
         }
 
-        public Color HadamardProduct(in Color other) => new(R * other.R, G * other.G, B * other.B);
-
         public static bool operator ==(in Color lhs, in Color rhs) => lhs.Equals(rhs);
 
         public static bool operator !=(in Color lhs, in Color rhs) => !lhs.Equals(rhs);
@@ -82,6 +80,9 @@ namespace RayTracer.Core
 
         public static Color operator -(in Color lhs, in Color rhs) =>
             new(lhs.R - rhs.R, lhs.G - rhs.G, lhs.B - rhs.B);
+
+        public static Color operator *(in Color lhs, in Color rhs) =>
+            new(lhs.R * rhs.R, lhs.G * rhs.G, lhs.B * rhs.B);
 
         public static Color operator *(in Color lhs, float rhs) =>
             new(lhs.R * rhs, lhs.G * rhs, lhs.B * rhs);
