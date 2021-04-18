@@ -83,8 +83,8 @@ namespace RayTracer.Core.UnitTests.Shapes
             using var _ = new AssertionScope();
             result.Should().HaveCount(2);
             result.Select(x => x.Time).Should().ContainInOrder(5f, 5f);
-            result[0].Object.Should().BeSameAs(sut);
-            result[1].Object.Should().BeSameAs(sut);
+            result[0].Shape.Should().BeSameAs(sut);
+            result[1].Shape.Should().BeSameAs(sut);
         }
 
         [Fact]
@@ -115,8 +115,8 @@ namespace RayTracer.Core.UnitTests.Shapes
             using var _ = new AssertionScope();
             result.Should().HaveCount(2);
             result.Select(x => x.Time).Should().ContainInOrder(-1f, 1f);
-            result[0].Object.Should().BeSameAs(sut);
-            result[1].Object.Should().BeSameAs(sut);
+            result[0].Shape.Should().BeSameAs(sut);
+            result[1].Shape.Should().BeSameAs(sut);
         }
 
         [Fact]
@@ -133,8 +133,8 @@ namespace RayTracer.Core.UnitTests.Shapes
             using var _ = new AssertionScope();
             result.Should().HaveCount(2);
             result.Select(x => x.Time).Should().ContainInOrder(4f, 6f);
-            result[0].Object.Should().BeSameAs(sut);
-            result[1].Object.Should().BeSameAs(sut);
+            result[0].Shape.Should().BeSameAs(sut);
+            result[1].Shape.Should().BeSameAs(sut);
         }
 
         [Fact]
@@ -151,8 +151,8 @@ namespace RayTracer.Core.UnitTests.Shapes
             using var _ = new AssertionScope();
             result.Should().HaveCount(2);
             result.Select(x => x.Time).Should().ContainInOrder(-6f, -4f);
-            result[0].Object.Should().BeSameAs(sut);
-            result[1].Object.Should().BeSameAs(sut);
+            result[0].Shape.Should().BeSameAs(sut);
+            result[1].Shape.Should().BeSameAs(sut);
         }
 
         [Fact]
