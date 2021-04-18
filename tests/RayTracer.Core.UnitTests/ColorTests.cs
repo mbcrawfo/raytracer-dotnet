@@ -44,34 +44,6 @@ namespace RayTracer.Core.UnitTests
         }
 
         [Fact]
-        public void
-            Clamp_ShouldClampAllComponentsToBeBetweenZeroAndOne_WhenComponentsAreNotBetweenZeroAndOne()
-        {
-            // arrange
-            var sut = new Color(5f, -10f, 1.5f);
-            var expected = new Color(1f, 0f, 1f);
-
-            // act
-            var actual = sut.Clamp();
-
-            // assert
-            actual.Should().Be(expected);
-        }
-
-        [Fact]
-        public void Clamp_ShouldReturnExistingComponentValues_WhenComponentsAreBetweenZeroAndOne()
-        {
-            // arrange
-            var expected = new Color(0.25f, 0.33f, 0.5f);
-
-            // act
-            var actual = expected.Clamp();
-
-            // assert
-            actual.Should().Be(expected);
-        }
-
-        [Fact]
         public void Deconstruct_ShouldReturnExpectedComponentValues()
         {
             // arrange

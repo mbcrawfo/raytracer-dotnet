@@ -58,12 +58,6 @@ namespace RayTracer.Core
             G.ApproximatelyEquals(other.G) &&
             B.ApproximatelyEquals(other.B);
 
-        /// <summary>
-        ///     Returns a new <see cref="Color" /> with all components clamped to the range [0, 1].
-        /// </summary>
-        /// <returns></returns>
-        public Color Clamp() => new(R.Clamp(0f, 1f), G.Clamp(0f, 1f), B.Clamp(0f, 1f));
-
         public void Deconstruct(out float r, out float g, out float b)
         {
             r = R;

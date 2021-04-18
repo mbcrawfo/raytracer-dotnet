@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
+using RayTracer.Core.Extensions;
 
 namespace RayTracer.Core
 {
@@ -103,12 +103,14 @@ namespace RayTracer.Core
         {
             const int bmpHeaderSize = 14;
             const int dibHeaderSize = 40;
-
-            var pixelArray = GetPixelData().ToImmutableArray();
+            // The number of bytes written for each row must be a multiple of 4
+            var rowPaddingRequired = Width * 3 % 4;
+            var bytesPerRow = Width * 3 + rowPaddingRequired;
+            var pixelArraySize = Height * bytesPerRow;
 
             // BMP header
             writer.Write((ushort) 0x4d42); // 'BM' magic number 
-            writer.Write((uint) (bmpHeaderSize + dibHeaderSize + pixelArray.Length)); // file size
+            writer.Write((uint) (bmpHeaderSize + dibHeaderSize + pixelArraySize)); // file size
             writer.Write((uint) 0); // unused app specific
             writer.Write((uint) (bmpHeaderSize + dibHeaderSize)); // pixel array offset
 
@@ -119,41 +121,32 @@ namespace RayTracer.Core
             writer.Write((ushort) 1); // color planes
             writer.Write((ushort) 24); // bits per pixel
             writer.Write((uint) 0); // BI_RGB, no pixel array compression
-            writer.Write((uint) pixelArray.Length);
+            writer.Write((uint) pixelArraySize);
             writer.Write((uint) 2835); // horizontal print resolution in pixels/meter => 72 dpi
             writer.Write((uint) 2835); // vertical print resolution in pixels/meter => 72 dpi
             writer.Write((uint) 0); // colors in the palette
             writer.Write((uint) 0); // all colors are important
 
-            writer.Write(pixelArray.AsSpan());
-
-            IEnumerable<byte> GetPixelData()
+            var rowData = new byte[bytesPerRow];
+            foreach (var y in Enumerable.Range(1, Height).Select(v => Height - v))
             {
-                // The number of bytes written for each row must be a multiple of 4
-                var rowPaddingRequired = Width * 3 % 4;
-
-                foreach (var y in Enumerable.Range(1, Height).Select(v => Height - v))
+                foreach (var x in Enumerable.Range(0, Width))
                 {
-                    foreach (var x in Enumerable.Range(0, Width))
-                    {
-                        var (r, g, b) = _pixelData[x, y].Clamp();
+                    var rowDataOffset = x * 3;
+                    var (r, g, b) = _pixelData[x, y];
 
-                        // Pixel values need to be "little endian" even though they don't make up
-                        // a full integer
-                        yield return GetScaledColorComponent(b);
-                        yield return GetScaledColorComponent(g);
-                        yield return GetScaledColorComponent(r);
-                    }
-
-                    foreach (var _ in Enumerable.Range(0, rowPaddingRequired))
-                    {
-                        yield return 0;
-                    }
+                    // Pixel values need to be "little endian" even though they don't make up
+                    // a full integer
+                    rowData[rowDataOffset] = GetScaledColorComponent(b);
+                    rowData[rowDataOffset + 1] = GetScaledColorComponent(g);
+                    rowData[rowDataOffset + 2] = GetScaledColorComponent(r);
                 }
+
+                writer.Write(rowData);
             }
 
             static byte GetScaledColorComponent(float value) =>
-                (byte) (int) MathF.Round(value * 255f);
+                (byte) (int) MathF.Round(value.Clamp(0f, 1f) * 255f);
         }
 
         public void SerializeToPortablePixmap(TextWriter writer)
@@ -195,7 +188,7 @@ namespace RayTracer.Core
             {
                 foreach (var x in Enumerable.Range(0, Width))
                 {
-                    var (r, g, b) = _pixelData[x, y].Clamp();
+                    var (r, g, b) = _pixelData[x, y];
                     yield return GetScaledColorComponent(r);
                     yield return GetScaledColorComponent(g);
                     yield return GetScaledColorComponent(b);
@@ -203,7 +196,7 @@ namespace RayTracer.Core
             }
 
             static string GetScaledColorComponent(float value) =>
-                ((int) MathF.Round(value * maxPixelValue)).ToString();
+                ((int) MathF.Round(value.Clamp(0f, 1f) * maxPixelValue)).ToString();
         }
     }
 }
