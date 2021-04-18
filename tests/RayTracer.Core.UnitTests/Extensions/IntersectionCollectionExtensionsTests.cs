@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Immutable;
 using FluentAssertions;
 using RayTracer.Core.Extensions;
@@ -6,8 +7,37 @@ using Xunit;
 
 namespace RayTracer.Core.UnitTests.Extensions
 {
-    public class IntersectionCollectionExtensionsTests
+    public partial class IntersectionCollectionExtensionsTests
     {
+        [Theory]
+        [MemberData(nameof(TestCasesWhenListDoesNotContainHit))]
+        public void Hit_ShouldNotReturnAnIntersection_WhenListDoesNotContainAnyHits(
+            IImmutableList<Intersection> sut
+        )
+        {
+            // arrange
+            // act
+            var result = sut.Hit();
+
+            // assert
+            result.Should().BeNull();
+        }
+
+        [Theory]
+        [MemberData(nameof(TestCasesWhenListContainsHit))]
+        public void Hit_ShouldReturnExpectedIntersection_WhenListContainsAHit(
+            IImmutableList<Intersection> sut,
+            float expectedTime
+        )
+        {
+            // arrange
+            // act
+            var actual = sut.Hit()?.Time;
+
+            // assert
+            actual.Should().Be(expectedTime);
+        }
+
         [Fact]
         public void Hit_ShouldReturnNull_WhenAllIntersectionsHaveNegativeTime()
         {
@@ -73,6 +103,20 @@ namespace RayTracer.Core.UnitTests.Extensions
 
             // assert
             actual.Should().BeSameAs(expected);
+        }
+
+        [Fact]
+        public void
+            Hit_ShouldThrowInvalidOperationException_WhenIntersectionsIsNotAnImmutableArrayOrImmutableList()
+        {
+            // arrange
+            var sut = new TestImmutableList { Count = 10 };
+
+            // act
+            Action act = () => { _ = sut.Hit(); };
+
+            // assert
+            act.Should().Throw<InvalidOperationException>().WithMessage("Unexpected collection*");
         }
     }
 }
