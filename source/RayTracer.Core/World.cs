@@ -39,5 +39,22 @@ namespace RayTracer.Core
 
             return result.Sort(Intersection.TimeComparer);
         }
+
+        public Color ShadeHit(IntersectionComputations computations)
+        {
+            var result = Color.Black;
+
+            for (var i = 0; i < Lights.Count; i += 1)
+            {
+                result += computations.Shape.Material.Lighting(
+                    Lights[i],
+                    computations.Point,
+                    computations.Eye,
+                    computations.Normal
+                );
+            }
+
+            return result;
+        }
     }
 }
