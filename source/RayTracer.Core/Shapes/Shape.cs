@@ -22,5 +22,7 @@ namespace RayTracer.Core.Shapes
         protected Matrix4 TransformInverse { get; init; } = Matrix4.Identity;
 
         public abstract IImmutableList<Intersection> Intersect(Ray ray);
+
+        public abstract Vector NormalAt(in Point worldPoint);
     }
 }

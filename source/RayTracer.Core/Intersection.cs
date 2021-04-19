@@ -8,6 +8,22 @@ namespace RayTracer.Core
     {
         public static readonly IComparer<Intersection> TimeComparer = new TimeComparerImpl();
 
+        public IntersectionComputations PrepareComputations(Ray ray)
+        {
+            var point = ray.Position(Time);
+            var eye = -ray.Direction;
+            var normal = Shape.NormalAt(point);
+            var inside = false;
+
+            if (normal.DotProduct(eye) < 0f)
+            {
+                normal = -normal;
+                inside = true;
+            }
+
+            return new IntersectionComputations(Shape, Time, point, eye, normal, inside);
+        }
+
         private sealed class TimeComparerImpl : IComparer<Intersection>
         {
             /// <inheritdoc />

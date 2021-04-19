@@ -34,7 +34,7 @@ namespace RayTracer.Core.Shapes
             return t1 <= t2 ? ImmutableArray.Create(i1, i2) : ImmutableArray.Create(i2, i1);
         }
 
-        public Vector NormalAt(in Point worldPoint)
+        public override Vector NormalAt(in Point worldPoint)
         {
             var objectPoint = TransformInverse * worldPoint;
             var objectNormal = objectPoint - Point.Origin;
