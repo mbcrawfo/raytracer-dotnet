@@ -752,5 +752,82 @@ namespace RayTracer.Core.UnitTests.Math
             // assert
             actual.Should().Be(expected);
         }
+
+        [Fact]
+        public void ViewTransform_ShouldMoveTheWorldAndNotTheEye()
+        {
+            // arrange
+            var from = new Point(0f, 0f, 8f);
+            var to = Point.Origin;
+            var up = Vector.UnitY;
+
+            // act
+            var result = Matrix4.ViewTransform(from, to, up);
+
+            // assert
+            result.Should().Be(Matrix4.Translation(0f, 0f, -8f));
+        }
+
+        [Fact]
+        public void ViewTransform_ShouldReturnIdentityMatrix_WhenInputsAreDefaultOrientation()
+        {
+            // arrange
+            var from = Point.Origin;
+            var to = new Point(0f, 0f, -1f);
+            var up = Vector.UnitY;
+
+            // act
+            var result = Matrix4.ViewTransform(from, to, up);
+
+            // assert
+            result.Should().Be(Matrix4.Identity);
+        }
+
+        [Fact]
+        public void
+            ViewTransform_ShouldReturnTheExpectedTransform_WhenLookingInAnArbitraryDirection()
+        {
+            // arrange
+            var from = new Point(1f, 3f, 2f);
+            var to = new Point(4f, -2f, 8f);
+            var up = new Vector(1f, 1f, 0f);
+
+            // act
+            var result = Matrix4.ViewTransform(from, to, up);
+
+            // assert
+            using var _ = new AssertionScope();
+            result[0, 0].Should().BeApproximately(-0.50709f, 1e-5f);
+            result[0, 1].Should().BeApproximately(0.50709f, 1e-5f);
+            result[0, 2].Should().BeApproximately(0.67612f, 1e-5f);
+            result[0, 3].Should().BeApproximately(-2.36643f, 1e-5f);
+            result[1, 0].Should().BeApproximately(0.76772f, 1e-5f);
+            result[1, 1].Should().BeApproximately(0.60609f, 1e-5f);
+            result[1, 2].Should().BeApproximately(0.12122f, 1e-5f);
+            result[1, 3].Should().BeApproximately(-2.82843f, 1e-5f);
+            result[2, 0].Should().BeApproximately(-0.35857f, 1e-5f);
+            result[2, 1].Should().BeApproximately(0.59761f, 1e-5f);
+            result[2, 2].Should().BeApproximately(-0.71714f, 1e-5f);
+            result[2, 3].Should().BeApproximately(0f, 1e-5f);
+            result[3, 0].Should().BeApproximately(0f, 1e-5f);
+            result[3, 1].Should().BeApproximately(0f, 1e-5f);
+            result[3, 2].Should().BeApproximately(0f, 1e-5f);
+            result[3, 3].Should().BeApproximately(1f, 1e-5f);
+        }
+
+        [Fact]
+        public void ViewTransform_ShouldReturnViewTransform_WhenLookingInThePositiveZDirection()
+        {
+            // arrange
+            var from = Point.Origin;
+            var to = new Point(0f, 0f, 1f);
+            var up = Vector.UnitY;
+
+            // act
+            var result = Matrix4.ViewTransform(from, to, up);
+
+            // assert
+            result.Should().Be(Matrix4.Scaling(-1, 1, -1));
+        }
     }
 }

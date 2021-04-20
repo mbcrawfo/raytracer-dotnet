@@ -217,5 +217,24 @@ namespace RayTracer.Core.Math
 
             return result;
         }
+
+        public static Matrix4 ViewTransform(in Point from, in Point to, in Vector up)
+        {
+            var forward = (to - from).Normalize();
+            var left = forward.CrossProduct(up.Normalize());
+            var trueUp = left.CrossProduct(forward);
+
+            var orientation = new Matrix4(
+                new[,]
+                {
+                    { left.X, left.Y, left.Z, 0f },
+                    { trueUp.X, trueUp.Y, trueUp.Z, 0f },
+                    { -forward.X, -forward.Y, -forward.Z, 0f },
+                    { 0f, 0f, 0f, 1f }
+                }
+            );
+
+            return orientation * Translation(-from.X, -from.Y, -from.Z);
+        }
     }
 }
