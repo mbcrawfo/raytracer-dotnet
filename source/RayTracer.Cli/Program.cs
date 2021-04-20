@@ -6,7 +6,7 @@ namespace RayTracer.Cli
     {
         internal static void Main()
         {
-            Chapter6ThreeDeeSphere.GenerateImage();
+            Chapter7MultiSphereScene.GenerateImage();
         }
     }
 }
