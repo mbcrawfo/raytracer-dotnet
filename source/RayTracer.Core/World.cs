@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using RayTracer.Core.Extensions;
 using RayTracer.Core.Math;
 using RayTracer.Core.Shapes;
 
@@ -27,6 +28,17 @@ namespace RayTracer.Core
         public IImmutableList<PointLight> Lights { get; init; } = ImmutableArray<PointLight>.Empty;
 
         public IImmutableList<Shape> Shapes { get; init; } = ImmutableArray<Shape>.Empty;
+
+        public Color ColorAt(Ray ray)
+        {
+            if (Intersect(ray).Hit() is not { } hit)
+            {
+                return Color.Black;
+            }
+
+            var computations = hit.PrepareComputations(ray);
+            return ShadeHit(computations);
+        }
 
         public IImmutableList<Intersection> Intersect(Ray ray)
         {
