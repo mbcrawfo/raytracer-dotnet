@@ -24,11 +24,22 @@ namespace RayTracer.Core
 
         public float SpecularReflection { get; init; }
 
-        public Color Lighting(PointLight light, in Point point, in Vector eye, in Vector normal)
+        public Color Lighting(
+            PointLight light,
+            in Point point,
+            in Vector eye,
+            in Vector normal,
+            bool pointLiesInShadow
+        )
         {
             var effectiveColor = Color * light.Intensity;
             var lightVector = (light.Position - point).Normalize();
             var ambient = effectiveColor * AmbientReflection;
+
+            if (pointLiesInShadow)
+            {
+                return ambient;
+            }
 
             var lightDotNormal = lightVector.DotProduct(normal);
             if (lightDotNormal < 0f)

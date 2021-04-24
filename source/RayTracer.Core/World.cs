@@ -36,7 +36,7 @@ namespace RayTracer.Core
                 return Color.Black;
             }
 
-            var computations = hit.PrepareComputations(ray);
+            var computations = new IntersectionComputations(ray, hit);
             return ShadeHit(computations);
         }
 
@@ -52,17 +52,30 @@ namespace RayTracer.Core
             return result.Sort(Intersection.TimeComparer);
         }
 
-        public Color ShadeHit(IntersectionComputations computations)
+        internal bool IsInShadow(in Point point, PointLight light)
+        {
+            var lightVector = light.Position - point;
+            var lightDistance = lightVector.Magnitude();
+            var lightRay = new Ray(point, lightVector.Normalize());
+
+            return Intersect(lightRay).Hit() is { } hit && hit.Time < lightDistance;
+        }
+
+        internal Color ShadeHit(IntersectionComputations computations)
         {
             var result = Color.Black;
 
             for (var i = 0; i < Lights.Count; i += 1)
             {
+                var light = Lights[i];
+                var inShadow = IsInShadow(computations.OverPoint, light);
+                
                 result += computations.Shape.Material.Lighting(
-                    Lights[i],
+                    light,
                     computations.Point,
                     computations.Eye,
-                    computations.Normal
+                    computations.Normal,
+                    inShadow
                 );
             }
 

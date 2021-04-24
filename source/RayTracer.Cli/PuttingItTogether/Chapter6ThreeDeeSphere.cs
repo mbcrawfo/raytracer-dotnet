@@ -41,7 +41,7 @@ namespace RayTracer.Cli.PuttingItTogether
                         var point = ray.Position(time);
                         var eye = -ray.Direction;
                         var normal = sphere.NormalAt(point);
-                        canvas[x, y] = shape.Material.Lighting(light, point, eye, normal);
+                        canvas[x, y] = shape.Material.Lighting(light, point, eye, normal, false);
                     }
                 }
             }
