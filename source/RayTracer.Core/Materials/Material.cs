@@ -1,24 +1,25 @@
 using System;
+using RayTracer.Core.Materials.Patterns;
 using RayTracer.Core.Math;
 
 namespace RayTracer.Core.Materials
 {
-    public record PhongMaterial : IMaterial
+    public record Material
     {
-        public static readonly PhongMaterial Default = new()
+        public static readonly Material Default = new()
         {
             AmbientReflection = 0.1f,
-            Color = Color.White,
             DiffuseReflection = 0.9f,
+            Pattern = new SolidPattern(Color.White),
             Shininess = 200f,
             SpecularReflection = 0.9f
         };
 
         public float AmbientReflection { get; init; }
 
-        public Color Color { get; init; }
-
         public float DiffuseReflection { get; init; }
+
+        public Pattern Pattern { get; init; } = new SolidPattern(Color.White);
 
         public float Shininess { get; init; }
 
@@ -32,7 +33,7 @@ namespace RayTracer.Core.Materials
             bool pointLiesInShadow
         )
         {
-            var effectiveColor = Color * light.Intensity;
+            var effectiveColor = Pattern.ColorAt(point) * light.Intensity;
             var lightVector = (light.Position - point).Normalize();
             var ambient = effectiveColor * AmbientReflection;
 

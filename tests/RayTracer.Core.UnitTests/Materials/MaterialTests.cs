@@ -16,7 +16,7 @@ namespace RayTracer.Core.UnitTests.Materials
             var light = new PointLight(new(0f, 0f, 10f), Color.White);
             var eye = new Vector(0f, 0f, -1f);
             var normal = new Vector(0f, 0f, -1f);
-            var sut = PhongMaterial.Default;
+            var sut = Material.Default;
 
             // act
             var result = sut.Lighting(light, Point.Origin, eye, normal, false);
@@ -32,7 +32,7 @@ namespace RayTracer.Core.UnitTests.Materials
             var light = new PointLight(new(0f, 0f, -10f), Color.White);
             var eye = new Vector(0f, 0f, -1f);
             var normal = new Vector(0f, 0f, -1f);
-            var sut = PhongMaterial.Default;
+            var sut = Material.Default;
 
             // act
             var result = sut.Lighting(light, Point.Origin, eye, normal, false);
@@ -49,7 +49,7 @@ namespace RayTracer.Core.UnitTests.Materials
             var light = new PointLight(new(0f, 10f, -10f), Color.White);
             var eye = new Vector(0f, -MathF.Sqrt(2f) / 2f, -MathF.Sqrt(2f) / 2f);
             var normal = new Vector(0f, 0f, -1f);
-            var sut = PhongMaterial.Default;
+            var sut = Material.Default;
 
             // act
             var result = sut.Lighting(light, Point.Origin, eye, normal, false);
@@ -69,7 +69,7 @@ namespace RayTracer.Core.UnitTests.Materials
             var light = new PointLight(new(0f, 0f, -10f), Color.White);
             var eye = new Vector(0f, MathF.Sqrt(2f) / 2f, -MathF.Sqrt(2f) / 2f);
             var normal = new Vector(0f, 0f, -1f);
-            var sut = PhongMaterial.Default;
+            var sut = Material.Default;
 
             // act
             var result = sut.Lighting(light, Point.Origin, eye, normal, false);
@@ -86,7 +86,7 @@ namespace RayTracer.Core.UnitTests.Materials
             var light = new PointLight(new(0f, 10f, -10f), Color.White);
             var eye = new Vector(0f, 0f, -1f);
             var normal = new Vector(0f, 0f, -1f);
-            var sut = PhongMaterial.Default;
+            var sut = Material.Default;
 
             // act
             var result = sut.Lighting(light, Point.Origin, eye, normal, false);
@@ -106,7 +106,7 @@ namespace RayTracer.Core.UnitTests.Materials
             var light = new PointLight(new(0f, 0f, -10f), Color.White);
             var eye = new Vector(0f, 0f, -1f);
             var normal = new Vector(0f, 0f, -1f);
-            var sut = PhongMaterial.Default;
+            var sut = Material.Default;
 
             // act
             var result = sut.Lighting(light, Point.Origin, eye, normal, true);

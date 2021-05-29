@@ -3,6 +3,7 @@ using System.Linq;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using RayTracer.Core.Materials;
+using RayTracer.Core.Materials.Patterns;
 using RayTracer.Core.Math;
 using RayTracer.Core.Shapes;
 using Xunit;
@@ -50,17 +51,21 @@ namespace RayTracer.Core.UnitTests
             var ray = new Ray(new(0f, 0f, 0.75f), -Vector.UnitZ);
             var outerSphere = World.Default.Shapes[0] with
             {
-                Material = PhongMaterial.Default with { AmbientReflection = 1f }
+                Material = (Material) World.Default.Shapes[0].Material with
+                {
+                    AmbientReflection = 1f
+                }
             };
-            var innerSphere = World.Default.Shapes[1] with
+            var innerMaterial = (Material) World.Default.Shapes[1].Material with
             {
-                Material = PhongMaterial.Default with { AmbientReflection = 1f }
+                AmbientReflection = 1f
             };
+            var innerSphere = World.Default.Shapes[1] with { Material = innerMaterial };
             var sut = World.Default with
             {
                 Shapes = ImmutableArray.Create(outerSphere, innerSphere)
             };
-            var expected = PhongMaterial.Default.Color;
+            var expected = ((SolidPattern) innerMaterial.Pattern).Color;
 
             // act
             var actual = sut.ColorAt(ray);

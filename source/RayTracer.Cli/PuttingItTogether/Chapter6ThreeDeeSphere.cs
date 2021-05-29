@@ -3,6 +3,7 @@ using System.Linq;
 using RayTracer.Core;
 using RayTracer.Core.Extensions;
 using RayTracer.Core.Materials;
+using RayTracer.Core.Materials.Patterns;
 using RayTracer.Core.Math;
 using RayTracer.Core.Shapes;
 
@@ -21,7 +22,10 @@ namespace RayTracer.Cli.PuttingItTogether
             var rayOrigin = new Point(0f, 0f, -5f);
             var sphere = new Sphere
             {
-                Material = PhongMaterial.Default with { Color = new(1f, 0.2f, 1f) }
+                Material = Material.Default with
+                {
+                    Pattern = new SolidPattern(new Color(1f, 0.2f, 1f))
+                }
             };
             var light = new PointLight(new(-10f, 10f, -10f), Color.White);
             var canvas = new Canvas(imageSize, imageSize, new Color(0.25f, 0.25f, 0.25f));

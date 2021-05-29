@@ -6,7 +6,7 @@ namespace RayTracer.Core.Shapes
 {
     public abstract record Shape : Transformable
     {
-        public IMaterial Material { get; init; } = PhongMaterial.Default;
+        public Material Material { get; init; } = Materials.Material.Default;
 
         public IImmutableList<Intersection> Intersect(Ray worldRay)
         {

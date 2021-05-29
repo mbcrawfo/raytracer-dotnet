@@ -1,6 +1,7 @@
 using System.Collections.Immutable;
 using RayTracer.Core.Extensions;
 using RayTracer.Core.Materials;
+using RayTracer.Core.Materials.Patterns;
 using RayTracer.Core.Math;
 using RayTracer.Core.Shapes;
 
@@ -15,10 +16,10 @@ namespace RayTracer.Core
                 Shapes = ImmutableArray.Create<Shape>(
                     new Sphere
                     {
-                        Material = PhongMaterial.Default with
+                        Material = Material.Default with
                         {
-                            Color = new(0.8f, 1f, 0.6f),
                             DiffuseReflection = 0.7f,
+                            Pattern = new SolidPattern(new Color(0.8f, 1f, 0.6f)),
                             SpecularReflection = 0.2f
                         }
                     },

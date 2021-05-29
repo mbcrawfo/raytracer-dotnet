@@ -3,6 +3,7 @@ using System.Collections.Immutable;
 using System.IO;
 using RayTracer.Core;
 using RayTracer.Core.Materials;
+using RayTracer.Core.Materials.Patterns;
 using RayTracer.Core.Math;
 using RayTracer.Core.Shapes;
 
@@ -12,9 +13,9 @@ namespace RayTracer.Cli.PuttingItTogether
     {
         public static void GenerateImage()
         {
-            var boxMaterial = PhongMaterial.Default with
+            var boxMaterial = Material.Default with
             {
-                Color = new Color(1f, 0.9f, 0.9f), SpecularReflection = 0f
+                Pattern = new SolidPattern(new Color(1f, 0.9f, 0.9f)), SpecularReflection = 0f
             };
 
             var floor = new InfinitePlane { Material = boxMaterial, Normal = Vector.UnitY };
@@ -35,10 +36,10 @@ namespace RayTracer.Cli.PuttingItTogether
 
             var middleSphere = new Sphere
             {
-                Material = PhongMaterial.Default with
+                Material = Material.Default with
                 {
-                    Color = new Color(0.15f, 0.15f, 1f),
                     DiffuseReflection = 0.7f,
+                    Pattern = new SolidPattern(new Color(0.15f, 0.15f, 1f)),
                     SpecularReflection = 0.5f
                 },
                 Transform = Matrix4.Translation(-0.5f, 1f, 0.5f)
@@ -46,10 +47,10 @@ namespace RayTracer.Cli.PuttingItTogether
 
             var rightSphere = new Sphere
             {
-                Material = PhongMaterial.Default with
+                Material = Material.Default with
                 {
-                    Color = new Color(0.1f, 1f, 0.1f),
                     DiffuseReflection = 0.7f,
+                    Pattern = new SolidPattern(new Color(0.1f, 1f, 0.1f)),
                     SpecularReflection = 0.3f
                 },
                 Transform = Matrix4.Identity
@@ -59,10 +60,10 @@ namespace RayTracer.Cli.PuttingItTogether
 
             var leftSphere = new Sphere
             {
-                Material = PhongMaterial.Default with
+                Material = Material.Default with
                 {
-                    Color = new Color(1f, 0.1f, 0.1f),
                     DiffuseReflection = 0.7f,
+                    Pattern = new SolidPattern(new Color(1f, 0.1f, 0.1f)),
                     SpecularReflection = 0.3f
                 },
                 Transform = Matrix4.Identity
