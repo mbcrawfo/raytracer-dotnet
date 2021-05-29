@@ -1,5 +1,4 @@
 using FluentAssertions;
-using FluentAssertions.Execution;
 using RayTracer.Core.Math;
 using RayTracer.Core.Shapes;
 using Xunit;
@@ -8,32 +7,63 @@ namespace RayTracer.Core.UnitTests.Shapes
 {
     public class TransformableTests
     {
-        private record TransformableImpl : Transformable
-        {
-            public new Matrix4 TransformInverse => base.TransformInverse;
+        private record TransformableImpl : Transformable;
 
-            public new Matrix4 TransformInverseTranspose => base.TransformInverseTranspose;
+        [Fact]
+        public void LocalVectorToWorldVector_ShouldConvertTheInputToWorldSpace()
+        {
+            // arrange
+            var localVector = new Vector(1.23f, 4.56f, 7.89f);
+            var transform = Matrix4.Identity.RotateX(0.1f)
+                .RotateY(0.2f)
+                .RotateZ(0.3f)
+                .Scale(1f, 2f, 3f);
+            var sut = new TransformableImpl { Transform = transform };
+            var expected = transform.Inverse().Transpose() * localVector;
+
+            // act
+            var actual = sut.LocalVectorToWorldVector(localVector);
+
+            // assert
+            actual.Should().Be(expected);
         }
 
         [Fact]
-        public void Transform_ShouldSetTransformInverseAndTransformInverseTranspose()
+        public void WorldPointToLocalPoint_ShouldConvertTheInputToLocalSpace()
         {
             // arrange
-            var expectedTransform = Matrix4.Identity.RotateX(0.1f)
-                .RotateY(0.25f)
-                .RotateZ(0.333f)
-                .Scale(0.5f, 0.5f, 0.5f);
-            var expectedTransformInverse = expectedTransform.Inverse();
-            var expectedTransformInverseTranspose = expectedTransformInverse.Transpose();
+            var worldPoint = new Point(1.23f, 4.56f, 7.89f);
+            var transform = Matrix4.Identity.RotateX(0.1f)
+                .RotateY(0.2f)
+                .RotateZ(0.3f)
+                .Scale(1f, 2f, 3f);
+            var sut = new TransformableImpl { Transform = transform };
+            var expected = transform.Inverse() * worldPoint;
 
             // act
-            var sut = new TransformableImpl { Transform = expectedTransform };
+            var actual = sut.WorldPointToLocalPoint(worldPoint);
 
             // assert
-            using var _ = new AssertionScope();
-            sut.Transform.Should().Be(expectedTransform);
-            sut.TransformInverse.Should().Be(expectedTransformInverse);
-            sut.TransformInverseTranspose.Should().Be(expectedTransformInverseTranspose);
+            actual.Should().Be(expected);
+        }
+
+        [Fact]
+        public void WorldRayToLocalRay_ShouldConvertTheInputToLocalSpace()
+        {
+            // arrange
+            var worldRay = new Ray(new Point(1f, 2f, 3f), new Vector(4f, 5f, 6f));
+            var transform = Matrix4.Identity.RotateX(0.1f)
+                .RotateY(0.2f)
+                .RotateZ(0.3f)
+                .Scale(1f, 2f, 3f);
+            var sut = new TransformableImpl { Transform = transform };
+            var expected = worldRay.Transform(transform.Inverse());
+
+            // act
+            var actual = sut.WorldRayToLocalRay(worldRay);
+
+            // assert
+            actual.Should().Be(expected);
         }
     }
 }

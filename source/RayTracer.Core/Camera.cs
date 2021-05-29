@@ -57,8 +57,8 @@ namespace RayTracer.Core
             var worldX = _halfWidth - xOffset;
             var worldY = _halfHeight - yOffset;
 
-            var pixel = TransformInverse * new Point(worldX, worldY, -1f);
-            var origin = TransformInverse * Point.Origin;
+            var pixel = WorldPointToLocalPoint(new Point(worldX, worldY, -1f));
+            var origin = WorldPointToLocalPoint(Point.Origin);
             var direction = (pixel - origin).Normalize();
 
             return new Ray(origin, direction);
