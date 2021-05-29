@@ -6,19 +6,19 @@ namespace RayTracer.Core.Shapes
 {
     public record Sphere : Shape
     {
-        public Point Position { get; } = Point.Origin;
+        public Point Position { get; init; } = Point.Origin;
 
-        public float Radius { get; } = 1f;
+        public float Radius { get; init; } = 1f;
 
-        public override IImmutableList<Intersection> Intersect(Ray ray)
+        public override IImmutableList<Intersection> LocalIntersect(Ray localRay)
         {
-            var (origin, direction) = ray.Transform(TransformInverse);
+            var (origin, direction) = localRay;
 
             var sphereToRay = origin - Position;
             var a = direction.DotProduct(direction);
             var b = 2f * direction.DotProduct(sphereToRay);
             var c = sphereToRay.DotProduct(sphereToRay) - Radius;
-            var discriminant = b * b - 4 * a * c;
+            var discriminant = b * b - 4f * a * c;
 
             if (discriminant < 0f)
             {
@@ -34,12 +34,7 @@ namespace RayTracer.Core.Shapes
             return t1 <= t2 ? ImmutableArray.Create(i1, i2) : ImmutableArray.Create(i2, i1);
         }
 
-        public override Vector NormalAt(in Point worldPoint)
-        {
-            var objectPoint = TransformInverse * worldPoint;
-            var objectNormal = objectPoint - Point.Origin;
-            var worldNormal = TransformInverse.Transpose() * objectNormal;
-            return worldNormal.Normalize();
-        }
+        public override Vector LocalNormalAt(in Point localPoint) =>
+            (localPoint - Position).Normalize();
     }
 }

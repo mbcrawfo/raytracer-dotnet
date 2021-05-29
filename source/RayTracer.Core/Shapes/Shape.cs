@@ -7,8 +7,22 @@ namespace RayTracer.Core.Shapes
     {
         public Material Material { get; init; } = Material.Default;
 
-        public abstract IImmutableList<Intersection> Intersect(Ray ray);
+        public IImmutableList<Intersection> Intersect(Ray worldRay)
+        {
+            var localRay = worldRay.Transform(TransformInverse);
+            return LocalIntersect(localRay);
+        }
 
-        public abstract Vector NormalAt(in Point worldPoint);
+        public Vector NormalAt(in Point worldPoint)
+        {
+            var localPoint = TransformInverse * worldPoint;
+            var localNormal = LocalNormalAt(localPoint);
+            var worldNormal = TransformInverseTranspose * localNormal;
+            return worldNormal.Normalize();
+        }
+
+        public abstract IImmutableList<Intersection> LocalIntersect(Ray localRay);
+
+        public abstract Vector LocalNormalAt(in Point localPoint);
     }
 }

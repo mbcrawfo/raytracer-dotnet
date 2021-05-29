@@ -13,9 +13,13 @@ namespace RayTracer.Core.Shapes
             {
                 _transform = value;
                 TransformInverse = value.Inverse();
+                TransformInverseTranspose = TransformInverse.Transpose();
             }
         }
 
         protected Matrix4 TransformInverse { get; private init; } = Matrix4.Identity;
+
+        protected Matrix4 TransformInverseTranspose { get; private init; } =
+            Matrix4.Identity.Transpose();
     }
 }
