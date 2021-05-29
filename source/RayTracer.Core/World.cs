@@ -15,7 +15,7 @@ namespace RayTracer.Core
                 Shapes = ImmutableArray.Create<Shape>(
                     new Sphere
                     {
-                        Material = Material.Default with
+                        Material = PhongMaterial.Default with
                         {
                             Color = new(0.8f, 1f, 0.6f),
                             DiffuseReflection = 0.7f,

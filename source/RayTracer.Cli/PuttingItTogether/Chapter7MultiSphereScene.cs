@@ -14,7 +14,7 @@ namespace RayTracer.Cli.PuttingItTogether
         {
             var floor = new Sphere
             {
-                Material = Material.Default with
+                Material = PhongMaterial.Default with
                 {
                     Color = new Color(1f, 0.9f, 0.9f), SpecularReflection = 0f
                 },
@@ -41,7 +41,7 @@ namespace RayTracer.Cli.PuttingItTogether
 
             var middleSphere = new Sphere
             {
-                Material = Material.Default with
+                Material = PhongMaterial.Default with
                 {
                     Color = new Color(0.15f, 0.15f, 1f),
                     DiffuseReflection = 0.7f,
@@ -52,7 +52,7 @@ namespace RayTracer.Cli.PuttingItTogether
 
             var rightSphere = new Sphere
             {
-                Material = Material.Default with
+                Material = PhongMaterial.Default with
                 {
                     Color = new Color(0.1f, 1f, 0.1f),
                     DiffuseReflection = 0.7f,
@@ -65,7 +65,7 @@ namespace RayTracer.Cli.PuttingItTogether
 
             var leftSphere = new Sphere
             {
-                Material = Material.Default with
+                Material = PhongMaterial.Default with
                 {
                     Color = new Color(1f, 0.1f, 0.1f),
                     DiffuseReflection = 0.7f,

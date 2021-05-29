@@ -3,9 +3,9 @@ using RayTracer.Core.Math;
 
 namespace RayTracer.Core.Materials
 {
-    public record Material
+    public record PhongMaterial : IMaterial
     {
-        public static readonly Material Default = new()
+        public static readonly PhongMaterial Default = new()
         {
             AmbientReflection = 0.1f,
             Color = Color.White,

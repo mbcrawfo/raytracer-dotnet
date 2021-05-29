@@ -50,22 +50,23 @@ namespace RayTracer.Core.UnitTests
             var ray = new Ray(new(0f, 0f, 0.75f), -Vector.UnitZ);
             var outerSphere = World.Default.Shapes[0] with
             {
-                Material = Material.Default with { AmbientReflection = 1f }
+                Material = PhongMaterial.Default with { AmbientReflection = 1f }
             };
             var innerSphere = World.Default.Shapes[1] with
             {
-                Material = Material.Default with { AmbientReflection = 1f }
+                Material = PhongMaterial.Default with { AmbientReflection = 1f }
             };
             var sut = World.Default with
             {
                 Shapes = ImmutableArray.Create(outerSphere, innerSphere)
             };
+            var expected = PhongMaterial.Default.Color;
 
             // act
-            var result = sut.ColorAt(ray);
+            var actual = sut.ColorAt(ray);
 
             // assert
-            result.Should().Be(innerSphere.Material.Color);
+            actual.Should().Be(expected);
         }
 
         [Fact]

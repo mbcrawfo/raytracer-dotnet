@@ -21,7 +21,7 @@ namespace RayTracer.Cli.PuttingItTogether
             var rayOrigin = new Point(0f, 0f, -5f);
             var sphere = new Sphere
             {
-                Material = Material.Default with { Color = new(1f, 0.2f, 1f) }
+                Material = PhongMaterial.Default with { Color = new(1f, 0.2f, 1f) }
             };
             var light = new PointLight(new(-10f, 10f, -10f), Color.White);
             var canvas = new Canvas(imageSize, imageSize, new Color(0.25f, 0.25f, 0.25f));
