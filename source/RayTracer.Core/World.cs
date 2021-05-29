@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using RayTracer.Core.Extensions;
+using RayTracer.Core.Materials;
 using RayTracer.Core.Math;
 using RayTracer.Core.Shapes;
 

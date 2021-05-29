@@ -2,6 +2,7 @@ using System;
 using System.Collections.Immutable;
 using System.IO;
 using RayTracer.Core;
+using RayTracer.Core.Materials;
 using RayTracer.Core.Math;
 using RayTracer.Core.Shapes;
 

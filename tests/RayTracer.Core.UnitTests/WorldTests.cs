@@ -2,6 +2,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using FluentAssertions;
 using FluentAssertions.Execution;
+using RayTracer.Core.Materials;
 using RayTracer.Core.Math;
 using RayTracer.Core.Shapes;
 using Xunit;

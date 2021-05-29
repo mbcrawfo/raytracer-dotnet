@@ -1,7 +1,7 @@
 using System;
 using RayTracer.Core.Math;
 
-namespace RayTracer.Core
+namespace RayTracer.Core.Materials
 {
     public record Material
     {

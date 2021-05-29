@@ -1,10 +1,11 @@
 using System;
 using FluentAssertions;
 using FluentAssertions.Execution;
+using RayTracer.Core.Materials;
 using RayTracer.Core.Math;
 using Xunit;
 
-namespace RayTracer.Core.UnitTests
+namespace RayTracer.Core.UnitTests.Materials
 {
     public class MaterialTests
     {

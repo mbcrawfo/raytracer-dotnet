@@ -2,6 +2,7 @@ using System.IO;
 using System.Linq;
 using RayTracer.Core;
 using RayTracer.Core.Extensions;
+using RayTracer.Core.Materials;
 using RayTracer.Core.Math;
 using RayTracer.Core.Shapes;
 
