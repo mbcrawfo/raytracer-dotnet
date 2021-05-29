@@ -3,6 +3,7 @@ using FluentAssertions;
 using FluentAssertions.Execution;
 using RayTracer.Core.Materials;
 using RayTracer.Core.Math;
+using RayTracer.Core.Shapes;
 using Xunit;
 
 namespace RayTracer.Core.UnitTests.Materials
@@ -14,12 +15,13 @@ namespace RayTracer.Core.UnitTests.Materials
         {
             // arrange
             var light = new PointLight(new(0f, 0f, 10f), Color.White);
+            var shape = new Sphere();
             var eye = new Vector(0f, 0f, -1f);
             var normal = new Vector(0f, 0f, -1f);
             var sut = Material.Default;
 
             // act
-            var result = sut.Lighting(light, Point.Origin, eye, normal, false);
+            var result = sut.Lighting(light, shape, Point.Origin, eye, normal, false);
 
             // assert
             result.Should().Be(new Color(0.1f, 0.1f, 0.1f));
@@ -30,12 +32,13 @@ namespace RayTracer.Core.UnitTests.Materials
         {
             // arrange
             var light = new PointLight(new(0f, 0f, -10f), Color.White);
+            var shape = new Sphere();
             var eye = new Vector(0f, 0f, -1f);
             var normal = new Vector(0f, 0f, -1f);
             var sut = Material.Default;
 
             // act
-            var result = sut.Lighting(light, Point.Origin, eye, normal, false);
+            var result = sut.Lighting(light, shape, Point.Origin, eye, normal, false);
 
             // assert
             result.Should().Be(new Color(1.9f, 1.9f, 1.9f));
@@ -47,12 +50,13 @@ namespace RayTracer.Core.UnitTests.Materials
         {
             // arrange
             var light = new PointLight(new(0f, 10f, -10f), Color.White);
+            var shape = new Sphere();
             var eye = new Vector(0f, -MathF.Sqrt(2f) / 2f, -MathF.Sqrt(2f) / 2f);
             var normal = new Vector(0f, 0f, -1f);
             var sut = Material.Default;
 
             // act
-            var result = sut.Lighting(light, Point.Origin, eye, normal, false);
+            var result = sut.Lighting(light, shape, Point.Origin, eye, normal, false);
 
             // assert
             using var _ = new AssertionScope();
@@ -67,12 +71,13 @@ namespace RayTracer.Core.UnitTests.Materials
         {
             // arrange
             var light = new PointLight(new(0f, 0f, -10f), Color.White);
+            var shape = new Sphere();
             var eye = new Vector(0f, MathF.Sqrt(2f) / 2f, -MathF.Sqrt(2f) / 2f);
             var normal = new Vector(0f, 0f, -1f);
             var sut = Material.Default;
 
             // act
-            var result = sut.Lighting(light, Point.Origin, eye, normal, false);
+            var result = sut.Lighting(light, shape, Point.Origin, eye, normal, false);
 
             // assert
             result.Should().Be(new Color(1f, 1f, 1f));
@@ -84,12 +89,13 @@ namespace RayTracer.Core.UnitTests.Materials
         {
             // arrange
             var light = new PointLight(new(0f, 10f, -10f), Color.White);
+            var shape = new Sphere();
             var eye = new Vector(0f, 0f, -1f);
             var normal = new Vector(0f, 0f, -1f);
             var sut = Material.Default;
 
             // act
-            var result = sut.Lighting(light, Point.Origin, eye, normal, false);
+            var result = sut.Lighting(light, shape, Point.Origin, eye, normal, false);
 
             // assert
             using var _ = new AssertionScope();
@@ -104,12 +110,13 @@ namespace RayTracer.Core.UnitTests.Materials
         {
             // arrange
             var light = new PointLight(new(0f, 0f, -10f), Color.White);
+            var shape = new Sphere();
             var eye = new Vector(0f, 0f, -1f);
             var normal = new Vector(0f, 0f, -1f);
             var sut = Material.Default;
 
             // act
-            var result = sut.Lighting(light, Point.Origin, eye, normal, true);
+            var result = sut.Lighting(light, shape, Point.Origin, eye, normal, true);
 
             // assert
             result.Should().Be(new Color(0.1f, 0.1f, 0.1f));

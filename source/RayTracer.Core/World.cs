@@ -74,6 +74,7 @@ namespace RayTracer.Core
                 
                 result += computations.Shape.Material.Lighting(
                     light,
+                    computations.Shape,
                     computations.Point,
                     computations.Eye,
                     computations.Normal,

@@ -1,6 +1,7 @@
 using System;
 using RayTracer.Core.Materials.Patterns;
 using RayTracer.Core.Math;
+using RayTracer.Core.Shapes;
 
 namespace RayTracer.Core.Materials
 {
@@ -27,13 +28,14 @@ namespace RayTracer.Core.Materials
 
         public Color Lighting(
             PointLight light,
+            Shape shape,
             in Point point,
             in Vector eye,
             in Vector normal,
             bool pointLiesInShadow
         )
         {
-            var effectiveColor = Pattern.ColorAt(point) * light.Intensity;
+            var effectiveColor = Pattern.ColorAtObjectSpace(shape, point) * light.Intensity;
             var lightVector = (light.Position - point).Normalize();
             var ambient = effectiveColor * AmbientReflection;
 
