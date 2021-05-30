@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using FluentAssertions;
 using RayTracer.Core.Materials.Patterns;
 using RayTracer.Core.Math;
+using RayTracer.Core.Shapes;
 using Xunit;
 
 namespace RayTracer.Core.UnitTests.Materials.Patterns
@@ -29,10 +30,11 @@ namespace RayTracer.Core.UnitTests.Materials.Patterns
             )
         {
             // arrange
+            var shape = new Sphere();
             var sut = new GradientPattern(Color.White, Color.Black);
 
             // act
-            var actual = sut.ColorAt(point);
+            var actual = sut.ColorAt(point, shape);
 
             // assert
             actual.Should().Be(expected);
@@ -45,11 +47,12 @@ namespace RayTracer.Core.UnitTests.Materials.Patterns
         public void ColorAt_ShouldNotChangeColor_WhenMovingAlongTheYAxis(float y)
         {
             // arrange
+            var shape = new Sphere();
             var point = new Point(0f, y, 0f);
             var sut = new GradientPattern(Color.White, Color.Black);
 
             // act
-            var result = sut.ColorAt(point);
+            var result = sut.ColorAt(point, shape);
 
             // assert
             result.Should().Be(Color.White);
@@ -62,11 +65,12 @@ namespace RayTracer.Core.UnitTests.Materials.Patterns
         public void ColorAt_ShouldNotChangeColor_WhenMovingAlongTheZAxis(float z)
         {
             // arrange
+            var shape = new Sphere();
             var point = new Point(0f, 0f, z);
             var sut = new GradientPattern(Color.White, Color.Black);
 
             // act
-            var result = sut.ColorAt(point);
+            var result = sut.ColorAt(point, shape);
 
             // assert
             result.Should().Be(Color.White);

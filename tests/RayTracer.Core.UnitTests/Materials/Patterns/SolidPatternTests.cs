@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using FluentAssertions;
 using RayTracer.Core.Materials.Patterns;
 using RayTracer.Core.Math;
+using RayTracer.Core.Shapes;
 using Xunit;
 
 namespace RayTracer.Core.UnitTests.Materials.Patterns
@@ -22,10 +23,11 @@ namespace RayTracer.Core.UnitTests.Materials.Patterns
         public void ColorAt_ShouldAlwaysReturnThePatternColor(in Color expected, in Point point)
         {
             // arrange
+            var shape = new Sphere();
             var sut = new SolidPattern(expected);
 
             // act
-            var actual = sut.ColorAt(point);
+            var actual = sut.ColorAt(point, shape);
 
             // assert
             actual.Should().Be(expected);

@@ -5,13 +5,18 @@ namespace RayTracer.Core.Materials.Patterns
 {
     public abstract record Pattern : Transformable
     {
-        public abstract Color ColorAt(in Point localPoint);
-
-        public Color ColorAtObjectSpace(Transformable @object, in Point worldPoint)
+        public Color ColorAt(in Point worldPoint, Transformable @object)
         {
             var objectPoint = @object.WorldPointToLocalPoint(worldPoint);
+            return PatternColorAt(objectPoint);
+        }
+
+        protected abstract Color LocalColorAt(in Point localPoint);
+
+        protected Color PatternColorAt(in Point objectPoint)
+        {
             var patternPoint = WorldPointToLocalPoint(objectPoint);
-            return ColorAt(patternPoint);
+            return LocalColorAt(patternPoint);
         }
     }
 }

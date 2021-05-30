@@ -35,7 +35,7 @@ namespace RayTracer.Core.Materials
             bool pointLiesInShadow
         )
         {
-            var effectiveColor = Pattern.ColorAtObjectSpace(shape, point) * light.Intensity;
+            var effectiveColor = Pattern.ColorAt(point, shape) * light.Intensity;
             var ambient = effectiveColor * AmbientReflection;
 
             if (pointLiesInShadow)

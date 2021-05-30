@@ -19,7 +19,7 @@ namespace RayTracer.Core.Materials.Patterns
         public IImmutableList<Color> Colors { get; init; } = ImmutableArray<Color>.Empty;
 
         /// <inheritdoc />
-        public override Color ColorAt(in Point localPoint)
+        protected override Color LocalColorAt(in Point localPoint)
         {
             Debug.Assert(Colors.Count > 0, "Colors.Count > 0");
 
