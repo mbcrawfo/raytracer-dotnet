@@ -7,24 +7,15 @@ namespace RayTracer.Core.Materials.Patterns
 {
     public sealed record StripedPattern : Pattern
     {
-        public StripedPattern()
-        {
-        }
-
-        public StripedPattern(params Color[] colors)
-        {
-            Colors = colors.ToImmutableArray();
-        }
-
-        public IImmutableList<Color> Colors { get; init; } = ImmutableArray<Color>.Empty;
+        public IImmutableList<Pattern> Patterns { get; init; } = ImmutableArray<Pattern>.Empty;
 
         /// <inheritdoc />
         protected override Color LocalColorAt(in Point localPoint)
         {
-            Debug.Assert(Colors.Count > 0, "Colors.Count > 0");
+            Debug.Assert(Patterns.Count > 0, "Patterns.Count > 0");
 
-            var index = (int) MathF.Abs(MathF.Floor(localPoint.X)) % Colors.Count;
-            return Colors[index];
+            var index = (int) MathF.Abs(MathF.Floor(localPoint.X)) % Patterns.Count;
+            return Patterns[index].PatternColorAt(localPoint);
         }
     }
 }

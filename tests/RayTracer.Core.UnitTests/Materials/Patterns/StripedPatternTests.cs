@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using FluentAssertions;
 using RayTracer.Core.Materials.Patterns;
 using RayTracer.Core.Math;
@@ -35,7 +36,14 @@ namespace RayTracer.Core.UnitTests.Materials.Patterns
             // arrange
             var shape = new Sphere();
             var point = new Point(x, 0f, 0f);
-            var sut = new StripedPattern(Color.Red, Color.White, Color.Blue);
+            var sut = new StripedPattern
+            {
+                Patterns = ImmutableArray.Create<Pattern>(
+                    new SolidPattern(Color.Red),
+                    new SolidPattern(Color.White),
+                    new SolidPattern(Color.Blue)
+                )
+            };
 
             // act
             var actual = sut.ColorAt(point, shape);
@@ -53,7 +61,13 @@ namespace RayTracer.Core.UnitTests.Materials.Patterns
             // arrange
             var shape = new Sphere();
             var point = new Point(0f, y, 0f);
-            var sut = new StripedPattern(Color.White, Color.Black);
+            var sut = new StripedPattern
+            {
+                Patterns = ImmutableArray.Create<Pattern>(
+                    new SolidPattern(Color.White),
+                    new SolidPattern(Color.Black)
+                )
+            };
 
             // act
             var result = sut.ColorAt(point, shape);
@@ -71,11 +85,17 @@ namespace RayTracer.Core.UnitTests.Materials.Patterns
             // arrange
             var shape = new Sphere();
             var point = new Point(0f, 0f, z);
-            var sut = new StripedPattern(Color.White, Color.Black);
+            var sut = new StripedPattern
+            {
+                Patterns = ImmutableArray.Create<Pattern>(
+                    new SolidPattern(Color.White),
+                    new SolidPattern(Color.Black)
+                )
+            };
 
             // act
             var result = sut.ColorAt(point, shape);
-            
+
             // assert
             result.Should().Be(Color.White);
         }

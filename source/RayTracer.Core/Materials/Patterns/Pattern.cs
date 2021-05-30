@@ -13,7 +13,7 @@ namespace RayTracer.Core.Materials.Patterns
 
         protected abstract Color LocalColorAt(in Point localPoint);
 
-        protected Color PatternColorAt(in Point objectPoint)
+        public Color PatternColorAt(in Point objectPoint)
         {
             var patternPoint = WorldPointToLocalPoint(objectPoint);
             return LocalColorAt(patternPoint);

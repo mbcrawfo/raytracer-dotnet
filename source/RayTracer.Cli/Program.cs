@@ -6,7 +6,7 @@ namespace RayTracer.Cli
     {
         internal static void Main()
         {
-            Chapter9Planes.GenerateImage();
+            Chapter10Patterns.GenerateImage();
         }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Immutable;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using RayTracer.Core.Materials;
@@ -23,7 +24,13 @@ namespace RayTracer.Core.UnitTests.Materials
             {
                 AmbientReflection = 1f,
                 DiffuseReflection = 0f,
-                Pattern = new StripedPattern(Color.White, Color.Black),
+                Pattern = new StripedPattern
+                {
+                    Patterns = ImmutableArray.Create<Pattern>(
+                        new SolidPattern(Color.White),
+                        new SolidPattern(Color.Black)
+                    )
+                },
                 SpecularReflection = 0f
             };
 
