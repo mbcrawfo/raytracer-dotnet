@@ -3,7 +3,7 @@ using RayTracer.Core.Math;
 
 namespace RayTracer.Core.Materials.Patterns
 {
-    public sealed record Gradient(Color Start, Color End) : Pattern
+    public sealed record GradientPattern(Color Start, Color End) : Pattern
     {
         /// <inheritdoc />
         public override Color ColorAt(in Point localPoint)

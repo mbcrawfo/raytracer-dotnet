@@ -6,7 +6,7 @@ using Xunit;
 
 namespace RayTracer.Core.UnitTests.Materials.Patterns
 {
-    public class RingedColorsTests
+    public class RingedPatternTests
     {
         public static IEnumerable<object> ColorAtTestCases =>
             new[]
@@ -36,7 +36,7 @@ namespace RayTracer.Core.UnitTests.Materials.Patterns
         {
             // arrange
             var point = new Point(0f, y, 0f);
-            var sut = new RingedColors(Color.White, Color.Black);
+            var sut = new RingedPattern(Color.White, Color.Black);
 
             // act
             var result = sut.ColorAt(point);
@@ -53,7 +53,7 @@ namespace RayTracer.Core.UnitTests.Materials.Patterns
         )
         {
             // arrange
-            var sut = new RingedColors(Color.Red, Color.Green, Color.Blue);
+            var sut = new RingedPattern(Color.Red, Color.Green, Color.Blue);
 
             // act
             var actual = sut.ColorAt(point);

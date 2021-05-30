@@ -5,17 +5,17 @@ using RayTracer.Core.Math;
 
 namespace RayTracer.Core.Materials.Patterns
 {
-    public sealed record StripedColors : Pattern
+    public sealed record RingedPattern : Pattern
     {
-        public StripedColors()
+        public RingedPattern()
         {
         }
 
-        public StripedColors(params Color[] colors)
+        public RingedPattern(params Color[] colors)
         {
             Colors = colors.ToImmutableArray();
         }
-
+        
         public IImmutableList<Color> Colors { get; init; } = ImmutableArray<Color>.Empty;
 
         /// <inheritdoc />
@@ -23,7 +23,8 @@ namespace RayTracer.Core.Materials.Patterns
         {
             Debug.Assert(Colors.Count > 0, "Colors.Count > 0");
 
-            var index = (int) MathF.Abs(MathF.Floor(localPoint.X)) % Colors.Count;
+            var distance = MathF.Sqrt(localPoint.X * localPoint.X + localPoint.Z * localPoint.Z);
+            var index = (int) MathF.Floor(distance) % Colors.Count;
             return Colors[index];
         }
     }

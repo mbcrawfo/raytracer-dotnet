@@ -6,7 +6,7 @@ using Xunit;
 
 namespace RayTracer.Core.UnitTests.Materials.Patterns
 {
-    public class SolidColorTests
+    public class SolidPatternTests
     {
         public static IEnumerable<object> ColorAtTestCases =>
             new[]
@@ -22,7 +22,7 @@ namespace RayTracer.Core.UnitTests.Materials.Patterns
         public void ColorAt_ShouldAlwaysReturnThePatternColor(in Color expected, in Point point)
         {
             // arrange
-            var sut = new SolidColor(expected);
+            var sut = new SolidPattern(expected);
 
             // act
             var actual = sut.ColorAt(point);

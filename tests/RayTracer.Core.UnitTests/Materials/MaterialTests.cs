@@ -23,7 +23,7 @@ namespace RayTracer.Core.UnitTests.Materials
             {
                 AmbientReflection = 1f,
                 DiffuseReflection = 0f,
-                Pattern = new StripedColors(Color.White, Color.Black),
+                Pattern = new StripedPattern(Color.White, Color.Black),
                 SpecularReflection = 0f
             };
 

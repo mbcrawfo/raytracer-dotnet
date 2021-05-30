@@ -24,7 +24,7 @@ namespace RayTracer.Cli.PuttingItTogether
             {
                 Material = Material.Default with
                 {
-                    Pattern = new SolidColor(new Color(1f, 0.2f, 1f))
+                    Pattern = new SolidPattern(new Color(1f, 0.2f, 1f))
                 }
             };
             var light = new PointLight(new(-10f, 10f, -10f), Color.White);

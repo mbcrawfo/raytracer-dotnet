@@ -11,7 +11,7 @@ namespace RayTracer.Core.Materials
         {
             AmbientReflection = 0.1f,
             DiffuseReflection = 0.9f,
-            Pattern = new SolidColor(Color.White),
+            Pattern = new SolidPattern(Color.White),
             Shininess = 200f,
             SpecularReflection = 0.9f
         };
@@ -20,7 +20,7 @@ namespace RayTracer.Core.Materials
 
         public float DiffuseReflection { get; init; }
 
-        public Pattern Pattern { get; init; } = new SolidColor(Color.White);
+        public Pattern Pattern { get; init; } = new SolidPattern(Color.White);
 
         public float Shininess { get; init; }
 

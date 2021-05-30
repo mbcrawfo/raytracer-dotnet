@@ -2,7 +2,7 @@ using RayTracer.Core.Math;
 
 namespace RayTracer.Core.Materials.Patterns
 {
-    public sealed record SolidColor(Color Color) : Pattern
+    public sealed record SolidPattern(Color Color) : Pattern
     {
         /// <inheritdoc />
         public override Color ColorAt(in Point localPoint) => Color;

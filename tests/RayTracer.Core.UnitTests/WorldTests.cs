@@ -65,7 +65,7 @@ namespace RayTracer.Core.UnitTests
             {
                 Shapes = ImmutableArray.Create(outerSphere, innerSphere)
             };
-            var expected = ((SolidColor) innerMaterial.Pattern).Color;
+            var expected = ((SolidPattern) innerMaterial.Pattern).Color;
 
             // act
             var actual = sut.ColorAt(ray);
