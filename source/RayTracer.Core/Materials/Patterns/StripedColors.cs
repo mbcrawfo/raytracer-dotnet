@@ -5,7 +5,7 @@ using RayTracer.Core.Math;
 
 namespace RayTracer.Core.Materials.Patterns
 {
-    public record StripedColors : Pattern
+    public sealed record StripedColors : Pattern
     {
         public StripedColors()
         {
