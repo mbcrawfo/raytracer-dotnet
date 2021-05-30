@@ -19,7 +19,7 @@ namespace RayTracer.Core
                         Material = Material.Default with
                         {
                             DiffuseReflection = 0.7f,
-                            Pattern = new SolidPattern(new Color(0.8f, 1f, 0.6f)),
+                            Pattern = new SolidColor(new Color(0.8f, 1f, 0.6f)),
                             SpecularReflection = 0.2f
                         }
                     },

@@ -5,13 +5,13 @@ using RayTracer.Core.Math;
 
 namespace RayTracer.Core.Materials.Patterns
 {
-    public record StripedPattern : Pattern
+    public record StripedColors : Pattern
     {
-        public StripedPattern()
+        public StripedColors()
         {
         }
 
-        public StripedPattern(params Color[] colors)
+        public StripedColors(params Color[] colors)
         {
             Colors = colors.ToImmutableArray();
         }

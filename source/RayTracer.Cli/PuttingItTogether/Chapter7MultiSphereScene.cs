@@ -17,7 +17,7 @@ namespace RayTracer.Cli.PuttingItTogether
             {
                 Material = Material.Default with
                 {
-                    Pattern = new SolidPattern(new Color(1f, 0.9f, 0.9f)),
+                    Pattern = new SolidColor(new Color(1f, 0.9f, 0.9f)),
                     SpecularReflection = 0f
                 },
                 Transform = Matrix4.Scaling(10f, 0.01f, 10f)
@@ -46,7 +46,7 @@ namespace RayTracer.Cli.PuttingItTogether
                 Material = Material.Default with
                 {
                     DiffuseReflection = 0.7f,
-                    Pattern = new SolidPattern(new Color(0.15f, 0.15f, 1f)),
+                    Pattern = new SolidColor(new Color(0.15f, 0.15f, 1f)),
                     SpecularReflection = 0.5f
                 },
                 Transform = Matrix4.Translation(-0.5f, 1f, 0.5f)
@@ -57,7 +57,7 @@ namespace RayTracer.Cli.PuttingItTogether
                 Material = Material.Default with
                 {
                     DiffuseReflection = 0.7f,
-                    Pattern = new SolidPattern(new Color(0.1f, 1f, 0.1f)),
+                    Pattern = new SolidColor(new Color(0.1f, 1f, 0.1f)),
                     SpecularReflection = 0.3f
                 },
                 Transform = Matrix4.Identity
@@ -70,7 +70,7 @@ namespace RayTracer.Cli.PuttingItTogether
                 Material = Material.Default with
                 {
                     DiffuseReflection = 0.7f,
-                    Pattern = new SolidPattern(new Color(1f, 0.1f, 0.1f)),
+                    Pattern = new SolidColor(new Color(1f, 0.1f, 0.1f)),
                     SpecularReflection = 0.3f
                 },
                 Transform = Matrix4.Identity

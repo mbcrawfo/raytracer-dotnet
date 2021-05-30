@@ -6,7 +6,7 @@ using Xunit;
 
 namespace RayTracer.Core.UnitTests.Materials.Patterns
 {
-    public class StripedPatternTests
+    public class StripedColorsTests
     {
         public static IEnumerable<object> ColorAtTestCases =>
             new[]
@@ -33,7 +33,7 @@ namespace RayTracer.Core.UnitTests.Materials.Patterns
         {
             // arrange
             var point = new Point(x, 0f, 0f);
-            var sut = new StripedPattern(Color.Red, Color.White, Color.Blue);
+            var sut = new StripedColors(Color.Red, Color.White, Color.Blue);
 
             // act
             var actual = sut.ColorAt(point);
@@ -50,7 +50,7 @@ namespace RayTracer.Core.UnitTests.Materials.Patterns
         {
             // arrange
             var point = new Point(0f, y, 0f);
-            var sut = new StripedPattern(Color.White, Color.Black);
+            var sut = new StripedColors(Color.White, Color.Black);
 
             // act
             var result = sut.ColorAt(point);
@@ -67,7 +67,7 @@ namespace RayTracer.Core.UnitTests.Materials.Patterns
         {
             // arrange
             var point = new Point(0f, 0f, z);
-            var sut = new StripedPattern(Color.White, Color.Black);
+            var sut = new StripedColors(Color.White, Color.Black);
 
             // act
             var result = sut.ColorAt(point);
