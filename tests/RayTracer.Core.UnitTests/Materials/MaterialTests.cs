@@ -2,6 +2,7 @@ using System;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using RayTracer.Core.Materials;
+using RayTracer.Core.Materials.Patterns;
 using RayTracer.Core.Math;
 using RayTracer.Core.Shapes;
 using Xunit;
@@ -10,6 +11,32 @@ namespace RayTracer.Core.UnitTests.Materials
 {
     public class MaterialTests
     {
+        [Fact]
+        public void Lighting_ShouldApplyColorsBasedOnTheMaterialPattern()
+        {
+            // arrange
+            var light = new PointLight(new(0f, 0f, -10f), Color.White);
+            var shape = new Sphere();
+            var eye = new Vector(0f, 0f, -1f);
+            var normal = new Vector(0f, 0f, -1f);
+            var sut = Material.Default with
+            {
+                AmbientReflection = 1f,
+                DiffuseReflection = 0f,
+                Pattern = new StripedPattern(Color.White, Color.Black),
+                SpecularReflection = 0f
+            };
+
+            // act
+            var color1 = sut.Lighting(light, shape, new Point(0.9f, 0f, 0f), eye, normal, true);
+            var color2 = sut.Lighting(light, shape, new Point(1.1f, 0f, 0f), eye, normal, true);
+
+            // assert
+            using var _ = new AssertionScope();
+            color1.Should().Be(Color.White);
+            color2.Should().Be(Color.Black);
+        }
+
         [Fact]
         public void Lighting_ShouldReturnAmbientLightIntensity_WhenTheLightIsBehindTheSurface()
         {
@@ -105,8 +132,7 @@ namespace RayTracer.Core.UnitTests.Materials
         }
 
         [Fact]
-        public void
-            Lighting_ShouldReturnOnlyAmbientLightComponent_WhenPointIsInShadow()
+        public void Lighting_ShouldReturnOnlyAmbientLightComponent_WhenPointIsInShadow()
         {
             // arrange
             var light = new PointLight(new(0f, 0f, -10f), Color.White);

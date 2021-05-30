@@ -36,7 +36,6 @@ namespace RayTracer.Core.Materials
         )
         {
             var effectiveColor = Pattern.ColorAtObjectSpace(shape, point) * light.Intensity;
-            var lightVector = (light.Position - point).Normalize();
             var ambient = effectiveColor * AmbientReflection;
 
             if (pointLiesInShadow)
@@ -44,6 +43,7 @@ namespace RayTracer.Core.Materials
                 return ambient;
             }
 
+            var lightVector = (light.Position - point).Normalize();
             var lightDotNormal = lightVector.DotProduct(normal);
             if (lightDotNormal < 0f)
             {
