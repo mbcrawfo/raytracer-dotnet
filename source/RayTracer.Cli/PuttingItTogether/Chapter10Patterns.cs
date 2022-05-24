@@ -39,63 +39,17 @@ namespace RayTracer.Cli.PuttingItTogether
                 Material = Material.Default with
                 {
                     DiffuseReflection = 0.7f,
-                    Pattern = new StripedPattern
-                    {
-                        Patterns = ImmutableArray.Create<Pattern>(
-                            new StripedPattern
-                            {
-                                Patterns = ImmutableArray.Create<Pattern>(
-                                    new StripedPattern
-                                    {
-                                        Patterns = ImmutableArray.Create<Pattern>(
-                                            new SolidPattern(Color.Red),
-                                            new SolidPattern(Color.White)
-                                        ),
-                                        Transform = Matrix4.Identity.RotateZ(MathF.PI / 4f)
-                                            .Scale(0.25f, 0.25f, 0.25f)
-                                    },
-                                    new StripedPattern
-                                    {
-                                        Patterns = ImmutableArray.Create<Pattern>(
-                                            new SolidPattern(Color.Green),
-                                            new SolidPattern(Color.White)
-                                        ),
-                                        Transform = Matrix4.Identity.RotateZ(-MathF.PI / 4f)
-                                            .Scale(0.25f, 0.25f, 0.25f)
-                                    }
-                                ),
-                                Transform = Matrix4.Identity.RotateZ(MathF.PI / 4f)
-                                    .Scale(0.25f, 0.25f, 0.25f)
-                            },
-                            new StripedPattern
-                            {
-                                Patterns = ImmutableArray.Create<Pattern>(
-                                    new StripedPattern
-                                    {
-                                        Patterns = ImmutableArray.Create<Pattern>(
-                                            new SolidPattern(Color.Blue),
-                                            new SolidPattern(Color.White)
-                                        ),
-                                        Transform = Matrix4.Identity.RotateZ(MathF.PI / 4f)
-                                            .Scale(0.25f, 0.25f, 0.25f)
-                                    },
-                                    new StripedPattern
-                                    {
-                                        Patterns = ImmutableArray.Create<Pattern>(
-                                            new SolidPattern(new Color(1f, 0.99f, 0.23f)),
-                                            new SolidPattern(Color.White)
-                                        ),
-                                        Transform = Matrix4.Identity.RotateZ(-MathF.PI / 4f)
-                                            .Scale(0.25f, 0.25f, 0.25f)
-                                    }
-                                ),
-                                Transform = Matrix4.Identity.RotateZ(-MathF.PI / 4f)
-                                    .Scale(0.25f, 0.25f, 0.25f)
-                            }
-                        ),
-                        Transform = Matrix4.Identity.RotateZ(MathF.PI / 2f)
-                            .Scale(0.25f, 0.25f, 0.25f)
-                    },
+                    Pattern = new PerturbedPattern(
+                        new StripedPattern
+                        {
+                            Patterns = ImmutableArray.Create<Pattern>(
+                                new SolidPattern(Color.Red),
+                                new SolidPattern(Color.Green)
+                            ),
+                            Transform = Matrix4.Identity.RotateZ(MathF.PI / 2f)
+                                .Scale(0.5f, 0.5f, 0.5f)
+                        }
+                    ),
                     SpecularReflection = 0.5f
                 },
                 Transform = Matrix4.Translation(0f, 1f, 0f)

@@ -59,5 +59,16 @@ namespace RayTracer.Core.UnitTests.Materials.Patterns
             // assert
             result.Should().Be(new Color(1f, 1.5f, 2f));
         }
+
+        [Fact]
+        public void METHOD()
+        {
+            // arrange
+            var a = PerlinNoise.Generate(1.23f, 4.56f, 7.89f);
+
+            // act
+
+            // assert
+        }
     }
 }
